@@ -1,8 +1,20 @@
 extends ../../layouts/default.pug
+include ../../mixins/box-head.pug
 
 block main
     .container.my-3
         .row
             .col-12
-                .box-model
-                
+                +box-head('Danh sách sản phẩm') 
+
+            .row 
+                .col-4.mb-3 
+                    .product-item 
+                        .inner-image 
+                            img(src='data:image/webp;base64,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' alt='Iphone 17')
+
+                        .inner-content 
+                            h3.inner-title iphone 17
+                            .inner-price-new $1000
+                            .inner-price-old $1250
+                            .inner-discount -15%             
