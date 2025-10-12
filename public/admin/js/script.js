@@ -1,8 +1,8 @@
 // Button status
-const btnStatus = document.querySelectorAll('[btn-status]')
+const btnsStatus = document.querySelectorAll('[btn-status]')
 
-if (btnStatus.length > 0){
-    btnStatus.forEach(btn => {
+if (btnsStatus.length > 0){
+    btnsStatus.forEach(btn => {
         btn.addEventListener('click', () =>{
             let url = new URL(window.location.href)
             const status = btn.getAttribute('btn-status')
@@ -20,22 +20,47 @@ if (btnStatus.length > 0){
 // End button status
 
 // Form search
-const formSearch = document.querySelectorAll('#form-search')
+const formsSearch = document.querySelectorAll('#form-search')
 
-if (formSearch) {
-    let url = new URL(window.location.href)
-    forEach.formSearch.addEventListener('submit', (e) => {
+if (formsSearch.length > 0) {
+    formsSearch.forEach(item => {
+        item.addEventListener('submit', (e) => {
         e.preventDefault()
-        const keyword = e.target.elements.keyword.value
 
-        if (keyword){
+        const url = new URL(window.location.href)
+        const keyword = e.target.elements.keyword.value.trim()
+
+        if (keyword) {
             url.searchParams.set('keyword', keyword)
         } else {
             url.searchParams.delete('keyword')
         }
+
         window.location.href = url.href
+    })
     })
 }
 
 
 // End form search
+
+// Pagination
+const btnsPagination = document.querySelectorAll('[btn-pagination]')
+
+if (btnsPagination.length > 0) {
+
+    btnsPagination.forEach(btn => {
+        btn.addEventListener('click', () => {
+
+            let url = new URL(window.location.href)
+
+            const page = btn.getAttribute('btn-pagination')
+
+            url.searchParams.set('page', page)
+            window.location.href = url.href
+        })
+    })
+}
+
+// End Pagination
+
