@@ -1,20 +1,10 @@
-const Product = require('../../models/product.model')
+const productService = require('../../services/client/product.service')
 
-
-// [GET] /products
 module.exports.index = async (req, res) => {
-    const products = await Product.find({
-        status: 'active',
-        deleted: 'false'
-    })
-
-    const newProducts = products.map(item => {
-        item.newPrice = (item.price * (100 - item.discountPercentage) / 100).toFixed(0)
-        return item
-    })
+    const products = await productService.getList()
 
     res.render('client/pages/products/index', {
         pageTitle: 'Trang danh sách sản phẩm',
-        products: newProducts
+        products
     })
 }
