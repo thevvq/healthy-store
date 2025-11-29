@@ -21,3 +21,9 @@ module.exports.changeMultiStatus = async (req, res) =>{
     await productService.changeMultiStatus(req.body.type, req.body.ids.split(','))
     res.redirect(req.get('Referer') || `${req.app.locals.prefixAdmin}/products`)
 }
+
+// [DELETE] /admin/products/delete-product/:id
+module.exports.deleteProduct = async (req, res) => {
+    await productService.deleteProduct(req.params.id)
+    res.redirect(req.get('Referer') || `${req.app.locals.prefixAdmin}/products`)
+}

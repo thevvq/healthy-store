@@ -18,3 +18,24 @@ if (buttonsChangeStatus.length > 0) {
 }
 
 //End Change Status
+
+// Delete Product
+const buttonsDelete = document.querySelectorAll('[data-btn-delete]');
+if (buttonsDelete.length > 0) {
+    const formDeleteProduct = document.querySelector('#form-delete-product');
+    const path = formDeleteProduct.getAttribute('data-path');
+    
+    buttonsDelete.forEach(button => {
+        button.addEventListener('click', (e) => {
+            const isConfirmed = confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?');
+            if (isConfirmed) {
+                const id = button.getAttribute('data-id');
+
+                const action = `${path}/${id}?_method=DELETE`;
+                formDeleteProduct.action = action;
+                formDeleteProduct.submit();
+            }  
+        });
+    });    
+}
+// End Delete Product

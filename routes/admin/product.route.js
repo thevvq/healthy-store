@@ -6,5 +6,6 @@ router.get('/', controller.index)
 
 router.patch('/change-status/:status/:id', controller.changeStatus)
 router.patch('/change-multi', controller.changeMultiStatus)
+router.delete('/delete-product/:id', controller.deleteProduct)
 
 module.exports = router

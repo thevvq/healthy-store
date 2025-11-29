@@ -68,7 +68,7 @@ block main
 
                             td
                                 button.btn.btn-warning.btn-sm Sửa
-                                button.btn.btn-danger.btn-sm.ml-1 Xóa
+                                button.btn.btn-danger.btn-sm.ml-1(data-id=item.id data-btn-delete='') Xóa
 
     +pagination(pagination)
 
@@ -78,5 +78,10 @@ block main
         data-path=`${prefixAdmin}/products/change-status`
     ) 
 
+    form(action=""
+        method="POST"
+        id="form-delete-product"
+        data-path=`${prefixAdmin}/products/delete-product`
+    ) 
 
     script(src='/admin/js/product.js') 

@@ -55,4 +55,18 @@ module.exports.changeMultiStatus = async (type, ids) => {
     )
 }
 
+module.exports.deleteProduct = async (id) => {
+    // return await Product.deleteOne(
+    //     { _id: id }
+    // )
+
+    return await Product.updateOne(
+        { _id: id },
+        { 
+            deleted: true,
+            deletedAt: new Date()
+        }
+    )
+}
+
 
