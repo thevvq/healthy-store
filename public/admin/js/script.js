@@ -64,3 +64,46 @@ if (btnsPagination.length > 0) {
 
 // End Pagination
 
+// Checkbox multi
+const checkboxMulti = document.querySelector('[checkbox-multi]')
+if (checkboxMulti){
+    const inputCheckAll = checkboxMulti.querySelector("input[name='check-all']")
+    const inputIds = checkboxMulti.querySelectorAll("input[name='id']")
+    
+    inputCheckAll.addEventListener("click", () => {
+        inputIds.forEach(input => input.checked = inputCheckAll.checked);
+    })
+
+
+    inputIds.forEach(input => {
+        input.addEventListener('click', ()=> {
+            const countChecked = checkboxMulti.querySelectorAll("input[name='id']:checked").length
+            inputCheckAll.checked = (countChecked === inputIds.length);
+        })  
+    })
+}
+// End Checkbox multi
+
+// Form change multi
+const formChangeMulti = document.querySelector('[form-change-multi]');
+if (formChangeMulti){
+    formChangeMulti.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const checkBoxMulti = document.querySelector('[checkbox-multi]');
+        const inputsChecked = checkBoxMulti.querySelectorAll("input[name='id']:checked");
+
+        if (inputsChecked.length === 0){
+            alert('Vui lòng chọn ít nhất một mục!');
+            return;
+        }
+
+        const inputIds = formChangeMulti.querySelector("input[name='ids']");
+        inputIds.value = [...inputsChecked].map(input => input.value).join(',');
+
+        formChangeMulti.submit();
+    });
+}
+
+// End Form change multi
+

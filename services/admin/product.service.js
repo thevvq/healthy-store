@@ -32,3 +32,27 @@ module.exports.getList = async (query) => {
         pagination
     }
 }
+
+module.exports.changeStatus = async (id, status) => {
+    return await Product.updateOne(
+        { _id: id },
+        { status }
+    )
+}
+
+module.exports.changeMultiStatus = async (type, ids) => {
+    const statusMap = {
+        active: 'active',
+        inactive: 'inactive'
+    }
+
+    const status = statusMap[type]
+    if (!status) return
+
+    await Product.updateMany(
+        { _id: { $in: ids } },
+        { status }
+    )
+}
+
+

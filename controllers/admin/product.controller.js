@@ -12,10 +12,12 @@ module.exports.index = async (req, res) => {
 
 // [PATCH] /admin/products/change-status/:status/:id
 module.exports.changeStatus = async (req, res) =>{
-    const id = req.params.id
-    const status = req.params.status
+    await productService.changeStatus(req.params.id, req.params.status)
+    res.redirect(req.get('Referer') || `${req.app.locals.prefixAdmin}/products`)
+}
 
-    await productService.updateStatus(id, status)
-
+// [PATCH] /admin/products/change-multi
+module.exports.changeMultiStatus = async (req, res) =>{
+    await productService.changeMultiStatus(req.body.type, req.body.ids.split(','))
     res.redirect(req.get('Referer') || `${req.app.locals.prefixAdmin}/products`)
 }
