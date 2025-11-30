@@ -1,4 +1,4 @@
-extends ../layouts/default
+extends ../../layouts/default
 
 block main
     .login-container.container.mt-5
@@ -17,3 +17,6 @@ block main
                 input.form-control(type="password", name="password", required)
 
             button.btn.btn-primary(type="submit") Đăng nhập
+            .mt-3
+            a(href="/register") Chưa có tài khoản? Đăng ký
+

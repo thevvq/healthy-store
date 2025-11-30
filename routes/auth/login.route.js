@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const loginController = require("../controllers/client/login.controller");
+const loginController = require("../../controllers/client/login.controller");
 
 // Hiển thị form đăng nhập
 router.get("/", loginController.renderLogin);
