@@ -3,13 +3,21 @@ header.header
         .row.align-items-center
             .col-3
                 .inner-logo
-                    a(href='/')
-                        img(src='/images/logo.svg', alt='Logo')
+                    a(href="/")
+                        img(src="/images/logo.svg", alt="Logo")
 
             .col-9
-                .inner-menu 
+                .inner-menu
                     ul
                         li
-                            a(href='/') Trang chủ
+                            a(href="/") Trang chủ
                         li
-                            a(href='/products') Sản phẩm
+                            a(href="/products") Sản phẩm
+                        if !user
+                            li
+                                a(href="/login") Đăng nhập
+                        else
+                            li
+                                span Xin chào, #{user.fullName}
+                            li
+                                a(href="/login/logout") Đăng xuất
