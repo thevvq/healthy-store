@@ -1,22 +1,27 @@
 extends ../../layouts/default
 
 block main
-    .login-container.container.mt-5
-        h2.mb-4 Đăng nhập
+    // 👉 Gắn file CSS riêng cho trang login
+    link(rel="stylesheet", href="/css/login.css")
 
-        if error
-            p.text-danger #{error}
+    .auth-container
+        .auth-box
+            h2.title Đăng nhập
 
-        form(method="POST", action="/login")
-            .mb-3
-                label.form-label Email
-                input.form-control(type="email", name="email", required)
+            if error
+                .alert.alert-danger #{error}
 
-            .mb-3
-                label.form-label Mật khẩu
-                input.form-control(type="password", name="password", required)
+            form(method="POST", action="/login")
+                .form-group
+                    label Email
+                    input(type="email", name="email", placeholder="Nhập email..." required)
 
-            button.btn.btn-primary(type="submit") Đăng nhập
-            .mt-3
-            a(href="/register") Chưa có tài khoản? Đăng ký
+                .form-group
+                    label Mật khẩu
+                    input(type="password", name="password", placeholder="Nhập mật khẩu..." required)
 
+                button.btn-login(type="submit") Đăng nhập
+
+            p.switch-text
+                | Chưa có tài khoản?
+                a(href="/register") Đăng ký ngay →
