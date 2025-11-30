@@ -99,4 +99,20 @@ module.exports.deleteProduct = async (id) => {
     )
 }
 
+module.exports.createProduct = async (req) => {
+    req.body.price = parseInt(req.body.price);
+    req.body.discountPercentage = parseInt(req.body.discountPercentage);
+    req.body.stock = parseInt(req.body.stock);
+
+    if (req.body.position === '') {
+        const countProducts = await Product.countDocuments({ deleted: false });
+        
+        req.body.position = countProducts + 1;
+    }else {
+        req.body.position = parseInt(req.body.position);
+    }
+
+    const product = new Product(req.body);
+    return await product.save();
+}
 
