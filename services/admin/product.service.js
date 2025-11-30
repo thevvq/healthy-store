@@ -41,7 +41,7 @@ module.exports.changeStatus = async (id, status) => {
     )
 }
 
-module.exports.changeMultiStatus = async (type, ids) => {
+module.exports.changeMulti = async (req, type, ids) => {
     const statusMap = {
         active: 'active',
         inactive: 'inactive',
@@ -53,13 +53,15 @@ module.exports.changeMultiStatus = async (type, ids) => {
     if (!status) return
 
     if (status === 'delete-all') {
-        return await Product.updateMany(
+        await Product.updateMany(
             { _id: { $in: ids }},
             { 
                 deleted: true,
                 deletedAt: new Date()
             }  
         )
+        req.flash('success', `Xóa thành công ${ids.length} sản phẩm!`)
+        return
     }
 
     if (status === 'change-position') {
@@ -71,6 +73,8 @@ module.exports.changeMultiStatus = async (type, ids) => {
                 { position }
             )
         }
+        req.flash('success', `Cập nhật vị trí thành công ${ids.length} sản phẩm!`)
+
         return 
     }
 
@@ -78,6 +82,7 @@ module.exports.changeMultiStatus = async (type, ids) => {
         { _id: { $in: ids } },
         { status }
     )
+    req.flash('success', `Cập nhật thành công ${ids.length} sản phẩm!`)
 }
 
 module.exports.deleteProduct = async (id) => {

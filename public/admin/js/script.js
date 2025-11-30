@@ -127,3 +127,24 @@ if (formChangeMulti){
 
 // End Form change multi
 
+// Show alert
+const alerts = document.querySelectorAll('[show-alert]');
+if (alerts.length > 0){
+    alerts.forEach(alert => {
+        const time = parseInt(alert.getAttribute('data-time')) || 3000;
+
+        const btnClose = alert.querySelector('[close-alert]');
+
+        setTimeout(()=>{
+            alert.classList.add('alert-hide');
+        }, time);
+
+        if (btnClose){
+            btnClose.addEventListener('click', () => {
+                alert.classList.add('alert-hide');
+            })
+        } 
+    })
+}
+
+// End Show alert

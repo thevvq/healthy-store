@@ -2,6 +2,8 @@ const express = require('express');
 const methodOverride = require('method-override');
 require('dotenv').config();
 
+const flash = require('express-flash');
+
 const session = require("express-session");
 const bodyParser = require("body-parser");
 
@@ -26,11 +28,17 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // Session login
-app.use(session({
-    secret: "my-login-secret",
-    resave: false,
-    saveUninitialized: true
-}));
+app.use(
+    session({
+        secret: process.env.SESSION_SECRET,
+        resave: false,
+        saveUninitialized: true,
+        cookie: { maxAge: 30 * 60 * 1000 }
+    })
+);
+
+// Flash message
+app.use(flash());
 
 // Gắn user vào view
 app.use((req, res, next) => {

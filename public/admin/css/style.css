@@ -50,3 +50,40 @@
     padding: 6px 10px;
     border-bottom: 1px solid #515151;
 }
+
+/* End Sider */
+
+/* Show alert */
+[show-alert] {
+    position: fixed;
+    top: 70px;
+    right: 20px;
+    z-index: 1000;
+}
+
+[show-alert].alert-hide {
+    animation-name: alert-hide;
+    animation-duration: 0.5s;
+    animation-fill-mode: both;
+}
+
+@keyframes alert-hide {
+    from {
+        right: 15px;
+    }
+
+    to {
+        right: -100px;
+        display: none;
+    }
+}
+
+[show-alert] span[close-alert] {
+    position: absolute;
+    top: 2px;
+    right: 8px;
+    cursor: pointer;
+    margin-left: 10px
+}
+
+/* End Show alert */
