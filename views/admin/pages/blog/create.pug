@@ -1,0 +1,21 @@
+extends ../../layouts/default
+
+block main
+    .container.mt-4
+        h2 Thêm bài viết
+
+        form(method="POST", action="/admin/blog/create")
+            .mb-3
+                label Tiêu đề
+                input.form-control(type="text", name="title", required)
+
+            .mb-3
+                label Ảnh thumbnails
+                input.form-control(type="text", name="thumbnail", placeholder="/images/blog1.jpg")
+
+            .mb-3
+                label Nội dung
+                textarea.form-control(name="content", rows="8", required)
+
+            button.btn.btn-success(type="submit") Lưu bài viết
+            a.btn.btn-secondary.ms-2(href="/admin/blog") Hủy

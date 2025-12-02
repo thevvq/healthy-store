@@ -1,0 +1,16 @@
+extends ../../layouts/default
+
+block main
+    .container.mt-4
+        if blog
+            h2 #{blog.title}
+
+            img(src=blog.thumbnail style="max-width:100%;border-radius:10px;margin:20px 0")
+
+            p.mt-3 !{blog.content}
+
+            a.btn.btn-secondary.mt-3(href="/blog") ← Quay lại blog
+
+        else
+            h3 Bài viết không tồn tại!
+            a.btn.btn-primary.mt-3(href="/blog") ← Quay lại
