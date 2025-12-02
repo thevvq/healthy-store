@@ -52,3 +52,39 @@ module.exports.createProduct = async (req, res) => {
     res.redirect(`${sysConfig.prefixAdmin}/products`)
     
 }
+
+// [GET] /admin/products/edit/:id
+module.exports.editProduct = async (req, res) => {
+    try {
+        const product = await productService.editProduct(req.params.id);
+
+        if (!product) {
+            req.flash('error', 'Sản phẩm không tồn tại!');
+            return res.redirect(`${sysConfig.prefixAdmin}/products`);
+        }
+
+        res.render('admin/pages/product/edit', {
+            pageTitle: 'Chỉnh sửa sản phẩm',
+            product
+        });
+    } catch (err) {
+        req.flash('error', 'Có lỗi xảy ra, vui lòng thử lại!');
+        return res.redirect(`${sysConfig.prefixAdmin}/products`);
+    }
+};
+
+// [PATCH] /admin/products/edit/:id
+module.exports.editProductPatch = async (req, res) => {
+    try {
+        const product = await productService.editProductPatch(req, req.params.id);
+        if (!product) {
+            req.flash('error', 'Sản phẩm không tồn tại!');
+            return res.redirect(`${sysConfig.prefixAdmin}/products`);
+        }
+        req.flash('success', 'Cập nhật sản phẩm thành công!');
+        res.redirect(req.get('Referer') || `${sysConfig.prefixAdmin}/products/edit/${req.params.id}`);
+    } catch (err) {
+        req.flash('error', 'Có lỗi xảy ra, vui lòng thử lại!');
+        return res.redirect(`${sysConfig.prefixAdmin}/products`);
+    }
+};

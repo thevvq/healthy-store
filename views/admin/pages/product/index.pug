@@ -7,8 +7,9 @@ include ../../mixins/alert.pug
 
 block main
     +alert-success(3000)
+    +alert-error(5000)
 
-    h1 Trang danh sách sản phẩm
+    h1.mb-4 #{pageTitle}
 
     .card.mb-3
         .card-header Bộ lọc và Tìm kiếm
@@ -82,7 +83,7 @@ block main
                                     ) Dừng hoạt động
 
                             td
-                                button.btn.btn-warning.btn-sm Sửa
+                                a(href=`${prefixAdmin}/products/edit/${item.id}`).btn.btn-warning.btn-sm Sửa
                                 button.btn.btn-danger.btn-sm.ms-1(
                                     data-id=item.id 
                                     data-btn-delete=''
