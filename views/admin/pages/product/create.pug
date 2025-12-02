@@ -1,6 +1,10 @@
 extends ../../layouts/default.pug
+include ../../mixins/alert.pug
 
 block main 
+    +alert-success(3000)
+    +alert-error(5000)
+
     h1.mb-4 #{pageTitle}
 
     form(action=`${prefixAdmin}/products/create` method="POST" id='form-create-product' enctype="multipart/form-data")
