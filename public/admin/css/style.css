@@ -87,3 +87,44 @@
 }
 
 /* End Show alert */
+
+/* Wrapper Image */
+.image-preview-wrapper {
+    position: relative;
+    display: inline-block;
+    margin-top: 10px;
+}
+
+[upload-image-preview] {
+    max-width: 200px;
+    display: none;
+    border-radius: 6px;
+}
+
+[upload-image-remove] {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 24px;
+    height: 24px;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    display: none;
+    font-size: 14px;
+    font-weight: bold;
+    color: black;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: normal;
+    text-align: initial;
+}
+
+[upload-image-remove]:hover {
+    background-color: #f5f5f5;
+    border-color: #999;
+}
+
+/* End Wrapper Image */

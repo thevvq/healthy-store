@@ -3,7 +3,7 @@ extends ../../layouts/default.pug
 block main 
     h1.mb-4 #{pageTitle}
 
-    form(action=`${prefixAdmin}/products/create` method="POST" id='form-create-product')
+    form(action=`${prefixAdmin}/products/create` method="POST" id='form-create-product' enctype="multipart/form-data")
         .form-group.mb-3
             label.form-label(for="title") Tiêu đề sản phẩm
             input.form-control(type="text" id="title" name="title" required)
@@ -24,9 +24,16 @@ block main
             label.form-label(for="stock") Số lượng sản phẩm
             input.form-control(type="number" id="stock" name="stock" value="0" min="0" )
 
-        .form-group.mb-3
+        .form-group.mb-3(upload-image='')
             label.form-label(for="thumbnail") Hình ảnh sản phẩm
-            input.form-control(type="text" id="thumbnail" name="thumbnail")
+            input.form-control(type="file" id="thumbnail" name="thumbnail" accept="image/*" required upload-image-input='') 
+            .image-preview-wrapper
+                img(src='' upload-image-preview='')
+                button(
+                    type='button' 
+                    upload-image-remove='' 
+                    aria-label='Close'
+                ) x
 
         .form-group.mb-3
             label.form-label(for="position") Vị trí

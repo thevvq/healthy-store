@@ -148,3 +148,32 @@ if (alerts.length > 0){
 }
 
 // End Show alert
+
+// Upload image preview
+const uploadImageContainer = document.querySelector('[upload-image]');
+
+if (uploadImageContainer) {
+    const uploadImageInput = uploadImageContainer.querySelector('[upload-image-input]');
+    const uploadImagePreview = uploadImageContainer.querySelector('[upload-image-preview]');
+    const uploadImageRemove = uploadImageContainer.querySelector('[upload-image-remove]');
+
+    uploadImageInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            uploadImagePreview.src = URL.createObjectURL(file);
+            uploadImagePreview.style.display = 'block';
+            uploadImageRemove.style.display = 'block';
+        }
+    });
+
+    uploadImageRemove.addEventListener('click', () => {
+        uploadImagePreview.src = '';
+        uploadImagePreview.style.display = 'none';
+        uploadImageInput.value = '';
+        uploadImageRemove.style.display = 'none';
+    });
+
+    uploadImageRemove.style.display = 'none';
+    uploadImagePreview.style.display = 'none';
+}
+// End Upload image preview
