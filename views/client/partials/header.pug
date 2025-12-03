@@ -10,16 +10,18 @@ header.header
                 .inner-menu
                     ul
                         li
-                            a(href="/") Trang chủ
+                            button.menu-btn(onclick="window.location.href='/'") Trang chủ
                         li
-                            a(href="/products") Sản phẩm
+                            button.menu-btn(onclick="window.location.href='/products'") Sản phẩm
                         li
-                            a(href="/blog") Tin mới
+                            button.menu-btn(onclick="window.location.href='/blog'") Tin mới
+
                         if !user
                             li
-                                a(href="/login") Đăng nhập
+                                button.menu-btn(onclick="window.location.href='/login'") Đăng nhập
                         else
                             li
-                                span Xin chào, #{user.fullName}
+                                button.profile-btn(onclick="window.location.href='/profile'")
+                                    | Xin chào, #{user.fullName}
                             li
-                                a(href="/login/logout") Đăng xuất
+                                button.logout-btn(onclick="window.location.href='/login/logout'") Đăng xuất

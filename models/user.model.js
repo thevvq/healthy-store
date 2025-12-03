@@ -25,12 +25,32 @@ const userSchema = new mongoose.Schema(
             type: String,
             enum: ["client", "admin"],
             default: "client"
+        },
+        avatar: {
+            type: String,
+            default: null
+        },
+        phone: {
+            type: String,
+            default: ""
+        },
+        gender: {
+            type: String,
+            enum: ["male", "female", "other", ""],
+            default: ""
+        },
+        birthday: {
+            type: String,
+            default: ""
+        },
+        address: {
+            type: String,
+            default: ""
         }
     },
     {
-        timestamps: true // ⭐ Tự thêm createdAt & updatedAt
+        timestamps: true 
     }
 );
 
-// ⭐ Collection name = "users"
 module.exports = mongoose.model("User", userSchema, "users");

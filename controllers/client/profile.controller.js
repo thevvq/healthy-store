@@ -1,29 +1,32 @@
 const User = require("../../models/user.model");
 
 module.exports = {
-    renderProfile: (req, res) => {
+    index: (req, res) => {
         if (!req.session.user) return res.redirect("/login");
+
         res.render("client/pages/profile/index", {
             title: "Thông tin tài khoản",
-            user: req.session.user
+            user: req.session.user,
         });
     },
 
     updateProfile: async (req, res) => {
         try {
-            const user = req.session.user;
-
-            let avatar = user.avatar;
-            if (req.file) {
-                avatar = "/uploads/avatar/" + req.file.filename;
+            if (!req.session.user) {
+                return res.json({ success: false, message: "Bạn chưa đăng nhập!" });
             }
 
+            const currentUser = req.session.user;
+
+            let avatar = currentUser.avatar || null;
+            if (req.file) avatar = "/uploads/avatar/" + req.file.filename;
+
             const updatedUser = await User.findByIdAndUpdate(
-                user._id,
+                currentUser._id,
                 {
                     fullName: req.body.fullName,
                     gender: req.body.gender,
-                    birthday: req.body.birthday,
+                    birthday: req.body.birthday || null,
                     phone: req.body.phone,
                     address: req.body.address,
                     avatar: avatar
@@ -33,9 +36,14 @@ module.exports = {
 
             req.session.user = updatedUser;
 
-            res.redirect("/profile");
-        } catch (err) {
-            res.send("Lỗi cập nhật: " + err.message);
+            return res.json({
+                success: true,
+                user: updatedUser
+            });
+
+        } catch (error) {
+            console.error(error);
+            res.json({ success: false, message: "Cập nhật thất bại!" });
         }
     }
 };

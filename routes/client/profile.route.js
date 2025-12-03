@@ -1,9 +1,13 @@
 const express = require("express");
 const router = express.Router();
-const controller = require("../../controllers/client/profile.controller");
-const upload = require("../../middlewares/uploadAvatar.middleware");
 
-router.get("/", controller.renderProfile);
-router.post("/update", upload.single("avatar"), controller.updateProfile);
+const profileController = require("../../controllers/client/profile.controller");
+const uploadAvatar = require("../../middlewares/uploadAvatar.middleware");
+
+// Hiển thị profile
+router.get("/", profileController.index);
+
+// Cập nhật profile (AJAX)
+router.post("/", uploadAvatar.single("avatar"), profileController.updateProfile);
 
 module.exports = router;

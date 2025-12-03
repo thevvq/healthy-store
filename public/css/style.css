@@ -153,3 +153,57 @@
 .dot.active {
   background: rgba(255,255,255,1);
 }
+.menu-btn {
+    background: #f8f9fa;
+    border: 1px solid #ddd;
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.25s;
+    font-size: 14px;
+}
+
+.menu-btn:hover {
+    background: #e2e6ea;
+    border-color: #ccc;
+}
+
+.profile-btn {
+    background: #0d6efd;
+    color: #fff;
+    padding: 6px 14px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.25s;
+    font-size: 14px;
+}
+
+.profile-btn:hover {
+    background: #0b5ed7;
+}
+
+.logout-btn {
+    background: #dc3545;
+    color: #fff;
+    padding: 6px 14px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.25s;
+    font-size: 14px;
+}
+
+.logout-btn:hover {
+    background: #bb2d3b;
+}
+
+.inner-menu ul {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
