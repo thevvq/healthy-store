@@ -1,0 +1,34 @@
+extends ../../layouts/default.pug
+
+block main 
+    if product
+        h1.mb-4 #{product.title}
+
+        .card.mb-3
+            .card-header Thông tin sản phẩm
+            .card-body
+                .row
+                    .col-md-4
+                        img.img-fluid(
+                            src=product.thumbnail
+                            alt=product.title
+                        )
+                    .col-md-8
+                        h3 $#{product.price}
+                        p Giảm giá: #{product.discountPercentage}%
+                        p Còn lại: #{product.stock}
+                        p Trạng thái: 
+                            if product.status === 'active'
+                                span.badge.bg-success Hoạt động
+                            else if product.status === 'inactive'
+                                span.badge.bg-secondary Không hoạt động
+                        p Vị trí: #{product.position}
+                        p #{product.description}
+                        a.btn.btn-warning(
+                            href=`${prefixAdmin}/products/edit/${product._id}`
+                        ) Chỉnh sửa sản phẩm
+    else
+        h1.mb-4 Sản phẩm không tồn tại
+
+
+    script(src="/admin/js/product.js") 

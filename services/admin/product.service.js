@@ -120,3 +120,34 @@ module.exports.createProduct = async (req) => {
     return await product.save();
 }
 
+module.exports.edit= async (id)=> {
+    return await Product.findOne({
+        deleted: false,
+        _id: id
+    })
+}
+
+module.exports.editProduct = async (req, id) => {
+    req.body.price = parseInt(req.body.price);
+    req.body.discountPercentage = parseInt(req.body.discountPercentage);
+    req.body.stock = parseInt(req.body.stock);
+    req.body.position = parseInt(req.body.position);
+
+    if (req.body.removeThumbnail === "1") {
+        req.body.thumbnail = '';
+    } else if (req.file) {
+        req.body.thumbnail = '/uploads/' + req.file.filename;
+    }
+
+    return await Product.updateOne(
+        { _id: id },
+        req.body
+    );
+}
+
+module.exports.detail = async (id) => {
+    return await Product.findOne({
+        deleted: false,
+        _id: id
+    })
+}

@@ -4,14 +4,21 @@ block main
     .container.mt-4
         h2 Sửa bài viết
 
-        form(method="POST", action=`/admin/blog/edit/${blog._id}`)
+        form(method="POST", action=`/admin/blog/edit/${blog._id}` enctype="multipart/form-data")
             .mb-3
                 label Tiêu đề
                 input.form-control(type="text", name="title", value=blog.title, required)
 
-            .mb-3
-                label Ảnh thumbnails
-                input.form-control(type="text", name="thumbnail", value=blog.thumbnail)
+            .mb-3(upload-image='')
+                label.form-label(for="thumbnail") Hình ảnh
+                input.form-control(type="file" id="thumbnail" name="thumbnail" accept="image/*" required upload-image-input='') 
+                .image-preview-wrapper
+                    img(src='' upload-image-preview='')
+                    button(
+                        type='button' 
+                        upload-image-remove='' 
+                        aria-label='Close'
+                    ) x
 
             .mb-3
                 label Nội dung

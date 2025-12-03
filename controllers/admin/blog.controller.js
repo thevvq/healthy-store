@@ -2,7 +2,6 @@ const Blog = require("../../models/blog.model");
 const slugify = require("slugify");
 
 module.exports = {
-    // Danh sách blog
     index: async (req, res) => {
         const blogs = await Blog.find().sort({ createdAt: -1 });
 
@@ -12,15 +11,17 @@ module.exports = {
         });
     },
 
-    // Form tạo bài viết
     create: (req, res) => {
         res.render("admin/pages/blog/create", {
             title: "Thêm bài viết"
         });
     },
 
-    // Lưu bài viết
     store: async (req, res) => {
+        if (req.file) {
+            req.body.thumbnail = `/uploads/${req.file.filename}`;
+        }
+
         const { title, content, thumbnail } = req.body;
 
         await Blog.create({
@@ -33,7 +34,6 @@ module.exports = {
         res.redirect("/admin/blog");
     },
 
-    // Form sửa bài viết
     edit: async (req, res) => {
         const blog = await Blog.findById(req.params.id);
 
@@ -43,8 +43,11 @@ module.exports = {
         });
     },
 
-    // Lưu sửa bài viết
     update: async (req, res) => {
+        if (req.file) {
+            req.body.thumbnail = `/uploads/${req.file.filename}`;
+        }
+
         const { title, content, thumbnail } = req.body;
 
         await Blog.updateOne(
@@ -60,7 +63,6 @@ module.exports = {
         res.redirect("/admin/blog");
     },
 
-    // Xóa
     delete: async (req, res) => {
         await Blog.deleteOne({ _id: req.params.id });
         res.redirect("/admin/blog");

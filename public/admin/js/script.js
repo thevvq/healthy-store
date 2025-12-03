@@ -156,9 +156,21 @@ if (uploadImageContainer) {
     const uploadImageInput = uploadImageContainer.querySelector('[upload-image-input]');
     const uploadImagePreview = uploadImageContainer.querySelector('[upload-image-preview]');
     const uploadImageRemove = uploadImageContainer.querySelector('[upload-image-remove]');
+    const removeFlag = uploadImageContainer.querySelector('[upload-image-remove-flag]');
+
+    const oldImage = uploadImagePreview.getAttribute('data-old');
+
+    if (oldImage) {
+        uploadImagePreview.style.display = 'block';
+        uploadImageRemove.style.display = 'block';
+    } else {
+        uploadImagePreview.style.display = 'none';
+        uploadImageRemove.style.display = 'none';
+    }
 
     uploadImageInput.addEventListener('change', (e) => {
         const file = e.target.files[0];
+
         if (file) {
             uploadImagePreview.src = URL.createObjectURL(file);
             uploadImagePreview.style.display = 'block';
@@ -167,13 +179,17 @@ if (uploadImageContainer) {
     });
 
     uploadImageRemove.addEventListener('click', () => {
+
+        uploadImageInput.value = '';
+
         uploadImagePreview.src = '';
         uploadImagePreview.style.display = 'none';
-        uploadImageInput.value = '';
         uploadImageRemove.style.display = 'none';
+        
+        if (oldImage) {
+            removeFlag.value = "1";
+    }
     });
-
-    uploadImageRemove.style.display = 'none';
-    uploadImagePreview.style.display = 'none';
 }
-// End Upload image preview
+// End upload image preview
+
