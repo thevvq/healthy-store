@@ -1,49 +1,61 @@
-const User = require("../../models/user.model");
+const profileService = require("../../services/client/profile.service");
 
-module.exports = {
-    index: (req, res) => {
-        if (!req.session.user) return res.redirect("/login");
+// [GET] client/profile
+module.exports.index = (req, res) => {
+    try {
+        const loggedIn = profileService.checkLogin(req.session.user);
+
+        if (!loggedIn) {
+            return res.redirect("/login");
+        }
 
         res.render("client/pages/profile/index", {
-            title: "Thông tin tài khoản",
+            pageTitle: "Thông tin tài khoản",
             user: req.session.user,
         });
-    },
 
-    updateProfile: async (req, res) => {
-        try {
-            if (!req.session.user) {
-                return res.json({ success: false, message: "Bạn chưa đăng nhập!" });
-            }
+    } catch (err) {
+        console.error(err);
+        res.redirect("/login");
+    }
+};
 
-            const currentUser = req.session.user;
+// [POST] client/profile
+module.exports.updateProfile = async (req, res) => {
+    try {
+        const loggedIn = profileService.checkLogin(req.session.user);
 
-            let avatar = currentUser.avatar || null;
-            if (req.file) avatar = "/uploads/avatar/" + req.file.filename;
-
-            const updatedUser = await User.findByIdAndUpdate(
-                currentUser._id,
-                {
-                    fullName: req.body.fullName,
-                    gender: req.body.gender,
-                    birthday: req.body.birthday || null,
-                    phone: req.body.phone,
-                    address: req.body.address,
-                    avatar: avatar
-                },
-                { new: true }
-            );
-
-            req.session.user = updatedUser;
-
+        if (!loggedIn) {
             return res.json({
-                success: true,
-                user: updatedUser
+                success: false,
+                message: "Bạn chưa đăng nhập!"
             });
-
-        } catch (error) {
-            console.error(error);
-            res.json({ success: false, message: "Cập nhật thất bại!" });
         }
+
+        // Lấy package update từ service
+        const updatePackage = profileService.prepareUpdateData(req);
+
+        // Update DB
+        const updatedUser = await profileService.updateUserInDatabase(
+            updatePackage.id,
+            updatePackage.data
+        );
+
+        // Cập nhật session
+        req.session.user = updatedUser;
+
+        return res.json({
+            success: true,
+            message: "Cập nhật thành công!",
+            user: updatedUser
+        });
+
+    } catch (err) {
+        console.error(err);
+
+        return res.json({
+            success: false,
+            message: "Cập nhật thất bại!"
+        });
     }
 };

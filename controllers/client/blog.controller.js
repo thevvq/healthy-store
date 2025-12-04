@@ -1,28 +1,44 @@
-const Blog = require("../../models/blog.model");
+const blogService = require("../../services/client/blog.service");
 
-module.exports = {
-    index: async (req, res) => {
-        const blogs = await Blog.find().sort({ createdAt: -1 });
+// [GET] /blog
+module.exports.index = async (req, res) => {
+    try {
+        const result = await blogService.getList();
 
         res.render("client/pages/blog/index", {
-            title: "Tin tức & Blog",
-            blogs
+            pageTitle: "Tin tức & Blog",
+            blogs: result.data
         });
-    },
 
-    detail: async (req, res) => {
-        const blog = await Blog.findOne({ slug: req.params.slug });
+    } catch (err) {
+        res.render("client/pages/blog/index", {
+            pageTitle: "Tin tức & Blog",
+            blogs: []
+        });
+    }
+};
 
-        if (!blog) {
+// [GET] /blog/:slug
+module.exports.detail = async (req, res) => {
+    try {
+        const result = await blogService.getDetail(req.params.slug);
+
+        if (!result.success) {
             return res.render("client/pages/blog/detail", {
-                title: "Không tìm thấy bài viết",
+                pageTitle: result.message,
                 blog: null
             });
         }
 
         res.render("client/pages/blog/detail", {
-            title: blog.title,
-            blog
+            pageTitle: result.data.title,
+            blog: result.data
+        });
+
+    } catch (err) {
+        res.render("client/pages/blog/detail", {
+            pageTitle: "Lỗi hệ thống",
+            blog: null
         });
     }
 };
