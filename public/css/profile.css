@@ -42,26 +42,50 @@
 .sidebar-menu {
     list-style: none;
     padding: 0;
-    margin-top: 20px;
+    margin-top: 25px;
 }
 
-.sidebar-menu li {
-    padding: 12px 5px;
+/* ===== Nút Sidebar ===== */
+.sidebar-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    margin-bottom: 10px;
     font-size: 15px;
     cursor: pointer;
-    color: #333;
-    transition: .15s;
-    border-radius: 6px;
+    background: #fafafa;
+    border-radius: 8px;
+    border: 1px solid #eee;
+    color: #444;
+    transition: all 0.18s ease;
 }
 
-.sidebar-menu li:hover {
+.sidebar-btn i {
+    font-size: 18px;
+    color: #777;
+}
+
+.sidebar-btn:hover {
+    background: #ffece5;
+    border-color: #ee4d2d;
+    color: #ee4d2d;
+}
+
+.sidebar-btn:hover i {
+    color: #ee4d2d;
+}
+
+/* Active */
+.sidebar-btn.active {
     background: #fff3ef;
     color: #ee4d2d;
+    font-weight: 600;
+    border-color: #ee4d2d;
 }
 
-.sidebar-menu li.active {
+.sidebar-btn.active i {
     color: #ee4d2d;
-    font-weight: 600;
 }
 
 

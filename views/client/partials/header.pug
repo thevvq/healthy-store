@@ -20,8 +20,33 @@ header.header
                             li
                                 button.menu-btn(onclick="window.location.href='/login'") Đăng nhập
                         else
+                         
                             li
-                                button.profile-btn(onclick="window.location.href='/profile'")
-                                    | Xin chào, #{user.fullName}
+                                a.cart-mini(href="/cart")
+                                    i.fa-solid.fa-cart-shopping.cart-icon
+                                    span.cart-count #{cartTotal || 0}
+
                             li
-                                button.logout-btn(onclick="window.location.href='/login/logout'") Đăng xuất
+                                .user-menu
+                                    .user-trigger#userMenuToggle
+                                        img.avatar-user(src=user.avatar || "/images/default-avatar.png")
+                                        span.username #{user.fullName}
+                                        i.fa-solid.fa-chevron-down(style="font-size:12px;")
+
+                                    ul.user-dropdown#userDropdown
+                                        li
+                                            a(href="/profile")
+                                                i.fa-regular.fa-user
+                                                span Thông tin tài khoản
+                                        li
+                                            a(href="/orders")
+                                                i.fa-solid.fa-bag-shopping
+                                                span Đơn hàng
+                                        li
+                                            a(href="/cart")
+                                                i.fa-solid.fa-cart-shopping
+                                                span Giỏ hàng
+                                        li
+                                            a(href="/login/logout")
+                                                i.fa-solid.fa-right-from-bracket
+                                                span Đăng xuất
