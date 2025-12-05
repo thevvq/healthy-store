@@ -230,7 +230,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    background: #fc6c33;
+    background: #e78964;
     color: #fff;
     padding: 7px 14px;
     border-radius: 20px;
@@ -239,7 +239,7 @@
 }
 
 .user-trigger:hover {
-    background: #1e93b1;
+    background: #b0d96a;
 }
 
 .avatar-user {

@@ -1,8 +1,8 @@
 const cartService = require("../../services/client/cart.service");
 
-// ===================================================
-// [POST] /cart/add  → Thêm vào giỏ hàng
-// ===================================================
+/* ===================================================
+   [POST] /cart/add  → Thêm sản phẩm vào giỏ hàng
+=================================================== */
 module.exports.add = async (req, res) => {
     try {
         const { productId, quantity } = req.body;
@@ -17,14 +17,15 @@ module.exports.add = async (req, res) => {
     } catch (err) {
         return res.json({
             success: false,
-            message: err.message
+            message: err.message || "Lỗi thêm sản phẩm vào giỏ!"
         });
     }
 };
 
-// ===================================================
-// [POST] /cart/update  → Cập nhật số lượng
-// ===================================================
+
+/* ===================================================
+   [POST] /cart/update  → Cập nhật số lượng
+=================================================== */
 module.exports.update = async (req, res) => {
     try {
         const { productId, quantity } = req.body;
@@ -39,14 +40,15 @@ module.exports.update = async (req, res) => {
     } catch (err) {
         return res.json({
             success: false,
-            message: err.message
+            message: err.message || "Lỗi cập nhật giỏ hàng!"
         });
     }
 };
 
-// ===================================================
-// [POST] /cart/delete  → Xóa 1 sản phẩm khỏi giỏ
-// ===================================================
+
+/* ===================================================
+   [POST] /cart/delete  → Xóa 1 sản phẩm khỏi giỏ
+=================================================== */
 module.exports.delete = async (req, res) => {
     try {
         const { productId } = req.body;
@@ -55,20 +57,21 @@ module.exports.delete = async (req, res) => {
 
         return res.json({
             success: true,
-            message: "Sản phẩm đã bị xóa!"
+            message: "Đã xóa sản phẩm khỏi giỏ!"
         });
 
     } catch (err) {
         return res.json({
             success: false,
-            message: err.message
+            message: err.message || "Lỗi xóa sản phẩm!"
         });
     }
 };
 
-// ===================================================
-// [POST] /cart/clear  → Xóa toàn bộ giỏ hàng
-// ===================================================
+
+/* ===================================================
+   [POST] /cart/clear  → Xóa toàn bộ giỏ hàng
+=================================================== */
 module.exports.clear = async (req, res) => {
     try {
         await cartService.clearCart(req);
@@ -81,14 +84,15 @@ module.exports.clear = async (req, res) => {
     } catch (err) {
         return res.json({
             success: false,
-            message: err.message
+            message: err.message || "Không thể xóa giỏ hàng!"
         });
     }
 };
 
-// ===================================================
-// [GET] /cart  → Hiển thị trang giỏ hàng
-// ===================================================
+
+/* ===================================================
+   [GET] /cart  → Hiển thị trang giỏ hàng
+=================================================== */
 module.exports.index = async (req, res) => {
     try {
         const result = await cartService.getCart(req);

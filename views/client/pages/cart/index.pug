@@ -2,27 +2,28 @@ extends ../../layouts/default
 
 block main
     .container.my-4
-        h2 Giỏ hàng của bạn
+        h2.mb-4 Giỏ hàng của bạn
 
         if Object.keys(cart).length === 0
             p Giỏ hàng đang trống.
         else
+            // Nút xóa toàn bộ giỏ hàng
             button.btn.btn-danger.mb-3#btnClearAll Xóa tất cả giỏ hàng
 
-            table.table
+            table.table.align-middle
                 thead
                     tr
-                        th Ảnh
+                        th(style="width:110px;") Ảnh
                         th Tên
                         th Giá
                         th Số lượng
                         th Thành tiền
-                        th
+                        th Hành động
                 tbody
                     each item, key in cart
                         tr
-                            td 
-                                img(src=item.thumbnail, width="70")
+                            td
+                                img(src=item.thumbnail, width="70", height="70", style="object-fit:cover;border-radius:6px;")
                             td #{item.title}
                             td $#{item.price}
                             td
@@ -32,17 +33,21 @@ block main
                                     max=item.maxStock
                                     value=item.quantity
                                     data-id=item.id
+                                    style="width:70px;text-align:center;border-radius:6px;"
                                 )
-                            td $#{item.price * item.quantity}
+                            td $#{(item.price * item.quantity).toFixed(2)}
                             td
-                                button.btn.btn-danger.btn-delete(data-id=item.id) Xóa
+                                button.btn.btn-danger.btn-delete(
+                                    data-id=item.id
+                                ) Xóa
 
             hr
 
-            h3 Tổng tiền: 
-                span.text-danger $#{total}
+            h3.mt-3 Tổng tiền: 
+                span.text-danger $#{total.toFixed(2)}
 
             a.btn.btn-success.mt-3(href="/checkout") Tiến hành đặt hàng
 
+
 block scripts
-    script(src="/js/cart-update.js")
+    script(src="/js/cart.js")

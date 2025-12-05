@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     title: "Đã thêm vào giỏ hàng!",
                     timer: 1200,
                     showConfirmButton: false
-                });
+                }).then(() => location.reload());
             } else {
                 Swal.fire({
                     icon: "error",
@@ -101,7 +101,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     body: JSON.stringify({ productId: id, quantity: qty })
                 });
 
-                location.reload(); // reload lại giỏ hàng
+                location.reload();
             } catch (err) {
                 Swal.fire({
                     icon: "error",
@@ -114,13 +114,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     // ============================================================
-    // 3) XÓA SẢN PHẨM KHỎI GIỎ
+    // 3) XÓA 1 SẢN PHẨM KHỎI GIỎ
     // ============================================================
 
     const deleteButtons = document.querySelectorAll(".btn-delete");
 
     deleteButtons.forEach(btn => {
-        btn.addEventListener("click", async () => {
+        btn.addEventListener("click", () => {
 
             const id = btn.dataset.id;
 
@@ -142,6 +142,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     });
 
                     location.reload();
+
                 } catch (err) {
                     Swal.fire({
                         icon: "error",
@@ -153,5 +154,43 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
+
+
+    // ============================================================
+    // 4) XÓA TOÀN BỘ GIỎ HÀNG
+    // ============================================================
+
+    const clearBtn = document.getElementById("btnClearAll");
+
+    if (clearBtn) {
+        clearBtn.addEventListener("click", () => {
+
+            Swal.fire({
+                icon: "warning",
+                title: "Xóa toàn bộ giỏ hàng?",
+                text: "Bạn sẽ xóa tất cả sản phẩm, không thể phục hồi!",
+                showCancelButton: true,
+                confirmButtonText: "Xóa hết",
+                cancelButtonText: "Hủy"
+            }).then(async (result) => {
+                if (!result.isConfirmed) return;
+
+                try {
+                    await fetch("/cart/clear", {
+                        method: "POST"
+                    });
+
+                    location.reload();
+
+                } catch (err) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Không thể xóa giỏ hàng!"
+                    });
+                }
+            });
+
+        });
+    }
 
 });
