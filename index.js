@@ -52,7 +52,7 @@ app.use((req, res, next) => {
     next();
 });
 
-<<<<<<< HEAD
+
 
 // ---------------------- GIỎ HÀNG MINI ----------------------
 
@@ -71,13 +71,13 @@ app.use((req, res, next) => {
 
 // ---------------------- TEMPLATE + PUBLIC ----------------------
 
-=======
+
 // tinyMCE
 app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce')));
 app.locals.tinyMceKey = process.env.TINYMCE_API_KEY
 
 // Pug template
->>>>>>> 3071597f85be69ea6ca42d2c927641a955c8eba5
+
 app.set('views', './views');
 app.set('view engine', 'pug');
 
