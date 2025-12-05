@@ -1,8 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const multer  = require('multer')
-// const storage = require('../../helper/storageMulter')
-const upload = multer();
+const upload = require("../../config/multer")
 
 const blogAdminController = require("../../controllers/admin/blog.controller");
 

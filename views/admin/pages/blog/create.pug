@@ -1,6 +1,10 @@
-extends ../../layouts/default
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
 
 block main
+    +alert-success(3000)
+    +alert-error(5000)
+
     .container.mt-4
         h2 Thêm bài viết
 

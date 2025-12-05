@@ -1,5 +1,6 @@
 const Blog = require("../../models/blog.model");
 const slugify = require("slugify");
+const uploadToCloud = require("../../helper/uploadCloud");
 
 // ========== LẤY DANH SÁCH BLOG ==========
 module.exports.getList = async () => {
@@ -8,13 +9,18 @@ module.exports.getList = async () => {
 
 // ========== TẠO BÀI VIẾT ==========
 module.exports.createBlog = async (req) => {
-    const thumbnail = req.file ? `/uploads/${req.file.filename}` : "";
+    let thumbnail = "";
+
+    if (req.file) {
+        const uploadResult = await uploadToCloud(req.file.path);
+        thumbnail = uploadResult.secure_url;
+    }
 
     const blog = new Blog({
         title: req.body.title,
         slug: slugify(req.body.title, { lower: true, strict: true }),
         content: req.body.content,
-        thumbnail
+        thumbnail: thumbnail
     });
 
     return await blog.save();
@@ -30,7 +36,8 @@ module.exports.updateBlog = async (req, id) => {
     let thumbnail = req.body.thumbnail || "";
 
     if (req.file) {
-        thumbnail = `/uploads/${req.file.filename}`;
+        const uploadResult = await uploadToCloud(req.file.path);
+        thumbnail = uploadResult.secure_url;
     }
 
     return await Blog.updateOne(
@@ -39,7 +46,7 @@ module.exports.updateBlog = async (req, id) => {
             title: req.body.title,
             slug: slugify(req.body.title, { lower: true, strict: true }),
             content: req.body.content,
-            thumbnail
+            thumbnail: thumbnail
         }
     );
 };

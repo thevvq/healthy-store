@@ -11,5 +11,5 @@ block main
                         img.card-img-top(src=item.thumbnail alt=item.title)
                         .card-body
                             h5.card-title #{item.title}
-                            p.card-text #{item.content.substring(0, 120)}...
+                            p.card-text !{item.content.substring(0, 120)}...
                             a.btn.btn-primary(href=`/blog/${item.slug}`) Đọc thêm →

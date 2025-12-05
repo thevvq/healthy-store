@@ -19,7 +19,7 @@ block main
 
             form#profileForm(method="POST", enctype="multipart/form-data")
                 .avatar-center
-                    img.avatar-preview#avatarPreview(src=user.avatar || "/images/default-avatar.png")
+                    img.avatar-preview#avatarPreview(src=user.avatar || "/images/default-avatar.svg")
                     input#avatarInput(type="file", name="avatar", accept="image/*", disabled)
                 .form-group
                     label Họ và tên

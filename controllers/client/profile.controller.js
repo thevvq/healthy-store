@@ -1,6 +1,6 @@
 const profileService = require("../../services/client/profile.service");
 
-// [GET] client/profile
+// [GET] /client/profile
 module.exports.index = (req, res) => {
     try {
         const loggedIn = profileService.checkLogin(req.session.user);
@@ -20,7 +20,7 @@ module.exports.index = (req, res) => {
     }
 };
 
-// [POST] client/profile
+// [POST] /client/profile
 module.exports.updateProfile = async (req, res) => {
     try {
         const loggedIn = profileService.checkLogin(req.session.user);
@@ -32,8 +32,8 @@ module.exports.updateProfile = async (req, res) => {
             });
         }
 
-        // Lấy package update từ service
-        const updatePackage = profileService.prepareUpdateData(req);
+        // Chuẩn bị data update (có thể bao gồm avatar)
+        const updatePackage = await profileService.prepareUpdateData(req);
 
         // Update DB
         const updatedUser = await profileService.updateUserInDatabase(

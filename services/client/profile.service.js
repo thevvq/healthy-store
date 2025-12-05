@@ -1,17 +1,21 @@
 const User = require("../../models/user.model");
+const uploadToCloud = require("../../helper/uploadCloud");
 
-//  KIỂM TRA LOGIN 
+// KIỂM TRA LOGIN 
 module.exports.checkLogin = (sessionUser) => {
     return !!sessionUser;
 };
 
 // CHUẨN BỊ DATA UPDATE
-module.exports.prepareUpdateData = (req) => {
+module.exports.prepareUpdateData = async (req) => {
     const currentUser = req.session.user;
 
     let avatar = currentUser.avatar || null;
+
+    // Nếu có upload file → đưa lên cloud
     if (req.file) {
-        avatar = "/uploads/avatar/" + req.file.filename;
+        const uploadResult = await uploadToCloud(req.file.path);
+        avatar = uploadResult.secure_url;
     }
 
     return {
@@ -27,7 +31,7 @@ module.exports.prepareUpdateData = (req) => {
     };
 };
 
-// UPDATE USER DB 
+// UPDATE USER
 module.exports.updateUserInDatabase = async (id, data) => {
     return await User.findByIdAndUpdate(id, data, { new: true });
 };
