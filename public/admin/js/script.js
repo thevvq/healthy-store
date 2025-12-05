@@ -193,3 +193,33 @@ if (uploadImageContainer) {
 }
 // End upload image preview
 
+// Sort
+const sort = document.querySelector('[sort]')
+
+if (sort){
+    const sortSelect = sort.querySelector("[sort-select]");
+    const btnClearSort = sort.querySelector("[sort-clear]");
+
+    const url = new URL(window.location.href);
+
+    sortSelect.addEventListener("change",  (e) => {
+        const value = e.target.value;
+        url.searchParams.set("sort", value);
+        window.location.href = url.href;
+    });
+
+    btnClearSort.addEventListener("click", function () {
+        url.searchParams.delete("sort");
+        window.location.href = url.href;
+    })
+    // Add selected for option
+    const sortKey = url.searchParams.get("sort")
+    
+    if (sortKey){
+        const optionSelected = sortSelect.querySelector(`option[value='${sortKey}']`)
+        optionSelected.selected = true
+    }
+
+}
+// End Sort
+

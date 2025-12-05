@@ -1,6 +1,7 @@
 const express = require('express');
 const methodOverride = require('method-override');
 require('dotenv').config();
+const path = require('path');
 
 const flash = require('express-flash');
 
@@ -47,6 +48,10 @@ app.use((req, res, next) => {
     res.locals.user = req.session.user || null;
     next();
 });
+
+// tinyMCE
+app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce')));
+app.locals.tinyMceKey = process.env.TINYMCE_API_KEY
 
 // Pug template
 app.set('views', './views');

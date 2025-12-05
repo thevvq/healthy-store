@@ -1,10 +1,8 @@
 const express = require('express')
 const router = express.Router()
 const validate = require('../../validates/admin/product.validate')
-const multer  = require('multer')
-const storage = require('../../helper/storageMulter')
-const upload = multer({ storage: storage() });
 
+const upload = require("../../config/multer")
 const controller = require('../../controllers/admin/product.controller')
 
 router.get('/', controller.index)

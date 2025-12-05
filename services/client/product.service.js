@@ -14,3 +14,15 @@ module.exports.getList = async () => {
 
     return newProducts
 }
+
+module.exports.detail = async (slug) => {
+    const product =  await Product.findOne({
+        deleted: false,
+        slug: slug,
+        status: 'active'
+    })
+    
+    product.newPrice = (product.price * (100 - product.discountPercentage) / 100).toFixed(0)
+    
+    return product
+}

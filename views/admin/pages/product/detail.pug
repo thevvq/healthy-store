@@ -23,7 +23,7 @@ block main
                             else if product.status === 'inactive'
                                 span.badge.bg-secondary Không hoạt động
                         p Vị trí: #{product.position}
-                        p #{product.description}
+                        p !{product.description}
                         a.btn.btn-warning(
                             href=`${prefixAdmin}/products/edit/${product._id}`
                         ) Chỉnh sửa sản phẩm

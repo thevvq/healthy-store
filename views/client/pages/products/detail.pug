@@ -1,0 +1,20 @@
+extends ../../layouts/default.pug
+
+block main 
+    if product
+        h1.mb-4 #{product.title}
+
+            .col-4.mb-3 
+                .product-item 
+                    .inner-image 
+                        img(src=product.thumbnail
+                            alt=product.title)
+
+                    .inner-content 
+                        .inner-price-new $#{product.newPrice}
+                        .inner-price-old $#{product.price}
+                        .inner-description Mô tả: !{product.description}
+                        .inner-discount % Giảm giá: -#{product.discountPercentage}
+                        .inner-stock Còn lại: $#{product.stock}
+    else
+        h1.mb-4 Sản phẩm không tồn tại

@@ -8,3 +8,13 @@ module.exports.index = async (req, res) => {
         products
     })
 }
+
+module.exports.detail = async (req, res) => {
+    const product = await productService.detail(req.params.slug)
+
+    res.render('client/pages/products/detail', {
+        pageTitle: product.title,
+        product
+    })
+}
+
