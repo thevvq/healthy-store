@@ -15,6 +15,6 @@ block main
                         .inner-price-old $#{product.price}
                         .inner-description Mô tả: #{product.description}
                         .inner-discount % Giảm giá: -#{product.discountPercentage}
-                        .inner-stock Còn lại: $#{product.stock}
+                        .inner-stock Còn lại: #{product.stock}
     else
         h1.mb-4 Sản phẩm không tồn tại

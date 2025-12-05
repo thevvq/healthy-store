@@ -92,7 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
             Swal.fire({
                 icon: "error",
                 title: "Lỗi kết nối",
-                text: "Không thể gửi dữ liệu lên server!"
+                text: "Không thể gửi cập nhật!"
             });
         }
     });
