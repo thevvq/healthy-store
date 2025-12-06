@@ -1,0 +1,33 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+include ../../mixins/category-rows.pug
+
+block main
+    +alert-success(3000)
+    +alert-error(5000)
+
+    h1.mb-4 #{pageTitle}
+
+    .card.mb-3
+        .card-header Danh mục sản phẩm
+        .card-body
+            .row.mb-3
+                .col-8
+                .col-4.text-end
+                    a.btn.btn-outline-success(
+                        href=`${prefixAdmin}/categories/create`
+                    ) + Thêm mới
+
+            table.table.table-hover.table-sm(checkbox-multi='')
+                thead
+                    tr  
+                        th 
+                            input(type="checkbox" name="check-all")
+                        th STT
+                        th Hình ảnh
+                        th Tiêu đề
+                        th Vị trí
+                        th Trạng thái
+                        th Hành động
+                tbody
+                    +category-rows(records)

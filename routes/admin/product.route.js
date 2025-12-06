@@ -15,11 +15,11 @@ router.delete('/delete-product/:id', controller.deleteProduct)
 
 router.get('/create', controller.create)
 
-router.post('/create', upload.single('thumbnail'), validate.createProduct, controller.createProduct)
+router.post('/create', upload.single('thumbnail'), validate.createPost, controller.createProduct)
 
 router.get('/edit/:id', controller.edit)
 
-router.patch('/edit/:id', upload.single('thumbnail'), validate.createProduct, controller.editProduct)
+router.patch('/edit/:id', upload.single('thumbnail'), validate.createPost, controller.editProduct)
 
 router.get('/detail/:id', controller.detail)
 
