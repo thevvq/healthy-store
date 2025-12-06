@@ -1,126 +1,133 @@
+const Cart = require("../../models/cart.model");
 const Product = require("../../models/product.model");
 
-/* ======================================================
-   HÀM TÍNH GIÁ SAU GIẢM
-====================================================== */
-function calculateNewPrice(product) {
-    const discount = product.discountPercentage || 0;
-    return product.price - (product.price * discount / 100);
+// Tính giá sau giảm %
+function calcPrice(product) {
+    return product.price - (product.price * (product.discountPercentage || 0) / 100);
 }
 
 /* ======================================================
-   LẤY GIỎ HÀNG TỪ SESSION
+   LẤY GIỎ HÀNG CỦA USER
 ====================================================== */
 module.exports.getCart = async (req) => {
-    const cart = req.session.cart || {};
-    let total = 0;
+    if (!req.session.user)
+        return { cart: [], total: 0 };
 
-    for (let id in cart) {
-        total += cart[id].price * cart[id].quantity;
-    }
+    const userId = req.session.user._id;
 
-    return {
-        cart,
-        total
-    };
+    let cart = await Cart.findOne({ userId });
+
+    if (!cart)
+        return { cart: [], total: 0 };
+
+    let total = cart.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+    return { cart: cart.items, total };
 };
 
 /* ======================================================
-   THÊM SẢN PHẨM VÀO GIỎ HÀNG
+   THÊM SẢN PHẨM VÀO GIỎ
 ====================================================== */
 module.exports.addToCart = async (req, productId, quantity) => {
-    const product = await Product.findById(productId);
 
-    if (!product) {
-        throw new Error("Sản phẩm không tồn tại");
-    }
+    if (!req.session.user)
+        throw new Error("Bạn phải đăng nhập!");
 
+    const userId = req.session.user._id;
     const qty = parseInt(quantity);
-    if (qty <= 0) throw new Error("Số lượng không hợp lệ");
-    if (qty > product.stock) throw new Error("Số lượng vượt quá tồn kho");
-
-    const newPrice = calculateNewPrice(product);
-
-    if (!req.session.cart) req.session.cart = {};
-    const cart = req.session.cart;
-
-    // Nếu đã có trong giỏ → tăng số lượng
-    if (cart[productId]) {
-        let totalQty = cart[productId].quantity + qty;
-
-        if (totalQty > product.stock) {
-            throw new Error("Không đủ số lượng trong kho");
-        }
-
-        cart[productId].quantity = totalQty;
-
-    } else {
-        // Nếu chưa có → thêm mới
-        cart[productId] = {
-            id: productId,
-            title: product.title,
-            price: newPrice, // ⭐ luôn đảm bảo có giá → không NaN
-            thumbnail: product.thumbnail || "/images/default.png",
-            quantity: qty,
-            maxStock: product.stock
-        };
-    }
-
-    req.session.cart = cart;
-    return true;
-};
-
-
-/* ======================================================
-   CẬP NHẬT SỐ LƯỢNG
-====================================================== */
-module.exports.updateQuantity = async (req, productId, quantity) => {
-    const cart = req.session.cart || {};
-
-    if (!cart[productId]) {
-        throw new Error("Sản phẩm không có trong giỏ");
-    }
 
     const product = await Product.findById(productId);
     if (!product) throw new Error("Sản phẩm không tồn tại");
 
-    const qty = parseInt(quantity);
+    if (qty <= 0) throw new Error("Số lượng không hợp lệ");
+    if (qty > product.stock) throw new Error("Không đủ hàng");
 
-    // Nếu = 0 → xóa khỏi giỏ
-    if (qty <= 0) {
-        delete cart[productId];
-        req.session.cart = cart;
+    const price = calcPrice(product);
+
+    let cart = await Cart.findOne({ userId });
+
+    // Nếu user chưa có giỏ → tạo mới
+    if (!cart) {
+        await Cart.create({
+            userId,
+            items: [{
+                productId,
+                title: product.title,
+                price,
+                thumbnail: product.thumbnail,
+                quantity: qty,
+                maxStock: product.stock
+            }]
+        });
         return true;
     }
 
-    if (qty > product.stock) throw new Error("Vượt quá tồn kho");
+    // Nếu user đã có giỏ → tìm sản phẩm
+    let item = cart.items.find(i => i.productId.toString() === productId);
 
-    cart[productId].quantity = qty;
-    req.session.cart = cart;
-
-    return true;
-};
-
-
-/* ======================================================
-   XÓA 1 SẢN PHẨM
-====================================================== */
-module.exports.removeItem = async (req, productId) => {
-    const cart = req.session.cart || {};
-
-    if (cart[productId]) {
-        delete cart[productId];
+    if (item) {
+        const newQty = item.quantity + qty;
+        if (newQty > product.stock) throw new Error("Vượt quá tồn kho");
+        item.quantity = newQty;
+    } else {
+        cart.items.push({
+            productId,
+            title: product.title,
+            price,
+            thumbnail: product.thumbnail,
+            quantity: qty,
+            maxStock: product.stock
+        });
     }
 
-    req.session.cart = cart;
+    await cart.save();
     return true;
 };
 
+/* ======================================================
+   UPDATE SỐ LƯỢNG
+====================================================== */
+module.exports.updateQuantity = async (req, productId, qty) => {
+    const userId = req.session.user._id;
+    const quantity = parseInt(qty);
+
+    let cart = await Cart.findOne({ userId });
+    if (!cart) throw new Error("Giỏ hàng trống!");
+
+    let item = cart.items.find(i => i.productId.toString() === productId);
+    if (!item) throw new Error("Không tìm thấy sản phẩm");
+
+    if (quantity <= 0) {
+        cart.items = cart.items.filter(i => i.productId.toString() !== productId);
+    } else {
+        if (quantity > item.maxStock) throw new Error("Vượt quá tồn kho");
+        item.quantity = quantity;
+    }
+
+    await cart.save();
+    return true;
+};
 
 /* ======================================================
-   XOÁ TẤT CẢ GIỎ HÀNG
+   XÓA SẢN PHẨM
+====================================================== */
+module.exports.removeItem = async (req, productId) => {
+    const userId = req.session.user._id;
+
+    let cart = await Cart.findOne({ userId });
+    if (!cart) return true;
+
+    cart.items = cart.items.filter(i => i.productId.toString() !== productId);
+
+    await cart.save();
+    return true;
+};
+
+/* ======================================================
+   XÓA TOÀN BỘ GIỎ HÀNG
 ====================================================== */
 module.exports.clearCart = async (req) => {
-    req.session.cart = {};
+    const userId = req.session.user._id;
+    await Cart.deleteOne({ userId });
     return true;
 };

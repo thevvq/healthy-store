@@ -4,50 +4,65 @@ block main
     .container.my-4
         h2.mb-4 Giỏ hàng của bạn
 
-        if Object.keys(cart).length === 0
+        if cart.length === 0
             p Giỏ hàng đang trống.
         else
+
             // Nút xóa toàn bộ giỏ hàng
             button.btn.btn-danger.mb-3#btnClearAll Xóa tất cả giỏ hàng
 
             table.table.align-middle
                 thead
                     tr
-                        th(style="width:110px;") Ảnh
+                        th Chọn
+                        th Ảnh
                         th Tên
                         th Giá
                         th Số lượng
                         th Thành tiền
                         th Hành động
                 tbody
-                    each item, key in cart
+                    each item in cart
                         tr
                             td
+                                input.select-item(
+                                    type="checkbox"
+                                    checked
+                                    data-id=item.productId.toString()
+                                )
+
+                            td
                                 img(src=item.thumbnail, width="70", height="70", style="object-fit:cover;border-radius:6px;")
+
                             td #{item.title}
-                            td $#{item.price}
+
+                            td.price(data-value=item.price) $#{item.price}
+
                             td
                                 input.qty-box(
-                                    type="number"
-                                    min="1"
-                                    max=item.maxStock
-                                    value=item.quantity
-                                    data-id=item.id
+                                    type="number",
+                                    min="1",
+                                    max=item.maxStock,
+                                    value=item.quantity,
+                                    data-id=item.productId.toString(),
                                     style="width:70px;text-align:center;border-radius:6px;"
                                 )
-                            td $#{(item.price * item.quantity).toFixed(2)}
+
+                            td.subtotal $#{(item.price * item.quantity).toFixed(2)}
+
                             td
                                 button.btn.btn-danger.btn-delete(
-                                    data-id=item.id
+                                    data-id=item.productId.toString()
                                 ) Xóa
 
             hr
 
             h3.mt-3 Tổng tiền: 
-                span.text-danger $#{total.toFixed(2)}
+                span#selectedTotal.text-danger $0.00
 
-            a.btn.btn-success.mt-3(href="/checkout") Tiến hành đặt hàng
-
+            form(action="/checkout" method="POST")
+                input(type="hidden" id="selectedItemsInput" name="selectedItems")
+                button.btn.btn-success.mt-3(type="submit") Tiến hành đặt hàng
 
 block scripts
     script(src="/js/cart.js")

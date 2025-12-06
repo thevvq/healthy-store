@@ -24,7 +24,7 @@ module.exports.add = async (req, res) => {
 
 
 /* ===================================================
-   [POST] /cart/update  → Cập nhật số lượng
+   [POST] /cart/update  → Cập nhật số lượng sản phẩm
 =================================================== */
 module.exports.update = async (req, res) => {
     try {
@@ -91,22 +91,22 @@ module.exports.clear = async (req, res) => {
 
 
 /* ===================================================
-   [GET] /cart  → Hiển thị trang giỏ hàng
+   [GET] /cart  → Trang hiển thị giỏ hàng
 =================================================== */
 module.exports.index = async (req, res) => {
     try {
         const result = await cartService.getCart(req);
 
-        res.render("client/pages/cart/index", {
+        return res.render("client/pages/cart/index", {
             pageTitle: "Giỏ hàng",
             cart: result.cart,
             total: result.total
         });
 
     } catch (err) {
-        res.render("client/pages/cart/index", {
+        return res.render("client/pages/cart/index", {
             pageTitle: "Giỏ hàng",
-            cart: {},
+            cart: [],
             total: 0,
             error: "Không thể tải giỏ hàng!"
         });
