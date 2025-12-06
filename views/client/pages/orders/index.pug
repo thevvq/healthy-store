@@ -1,0 +1,33 @@
+extends ../../layouts/default
+
+block main
+    .container.my-4
+        h2.mb-3 Chi tiết đơn hàng
+
+        h4 Thông tin giao hàng
+        p Tên: #{order.shippingInfo.name}
+        p SĐT: #{order.shippingInfo.phone}
+        p Địa chỉ: #{order.shippingInfo.address}
+
+        h4.mt-4 Sản phẩm
+        table.table
+            thead
+                tr
+                    th Ảnh
+                    th Tên
+                    th Giá
+                    th SL
+                    th Tổng
+            tbody
+                each item in order.items
+                    tr
+                        td 
+                            img(src=item.thumbnail, width="60")
+                        td #{item.title}
+                        td $#{item.price}
+                        td #{item.quantity}
+                        td $#{(item.price * item.quantity).toFixed(2)}
+
+        h3.mt-4 Tổng tiền: 
+            span.text-danger $#{order.totalPrice.toFixed(2)}
+
