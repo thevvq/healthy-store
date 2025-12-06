@@ -512,12 +512,11 @@ footer.footer {
 .why-section {
   position: relative;
   padding: 80px 0 100px;
-  /* ảnh nền + hiệu ứng đứng yên */
-  background-image: url("/images/slider3.jpg"); /* ĐỔI tên ảnh nếu muốn */
+  background-image: url("/images/slider3.jpg"); /* ĐỔI tên ảnh */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-attachment: fixed; /* chính nó giúp hình đứng yên khi cuộn */
+  background-attachment: fixed;
 }
 
 /* lớp mờ phủ lên để chữ/hộp nhìn rõ hơn */
@@ -525,12 +524,12 @@ footer.footer {
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(255, 255, 255, 0.35); /* mờ nhẹ, bạn thích có thể tăng/giảm */
+  background: rgba(255, 255, 255, 0.35);
 }
 
 .why-section .container {
   position: relative;
-  z-index: 1; /* nằm trên lớp mờ */
+  z-index: 1;
 }
 
 .why-title {
