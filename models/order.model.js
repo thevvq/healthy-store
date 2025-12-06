@@ -3,18 +3,16 @@ const Schema = mongoose.Schema;
 
 const OrderSchema = new Schema({
     userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
-
     items: [
         {
-            productId: { type: Schema.Types.ObjectId, ref: "Product", required: true },
+            productId: { type: Schema.Types.ObjectId, ref: "Product" },
             title: String,
             price: Number,
-            quantity: Number,
-            thumbnail: String
+            thumbnail: String,
+            quantity: Number
         }
     ],
-
-    totalPrice: Number,
+    total: Number,
 
     shippingInfo: {
         name: String,
@@ -26,7 +24,7 @@ const OrderSchema = new Schema({
         type: String,
         enum: ["pending", "confirmed", "shipping", "completed", "cancelled"],
         default: "pending"
-    }
+    },
 
 }, { timestamps: true });
 

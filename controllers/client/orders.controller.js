@@ -2,21 +2,30 @@ const ordersService = require("../../services/client/orders.service");
 
 module.exports = {
 
-    // DANH SÁCH ĐƠN HÀNG
+    /* ======================================================
+       TRANG DANH SÁCH ĐƠN HÀNG
+    ====================================================== */
     orderList: async (req, res) => {
         try {
-            if (!req.session.user) return res.redirect("/login");
+            // Chưa đăng nhập → không cho xem đơn hàng
+            if (!req.session.user) {
+                return res.redirect("/login");
+            }
 
             const userId = req.session.user._id;
+
+            // Lấy danh sách đơn hàng từ service
             const orders = await ordersService.getOrderList(userId);
 
-            res.render("client/pages/orders/index", {
+            return res.render("client/pages/orders/index", {
                 pageTitle: "Đơn hàng của tôi",
                 orders
             });
 
         } catch (err) {
-            res.render("client/pages/orders/index", {
+            console.error("Order List Error:", err.message);
+
+            return res.render("client/pages/orders/index", {
                 pageTitle: "Đơn hàng của tôi",
                 orders: [],
                 error: "Không thể tải danh sách đơn hàng!"
@@ -24,23 +33,37 @@ module.exports = {
         }
     },
 
-    // CHI TIẾT ĐƠN HÀNG
+
+
+    /* ======================================================
+       TRANG CHI TIẾT 1 ĐƠN HÀNG
+    ====================================================== */
     orderDetail: async (req, res) => {
         try {
-            if (!req.session.user) return res.redirect("/login");
+            if (!req.session.user) {
+                return res.redirect("/login");
+            }
 
             const userId = req.session.user._id;
             const orderId = req.params.id;
 
+            // Lấy chi tiết đơn hàng theo user
             const order = await ordersService.getOrderDetail(userId, orderId);
 
-            res.render("client/pages/orders/detail", {
+            if (!order) {
+                req.flash("error", "Đơn hàng không tồn tại!");
+                return res.redirect("/orders");
+            }
+
+            return res.render("client/pages/orders/detail", {
                 pageTitle: "Chi tiết đơn hàng",
                 order
             });
 
         } catch (err) {
-            res.redirect("/orders");
+            console.error("Order Detail Error:", err.message);
+            req.flash("error", "Không thể xem chi tiết đơn hàng!");
+            return res.redirect("/orders");
         }
     }
 

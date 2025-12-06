@@ -1,8 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const ordersController = require("../../controllers/client/orders.controller");
+const ordersCtrl = require("../../controllers/client/orders.controller");
 
-router.get("/", ordersController.orderList);
-router.get("/:id", ordersController.orderDetail);
+// Danh sách đơn hàng
+router.get("/", ordersCtrl.orderList);
+
+// Chi tiết 1 đơn hàng
+router.get("/:id", ordersCtrl.orderDetail);
 
 module.exports = router;

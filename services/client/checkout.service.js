@@ -1,53 +1,130 @@
 const Cart = require("../../models/cart.model");
-const Product = require("../../models/product.model");
 const Order = require("../../models/order.model");
+const Product = require("../../models/product.model");
 
-module.exports = {
-    // LẤY GIỎ HÀNG ĐỂ HIỂN THỊ CHECKOUT
-    getCheckoutData: async (userId) => {
-        const cart = await Cart.findOne({ userId });
+/* ======================================================
+   LẤY DANH SÁCH SẢN PHẨM ĐƯỢC CHỌN ĐỂ THANH TOÁN
+====================================================== */
+module.exports.getSelectedItems = async (req, selectedItems) => {
+    try {
+        const userId = req.session.user?._id;
+        if (!userId) throw new Error("Bạn chưa đăng nhập!");
 
-        if (!cart || cart.items.length === 0) {
-            throw new Error("Giỏ hàng trống!");
-        }
-
-        const total = cart.items.reduce((s, i) => s + i.price * i.quantity, 0);
-
-        return { cart: cart.items, total };
-    },
-
-    // XỬ LÝ ĐẶT HÀNG
-    placeOrder: async (userId, shippingInfo) => {
         const cart = await Cart.findOne({ userId });
         if (!cart || cart.items.length === 0) {
             throw new Error("Giỏ hàng đang trống!");
         }
 
-        // TRỪ TỒN KHO
-        for (let item of cart.items) {
+        // Lọc các item được chọn
+        const selected = cart.items.filter(item =>
+            selectedItems.includes(item.productId.toString())
+        );
+
+        if (selected.length === 0) {
+            throw new Error("Không có sản phẩm nào được chọn!");
+        }
+
+        const total = selected.reduce(
+            (sum, item) => sum + item.price * item.quantity,
+            0
+        );
+
+        return {
+            items: selected,
+            total
+        };
+
+    } catch (err) {
+        throw new Error(err.message || "Lỗi khi lấy danh sách sản phẩm để thanh toán!");
+    }
+};
+
+
+
+/* ======================================================
+   TẠO ĐƠN HÀNG – KIỂM TRA TỒN KHO – TRỪ KHO – XÓA GIỎ
+====================================================== */
+module.exports.createOrder = async (req, selectedItems) => {
+    try {
+        const userId = req.session.user?._id;
+        if (!userId) throw new Error("Bạn chưa đăng nhập!");
+
+        const { name, phone, address } = req.body;
+
+        // Kiểm tra thông tin bắt buộc
+        if (!name || !phone || !address) {
+            throw new Error("Vui lòng nhập đầy đủ thông tin giao hàng!");
+        }
+
+        const cart = await Cart.findOne({ userId });
+        if (!cart || cart.items.length === 0) {
+            throw new Error("Giỏ hàng rỗng, không thể đặt hàng!");
+        }
+
+        // Lấy danh sách sản phẩm đã chọn
+        const selected = cart.items.filter(item =>
+            selectedItems.includes(item.productId.toString())
+        );
+
+        if (selected.length === 0) {
+            throw new Error("Không có sản phẩm nào được chọn để đặt hàng!");
+        }
+
+        /* ======================================================
+           KIỂM TRA TỒN KHO TRƯỚC KHI TRỪ
+        ====================================================== */
+        for (let item of selected) {
             const product = await Product.findById(item.productId);
 
             if (!product) throw new Error("Sản phẩm không tồn tại!");
+
             if (product.stock < item.quantity) {
-                throw new Error(`Sản phẩm '${product.title}' không đủ hàng!`);
+                throw new Error(
+                    `Sản phẩm "${product.title}" chỉ còn ${product.stock} cái trong kho!`
+                );
             }
+        }
+
+        /* ======================================================
+           TRỪ TỒN KHO
+        ====================================================== */
+        for (let item of selected) {
+            const product = await Product.findById(item.productId);
 
             product.stock -= item.quantity;
             await product.save();
         }
 
-        // TẠO ĐƠN HÀNG
+        /* ======================================================
+           TẠO ĐƠN HÀNG
+        ====================================================== */
+        const totalPrice = selected.reduce(
+            (sum, item) => sum + item.price * item.quantity,
+            0
+        );
+
         const order = await Order.create({
             userId,
-            items: cart.items,
-            totalPrice: cart.items.reduce((s, i) => s + i.price * i.quantity, 0),
-            shippingInfo,
-            status: "pending"
+            items: selected,
+            total: totalPrice,
+            shippingInfo: { name, phone, address },
+            status: "pending",
+            createdAt: new Date()
         });
 
-        // XÓA GIỎ HÀNG
-        await Cart.deleteOne({ userId });
+        /* ======================================================
+           XÓA ITEM ĐÃ ĐẶT KHỎI GIỎ HÀNG
+        ====================================================== */
+        cart.items = cart.items.filter(
+            item => !selectedItems.includes(item.productId.toString())
+        );
+
+        await cart.save();
 
         return order;
+
+    } catch (err) {
+        console.error("Create Order Error:", err);
+        throw new Error(err.message || "Không thể tạo đơn hàng!");
     }
 };
