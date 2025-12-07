@@ -12,14 +12,27 @@ block main
                     style="border:1px solid #ddd;padding:16px;border-radius:8px;margin-bottom:22px;background:#fff;"
                 )
 
+                    // ===== HEADER ĐƠN HÀNG =====
                     .d-flex.justify-content-between.align-items-center
                         h3(style="font-size:20px;") Đơn hàng ##{order._id}
-                        span.badge.bg-warning.text-dark #{order.status || "pending"}
+
+                        // MÀU TRẠNG THÁI
+                        if order.status === 'pending'
+                            span.badge.bg-warning.text-dark Đang xử lý
+                        else if order.status === 'confirmed'
+                            span.badge.bg-info.text-dark Đã duyệt
+                        else if order.status === 'shipping'
+                            span.badge.bg-primary.text-white Đang giao
+                        else if order.status === 'completed'
+                            span.badge.bg-success.text-white Hoàn tất
+                        else if order.status === 'cancelled'
+                            span.badge.bg-danger.text-white Đã hủy
 
                     p.text-muted.mt-1 Ngày đặt: #{order.createdAt.toLocaleString()}
 
                     hr
 
+                    // ===== THÔNG TIN GIAO HÀNG =====
                     h4(style="font-size:18px;margin-top:10px;") Thông tin giao hàng
 
                     if order.shippingInfo
@@ -31,7 +44,9 @@ block main
 
                     hr
 
+                    // ===== DANH SÁCH SẢN PHẨM =====
                     h4(style="font-size:18px;margin-top:10px;") Sản phẩm
+
                     table.table.table-bordered.align-middle
                         thead.table-light
                             tr
@@ -40,6 +55,7 @@ block main
                                 th(style="width:60px;") SL
                                 th Giá
                                 th Thành tiền
+
                         tbody
                             each item in order.items
                                 tr
@@ -50,8 +66,13 @@ block main
                                     td $#{item.price}
                                     td $#{(item.quantity * item.price).toFixed(2)}
 
+                    // ===== TỔNG TIỀN =====
                     h4.mt-3
                         | Tổng thanh toán: 
                         span.text-danger $#{order.total.toFixed(2)}
 
-                    a.btn.btn-primary.mt-3(href=`/orders/${order._id}`) Xem chi tiết
+                    // ===== CÁC NÚT CHỨC NĂNG =====
+                    .mt-3
+
+                        a.btn.btn-primary(href=`/orders/${order._id}`) Xem chi tiết
+

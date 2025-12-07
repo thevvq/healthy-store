@@ -119,8 +119,10 @@ app.use("/cart", cartRoute);
 app.use("/checkout", checkoutRoute);
 app.use("/orders", ordersRoute);
 
-// Main Routes
+// ROUTES CLIENT
 routeClient(app);
+
+// ROUTES ADMIN
 routeAdmin(app);
 
 

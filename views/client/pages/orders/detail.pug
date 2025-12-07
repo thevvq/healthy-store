@@ -2,13 +2,31 @@ extends ../../layouts/default
 
 block main
     .container.my-4
+
         if !order
             h2 Đơn hàng không tồn tại
             a.btn.btn-primary(href="/orders") Quay lại danh sách đơn hàng
+
         else
             h2.mb-3 Chi tiết đơn hàng ##{order._id}
 
+            
+            h4 Trạng thái đơn hàng:
+            if order.status === "pending"
+                span.badge.bg-warning.text-dark Đang xử lý
+            else if order.status === "confirmed"
+                span.badge.bg-info.text-dark Đã duyệt
+            else if order.status === "shipping"
+                span.badge.bg-primary.text-white Đang giao
+            else if order.status === "completed"
+                span.badge.bg-success.text-white Hoàn tất
+            else if order.status === "cancelled"
+                span.badge.bg-danger.text-white Đã hủy
+
+            hr
+
             h3(style="font-size:20px;") Thông tin giao hàng
+
             if order.shippingInfo
                 p Tên: #{order.shippingInfo.name}
                 p SĐT: #{order.shippingInfo.phone}
@@ -18,13 +36,14 @@ block main
 
             hr
 
-            h3(style="font-size:20px;") Sản phẩm
-            table.table
-                thead
+            h3(style="font-size:20px;") Sản phẩm trong đơn
+
+            table.table.table-bordered.align-middle
+                thead.table-light
                     tr
-                        th Ảnh
+                        th(style="width:80px;") Ảnh
                         th Tên
-                        th SL
+                        th(style="width:60px;") SL
                         th Giá
                         th Thành tiền
                 tbody
@@ -43,6 +62,20 @@ block main
             hr
 
             h3 Tổng thanh toán:
-                span.text-danger $#{order.total.toFixed(2)}
+                span.text-danger(style="margin-left:6px;") $#{order.total.toFixed(2)}
 
-            a.btn.btn-secondary.mt-3(href="/orders") Quay lại danh sách đơn hàng
+            hr
+
+     
+            .mt-3
+                a.btn.btn-secondary(href="/orders") Quay lại danh sách
+
+                // Nút hủy đơn chỉ hiển thị khi pending
+                if order.status === "pending"
+                    button.btn.btn-danger.ms-2.btn-cancel-order(
+                        data-id=order._id
+                    ) Hủy đơn hàng
+                else if order.status === "cancelled"
+                    span.text-danger.ms-2 Đơn hàng đã bị hủy
+block scripts
+    script(src="/js/order.js")
