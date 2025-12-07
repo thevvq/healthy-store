@@ -1,0 +1,86 @@
+[33mc3b0611[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mdetail/cart[m[33m, [m[1;31morigin/detail/cart[m[33m)[m update cart
+[33m0f356bc[m Merge remote-tracking branch 'origin/home'
+[33m24f6055[m Update page product detail
+[33m141a6b8[m Add categories to products and finish
+[33m649993b[m Finish page category
+[33ma74f973[m Implement a feature for editing category
+[33m156a877[m Add filter, search and pagination for category
+[33m16b592f[m Merge remote-tracking branch 'origin/detail/cart'
+[33m8c5e4ad[m Develop the category management section (data display)
+[33m34604ed[m complete order
+[33m92a1a42[m code order
+[33m67ca9f6[m code checkout
+[33md330905[m code orders
+[33m94083f0[m update css
+[33m6672e8c[m Merge branch 'detail/cart' of https://github.com/thevvq/healthy-store into home
+[33md5dbf9c[m introducing home page
+[33m6df0ba8[m Merge branch 'main' of https://github.com/thevvq/healthy-store into home
+[33md2cf73f[m fix code cart
+[33m82af11a[m Add logo
+[33m199bc9d[m code
+[33m201cb0e[m Fix UI
+[33m50d8a43[m Merge remote-tracking branch 'origin/detail/cart'
+[33m045514f[m Upload to cloudinary(blog, profile)
+[33m830c706[m[33m ([m[1;31morigin/feature/home[m[33m)[m merge
+[33m678a266[m Resolve merge
+[33m6584f09[m merge
+[33m2334d25[m add delete cart
+[33m3071597[m Fix tinyMCE
+[33m619c2ad[m code cart
+[33mf46f082[m fix code
+[33m9f3532d[m[33m ([m[1;31morigin/Customer-Profile[m[33m, [m[1;32mCustomer-Profile[m[33m)[m Merge branch 'main' of https://github.com/thevvq/healthy-store into Customer-Profile
+[33m7a49db7[m TinyMCE
+[33mbb59d5e[m Sort products based on selected criteria
+[33m6507e77[m Upload file to cloudinary
+[33m7612492[m upadte direct message
+[33m29920aa[m update footer
+[33mf556ba9[m update footer
+[33m0a4a745[m Implement a procduct detail page(client)
+[33mf7b5b7e[m sửa lỗi
+[33meca7d49[m fix code profile
+[33m1660fed[m update code profile
+[33m3c3cc9e[m code profile
+[33ma9235f2[m avatar
+[33m0cf871d[m[33m ([m[1;31morigin/Blog[m[33m, [m[1;32mBlog[m[33m)[m Merge branch 'main' of https://github.com/thevvq/Product-management into Blog
+[33m461998e[m Implement a product detail page(Admin)
+[33m8261490[m Implement a feature for editing a product
+[33m46060cf[m (*) Data validation
+[33m1c1073f[m Add upload image on Blog Page
+[33mabdc995[m Merge branch 'feature/home' of https://github.com/thevvq/Product-management into Blog
+[33m6f48a11[m Merge branch 'main' of https://github.com/thevvq/Product-management into Blog
+[33mc703da8[m Merge remote-tracking branch 'origin/Blog'
+[33mab14159[m code blog
+[33m0618534[m[33m ([m[1;32mmain[m[33m)[m Implement a feature for adding new products(Upload image)
+[33me315d18[m[33m ([m[1;32mlogin[m[33m)[m Implement a feature for adding new products
+[33me774aab[m Resolved merge conflict in index.js
+[33mf3c5e41[m display a notification when performing an action
+[33m94c7739[m[33m ([m[1;31morigin/login[m[33m)[m update css login
+[33m7edda21[m[33m ([m[1;32mfeature/home[m[33m)[m update slider_home
+[33mb5e8e56[m update login
+[33m088c317[m update header
+[33ma7a07d4[m Merge pull request #1 from thevvq/login
+[33me3ef2e0[m code login
+[33mb9266bc[m code login
+[33m59bc2da[m code login
+[33m0fc684c[m Implement a feature to reorder products
+[33m64b124c[m implement a feature to delete multi product
+[33m12a76a0[m implement a feature to delete a product
+[33m407a296[m build a bulk product status update feature
+[33mae95a36[m Restructure the directory
+[33m188ddc5[m Product status update feature
+[33m32cac2a[m Pagination feature
+[33m13006c0[m Optimize the search feature
+[33m95fc733[m optimize the filering feature
+[33m49c3482[m Search feature
+[33m8928be2[m Inplement a filter by status feature
+[33m3e25952[m Fectch data and rende it on the product page
+[33md825055[m Design the product list interface
+[33m1f71319[m Build a common layout
+[33m0e74850[m build the admin dashboard
+[33m7407e06[m build the client product list page
+[33m37a7284[m set-up mongoose
+[33mf5b0431[m update layout
+[33m2460a52[m embed static file
+[33mb540343[m restructure pug folder
+[33m804b877[m env configuration
+[33mc8d3adf[m controller congfiguration
