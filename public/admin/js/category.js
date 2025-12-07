@@ -6,39 +6,37 @@ if (buttonsChangeStatus.length > 0) {
 
     buttonsChangeStatus.forEach(button => {
         button.addEventListener('click', (e) => {
-            e.preventDefault()
+            e.preventDefault();
             const id = button.getAttribute('data-id');
             const currentStatus = button.getAttribute('data-status');
-            const newStatus = currentStatus == 'active' ? 'inactive' : 'active';
+            const newStatus = currentStatus === 'active' ? 'inactive' : 'active';
 
             formChangeStatus.action = `${path}/${newStatus}/${id}?_method=PATCH`;
             formChangeStatus.submit();
         });
     });
 }
+// End Change Status
 
-//End Change Status
-
-// Delete Product
+// Delete Category
 const buttonsDelete = document.querySelectorAll('[data-btn-delete]');
 if (buttonsDelete.length > 0) {
-    const formDeleteProduct = document.querySelector('#form-delete-product');
-    const path = formDeleteProduct.getAttribute('data-path');
+    const formDeleteCategory = document.getElementById('form-delete-category');
+    const path = formDeleteCategory.getAttribute('data-path');
     
     buttonsDelete.forEach(button => {
         button.addEventListener('click', (e) => {
-            const isConfirmed = confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?');
+            e.preventDefault();
+            const isConfirmed = confirm('Bạn có chắc chắn muốn xóa danh mục này không?');
             if (isConfirmed) {
                 const id = button.getAttribute('data-id');
-
-                const action = `${path}/${id}?_method=DELETE`;
-                formDeleteProduct.action = action;
-                formDeleteProduct.submit();
-            }  
+                formDeleteCategory.action = `${path}/${id}?_method=DELETE`;
+                formDeleteCategory.submit();
+            }
         });
-    });    
+    });
 }
-// End Delete Product
+// End Delete Category
 
 // Form change multi
 const formChangeMulti = document.querySelector('[form-change-multi]');
@@ -52,12 +50,12 @@ if (formChangeMulti){
         const typeSelect = e.target.elements.type.value;
 
         if (typeSelect === 'delete-all'){
-            const confirmDelete = confirm('Bạn có chắc chắn muốn xóa các sản phẩm đã chọn không?');
+            const confirmDelete = confirm('Bạn có chắc chắn muốn xóa các danh mục đã chọn không?');
             if (!confirmDelete) return;
         }
 
         if (inputsChecked.length === 0){
-            alert('Vui lòng chọn ít nhất một sản phẩm!');
+            alert('Vui lòng chọn ít nhất một danh mục!');
             return;
         }
 

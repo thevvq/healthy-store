@@ -39,6 +39,7 @@ module.exports.changeMulti = async (req, res) => {
 
         req.flash(result.status, result.message)
     } catch (err) {
+        console.log(err)
         req.flash('error', 'Có lỗi xảy ra, vui lòng thử lại!')
     }
 
@@ -59,10 +60,18 @@ module.exports.deleteProduct = async (req, res) => {
 }
 
 // [GET] /admin/products/create
-module.exports.create = (req, res) => {
-    res.render('admin/pages/product/create', {
-        pageTitle: 'Thêm sản phẩm mới'
-    })
+module.exports.create = async (req, res) => {
+    try{
+        const categories = await productService.create()
+
+        res.render('admin/pages/product/create', {
+            pageTitle: 'Thêm sản phẩm mới',
+            categories
+        })
+    }catch (err) {
+        req.flash('error', 'Có lỗi xảy ra, vui lòng thử lại!')
+        res.redirect(`${sysConfig.prefixAdmin}/products`)
+    }
 }
 
 // [POST] /admin/products/create
@@ -81,16 +90,11 @@ module.exports.createProduct = async (req, res) => {
 // [GET] /admin/products/edit/:id
 module.exports.edit = async (req, res) => {
     try {
-        const product = await productService.detail(req.params.id)
-
-        if (!product) {
-            req.flash('error', 'Sản phẩm không tồn tại!')
-            return res.redirect(`${sysConfig.prefixAdmin}/products`)
-        }
+        const records = await productService.edit(req.params.id)
 
         res.render('admin/pages/product/edit', {
             pageTitle: 'Chỉnh sửa sản phẩm',
-            product
+            ...records
         })
     } catch (err) {
         req.flash('error', 'Có lỗi xảy ra, vui lòng thử lại!')

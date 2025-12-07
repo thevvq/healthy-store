@@ -3,6 +3,8 @@ const filterStatusHelper = require('../../helper/filterStatus')
 const searchHelper = require('../../helper/search')
 const paginationHelper = require('../../helper/pagination')
 const uploadToCloud = require("../../helper/uploadCloud")
+const Category = require('../../models/category.model')
+const createTreeHelper = require('../../helper/createTree')
 
 module.exports.getList = async (query) => {
     const filterStatus = filterStatusHelper(query)
@@ -114,6 +116,16 @@ module.exports.deleteProduct = async (id) => {
     )
 }
 
+module.exports.create = async () => {
+    const find = { deleted: false }
+    
+    const records = await Category.find(find)
+    
+    const categories = createTreeHelper.createTree(records)
+
+    return categories
+}
+
 module.exports.createProduct = async (req) => {
     const body = req.body
 
@@ -138,7 +150,27 @@ module.exports.createProduct = async (req) => {
 }
 
 module.exports.detail = async (id) => {
-    return Product.findOne({ deleted: false, _id: id })
+    const product = await Product.findOne({ deleted: false, _id: id });
+
+    const category = await Category.findOne({ deleted: false, _id: product.product_category });
+    product.nameCategory = category ? category.title : null;
+
+    return product;
+}
+
+
+module.exports.edit = async (id) => {
+    const find = { deleted: false }
+    
+    const records = await Category.find(find)
+    
+    const categories = createTreeHelper.createTree(records)
+
+    const product = await Product.findOne({ deleted: false, _id: id })
+    return {
+        product,
+        categories
+    }
 }
 
 module.exports.editProduct = async (req, id) => {

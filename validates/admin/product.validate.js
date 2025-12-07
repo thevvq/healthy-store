@@ -1,6 +1,6 @@
 const sysConfig = require('../../config/system');
 
-module.exports.createProduct = (req, res, next) => {
+module.exports.createPost = (req, res, next) => {
     if (!req.body.title) {
         req.flash('error', 'Vui lòng nhập Tiêu đề sản phẩm!');
         res.redirect(`${sysConfig.prefixAdmin}/products/create`);

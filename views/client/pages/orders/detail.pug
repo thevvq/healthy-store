@@ -1,0 +1,48 @@
+extends ../../layouts/default
+
+block main
+    .container.my-4
+        if !order
+            h2 Đơn hàng không tồn tại
+            a.btn.btn-primary(href="/orders") Quay lại danh sách đơn hàng
+        else
+            h2.mb-3 Chi tiết đơn hàng ##{order._id}
+
+            h3(style="font-size:20px;") Thông tin giao hàng
+            if order.shippingInfo
+                p Tên: #{order.shippingInfo.name}
+                p SĐT: #{order.shippingInfo.phone}
+                p Địa chỉ: #{order.shippingInfo.address}
+            else
+                p Không có thông tin giao hàng.
+
+            hr
+
+            h3(style="font-size:20px;") Sản phẩm
+            table.table
+                thead
+                    tr
+                        th Ảnh
+                        th Tên
+                        th SL
+                        th Giá
+                        th Thành tiền
+                tbody
+                    each item in order.items
+                        tr
+                            td
+                                if item.thumbnail
+                                    img(src=item.thumbnail, width="60", height="60", style="object-fit:cover;border-radius:6px;")
+                                else
+                                    span (Không có ảnh)
+                            td #{item.title}
+                            td #{item.quantity}
+                            td $#{item.price}
+                            td $#{(item.price * item.quantity).toFixed(2)}
+
+            hr
+
+            h3 Tổng thanh toán:
+                span.text-danger $#{order.total.toFixed(2)}
+
+            a.btn.btn-secondary.mt-3(href="/orders") Quay lại danh sách đơn hàng

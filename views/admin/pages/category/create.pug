@@ -8,36 +8,24 @@ block main
 
     h1.mb-4 #{pageTitle}
 
-    form(action=`${prefixAdmin}/products/create` method="POST" id='form-create-product' enctype="multipart/form-data")
+    form(action=`${prefixAdmin}/categories/create` method="POST" enctype="multipart/form-data")
         .form-group.mb-3
-            label.form-label(for="title") Tiêu đề sản phẩm
+            label.form-label(for="title") Tên danh mục
             input.form-control(type="text" id="title" name="title" required)
 
         .form-group.mb-3
-            label.form-label(for="product_category") Danh mục
-            select.form-control(id="product_category" name="product_category")
+            label.form-label(for="parent_category") Danh mục cha
+            select.form-control(id="parent_category" name="parent_category")
                 option(value='') -- Chọn danh mục --
-                if categories
-                    +select-tree(categories)
+                if records
+                    +select-tree(records)
 
         .form-group.mb-3
-            label.form-label(for="desc") Mô tả sản phẩm
-            textarea.form-control(id="desc" name="description" rows="5" required)
-
-        .form-group.mb-3
-            label.form-label(for="price") Giá sản phẩm
-            input.form-control(type="number" id="price" name="price" value="0" min="0" )
-
-        .form-group.mb-3
-            label.form-label(for="discount") % Giảm giá
-            input.form-control(type="number" id="discount" name="discountPercentage" value="0" min="0" )
-
-        .form-group.mb-3
-            label.form-label(for="stock") Số lượng sản phẩm
-            input.form-control(type="number" id="stock" name="stock" value="0" min="0" )
+            label.form-label(for="desc") Mô tả danh mục
+            textarea.form-control(id="desc" name="description" rows="4")
 
         .form-group.mb-3(upload-image='')
-            label.form-label(for="thumbnail") Hình ảnh sản phẩm
+            label.form-label(for="thumbnail") Hình ảnh danh mục
             input.form-control(type="file" id="thumbnail" name="thumbnail" accept="image/*" upload-image-input='') 
             .image-preview-wrapper
                 img(src='' upload-image-preview='')
@@ -49,7 +37,7 @@ block main
 
         .form-group.mb-3
             label.form-label(for="position") Vị trí
-            input.form-control(type="number" id="position" name="position" placeholder="Tự động tăng" min="1" )
+            input.form-control(type="number" id="position" name="position" placeholder="Tự động tăng" min="1")
 
         .form-group.mb-3.form-check.form-check-inline
             input.form-check-input(
@@ -60,8 +48,9 @@ block main
                 checked
             )
             label.form-check-label(for="status-active") Hoạt động
+
         .form-group.mb-3.form-check.form-check-inline
-            input.form-check-input( 
+            input.form-check-input(
                 type="radio"
                 id="status-inactive"
                 name="status"
@@ -70,6 +59,6 @@ block main
             label.form-check-label(for="status-inactive") Dừng hoạt động
 
         .form-group
-            button.btn.btn-primary(type="submit") Lưu sản phẩm
+            button.btn.btn-primary(type="submit") Lưu danh mục
 
-    script(src="/admin/js/product.js") 
+    script(src="/admin/js/product.js")

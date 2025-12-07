@@ -13,6 +13,8 @@ const routeAdmin = require('./routes/admin/index.route');
 const loginRoute = require("./routes/auth/login.route");
 const registerRoute = require("./routes/auth/register.route");
 const cartRoute = require("./routes/client/cart.route");
+const checkoutRoute = require("./routes/client/checkout.route");
+const ordersRoute = require("./routes/client/orders.route");
 
 const systemConfig = require('./config/system');
 
@@ -20,7 +22,7 @@ const systemConfig = require('./config/system');
 const database = require('./config/database');
 database.connect();
 
-// Cart Model
+// Models
 const Cart = require("./models/cart.model");
 
 const app = express();
@@ -31,7 +33,6 @@ const port = process.env.PORT;
 /* ======================================================
    MIDDLEWARE CƠ BẢN
 ====================================================== */
-
 app.use(methodOverride('_method'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -42,7 +43,7 @@ app.use(
         secret: process.env.SESSION_SECRET,
         resave: false,
         saveUninitialized: true,
-        cookie: { maxAge: 30 * 60 * 1000 } 
+        cookie: { maxAge: 30 * 60 * 1000 } // 30 phút
     })
 );
 
@@ -52,7 +53,7 @@ app.use(flash());
 
 
 /* ======================================================
-   GẮN USER VÀO TEMPLATE
+   GẮN USER VÀO VIEW TEMPLATE
 ====================================================== */
 app.use((req, res, next) => {
     res.locals.user = req.session.user || null;
@@ -62,49 +63,41 @@ app.use((req, res, next) => {
 
 
 /* ======================================================
-   MINI CART DÙNG MongoDB (KHÔNG DÙNG SESSION)
+   MINI CART → LẤY TỪ MongoDB
 ====================================================== */
 app.use(async (req, res, next) => {
-
-    // Nếu chưa đăng nhập → giỏ hàng = 0
     if (!req.session.user) {
         res.locals.cartTotal = 0;
         return next();
     }
 
-    const userId = req.session.user._id;
-
     try {
+        const userId = req.session.user._id;
         const cart = await Cart.findOne({ userId });
 
         res.locals.cartTotal = cart
             ? cart.items.reduce((sum, item) => sum + item.quantity, 0)
             : 0;
 
-        next();
-
     } catch (err) {
-        console.log("Mini cart error:", err);
+        console.error("Mini Cart Error:", err);
         res.locals.cartTotal = 0;
-        next();
     }
+
+    next();
 });
 
 
 
 /* ======================================================
-   TEMPLATE + PUBLIC
+   TEMPLATE, STATIC FILES, TINYMCE
 ====================================================== */
-
-// tinyMCE
 app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce')));
 app.locals.tinyMceKey = process.env.TINYMCE_API_KEY;
 
-// PUG
 app.set('views', './views');
 app.set('view engine', 'pug');
 
-// Public folder
 app.use(express.static('public'));
 
 app.locals.prefixAdmin = systemConfig.prefixAdmin;
@@ -112,16 +105,21 @@ app.locals.prefixAdmin = systemConfig.prefixAdmin;
 
 
 /* ======================================================
-   ROUTES
+   KHAI BÁO ROUTES
 ====================================================== */
 
+// Auth
 app.use("/login", loginRoute);
 app.use("/register", registerRoute);
 
-// ⭐ CART MUST GO BEFORE CLIENT ROUTES
+// ⭐ CART phải đứng trước client routes
 app.use("/cart", cartRoute);
 
-// Client + Admin
+// Checkout + Orders
+app.use("/checkout", checkoutRoute);
+app.use("/orders", ordersRoute);
+
+// Main Routes
 routeClient(app);
 routeAdmin(app);
 
@@ -130,7 +128,6 @@ routeAdmin(app);
 /* ======================================================
    RUN SERVER
 ====================================================== */
-
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
 });

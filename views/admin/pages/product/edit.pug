@@ -1,5 +1,6 @@
 extends ../../layouts/default.pug
 include ../../mixins/alert.pug
+include ../../mixins/select-tree.pug
 
 block main 
     +alert-success(3000)
@@ -11,6 +12,13 @@ block main
         .form-group.mb-3
             label.form-label(for="title") Tiêu đề sản phẩm
             input.form-control(type="text" id="title" name="title" required value=product.title)
+
+        .form-group.mb-3
+            label.form-label(for="product_category") Danh mục
+            select.form-control(id="product_category" name="product_category")
+                option(value='') -- Chọn danh mục --
+                if categories
+                    +select-tree(categories, '', product.product_category)
 
         .form-group.mb-3
             label.form-label(for="desc") Mô tả sản phẩm

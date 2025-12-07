@@ -22,6 +22,7 @@ block main
                                 span.badge.bg-success Hoạt động
                             else if product.status === 'inactive'
                                 span.badge.bg-secondary Không hoạt động
+                        p Danh mục: #{product.nameCategory}
                         p Vị trí: #{product.position}
                         p !{product.description}
                         a.btn.btn-warning(
