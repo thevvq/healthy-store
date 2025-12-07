@@ -108,7 +108,7 @@ module.exports.index = async (req, res) => {
             pageTitle: "Giỏ hàng",
             cart: [],
             total: 0,
-            error: "Không thể tải giỏ hàng!"
+            error: "Không thể tải giỏ hàng!!!"
         });
     }
 };
