@@ -150,8 +150,14 @@ module.exports.createProduct = async (req) => {
 }
 
 module.exports.detail = async (id) => {
-    return Product.findOne({ deleted: false, _id: id })
+    const product = await Product.findOne({ deleted: false, _id: id });
+
+    const category = await Category.findOne({ deleted: false, _id: product.product_category });
+    product.nameCategory = category ? category.title : null;
+
+    return product;
 }
+
 
 module.exports.edit = async (id) => {
     const find = { deleted: false }
