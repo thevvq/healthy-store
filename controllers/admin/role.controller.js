@@ -28,7 +28,7 @@ module.exports.create = async (req, res) => {
 
     } catch (err) {
         req.flash('error', 'Có lỗi xảy ra, vui lòng thử lại!')
-        res.redirect(`${sysConfig.prefixAdmin}/dashboard`)
+        res.redirect(`${sysConfig.prefixAdmin}/roles`)
     }
 }
 
@@ -41,8 +41,35 @@ module.exports.createRole = async (req, res) => {
         res.redirect(`${sysConfig.prefixAdmin}/roles`)
     } catch (err) {
         req.flash('error', 'Có lỗi xảy ra, vui lòng thử lại!')
-        res.redirect(`${sysConfig.prefixAdmin}/dashboard`)
+        res.redirect(`${sysConfig.prefixAdmin}/roles`)
     }
 }
 
+// [GET] /admin/roles/edit/:id
+module.exports.edit = async (req, res) => {
+    try {
+        const role = await roleService.edit(req.params.id)
 
+        res.render('admin/pages/role/edit', {
+            pageTitle: 'Tạo nhóm quyền',
+            role
+        })
+
+    } catch (err) {
+        req.flash('error', 'Có lỗi xảy ra, vui lòng thử lại!')
+        res.redirect(`${sysConfig.prefixAdmin}/roles`)
+    }
+}
+
+// [PATCH] /admin/roles/edit/:id
+module.exports.editRole = async (req, res) => {
+    try {
+        await roleService.editRole(req.params.id)
+
+        req.flash('success', 'Cập nhật thành công!')
+        res.redirect(req.get('Referer') || `${sysConfig.prefixAdmin}/categories/edit/${req.params.id}`)
+    } catch (err) {
+        req.flash('error', 'Có lỗi xảy ra, vui lòng thử lại!')
+        res.redirect(`${sysConfig.prefixAdmin}/roles`)
+    }
+}

@@ -11,3 +11,16 @@ module.exports.createRole = async (req) => {
     
     await role.save()
 }
+
+module.exports.edit = async (id) => {
+    let find = {
+        _id: id,
+        deleted: false
+    }
+
+    return Role.findOne(find)
+}
+
+module.exports.editRole = async (id) => {
+    await Role.updateOne({_id: id}, req.body)
+}

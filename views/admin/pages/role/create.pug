@@ -1,14 +1,10 @@
 extends ../../layouts/default.pug
-include ../../mixins/alert.pug
 
 block main
-    +alert-success(3000)
-    +alert-error(5000)
-
     .container.mt-5
         h1 Tạo Role mới
 
-        form(method="POST" action=`${prefixAdmin}/roles/create`)
+        form(method="POST", action=`${prefixAdmin}/roles/create`)
             .mb-3
                 label.form-label(for="title") Nhóm quyền
                 input.form-control(type="text" id="title" name="title" required)
