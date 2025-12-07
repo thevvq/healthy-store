@@ -45,6 +45,73 @@ module.exports.getList = async (query) => {
     }
 }
 
+module.exports.changeStatus = async (id, status) => {
+    return Category.updateOne({ _id: id }, { status })
+}
+
+module.exports.changeMulti = async (type, ids) => {
+    const actions = {
+        active: { status: "active" },
+        inactive: { status: "inactive" },
+        "delete-all": "delete",
+        "change-position": "position"
+    }
+
+    const action = actions[type]
+    if (!action) {
+        return { status: "error", message: "Hành động không hợp lệ!" }
+    }
+
+    if (action === "delete") {
+        await Category.updateMany(
+            { _id: { $in: ids } },
+            {
+                deleted: true,
+                deletedAt: new Date()
+            }
+        )
+
+        return {
+            status: "success",
+            message: `Đã xóa ${ids.length} danh mục!`
+        }
+    }
+
+    if (action === "position") {
+        for (const item of ids) {
+            const [id, position] = item.split('-')
+            await Category.updateOne(
+                { _id: id },
+                { position: parseInt(position) }
+            )
+        }
+
+        return {
+            status: "success",
+            message: `Đã cập nhật vị trí ${ids.length} danh mục!`
+        }
+    }
+
+    await Category.updateMany(
+        { _id: { $in: ids } },
+        { status: action.status }
+    )
+
+    return {
+        status: "success",
+        message: `Cập nhật trạng thái ${ids.length} danh mục thành công!`
+    }
+}
+
+module.exports.deleteCategory = async (id) => {
+    return Category.updateOne(
+        { _id: id },
+        {
+            deleted: true,
+            deletedAt: new Date()
+        }
+    )
+}
 
 module.exports.create = async (req) => {
     const find = { deleted: false }

@@ -39,6 +39,7 @@ module.exports.changeMulti = async (req, res) => {
 
         req.flash(result.status, result.message)
     } catch (err) {
+        console.log(err)
         req.flash('error', 'Có lỗi xảy ra, vui lòng thử lại!')
     }
 

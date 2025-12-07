@@ -17,6 +17,49 @@ module.exports.index = async (req, res) => {
     }
 }
 
+// [PATCH] /admin/categories/change-status/:status/:id
+module.exports.changeStatus = async (req, res) => {
+    try {
+        const { id, status } = req.params
+        await categoryService.changeStatus(id, status)
+
+        req.flash('success', 'Cập nhật trạng thái thành công!')
+    } catch (err) {
+        req.flash('error', 'Có lỗi xảy ra, vui lòng thử lại!')
+    }
+
+    res.redirect(req.get('Referer') || `${sysConfig.prefixAdmin}/categories`)
+}
+
+// [PATCH] /admin/categories/change-multi
+module.exports.changeMulti = async (req, res) => {
+    try {
+        const { type, ids } = req.body
+
+        const result = await categoryService.changeMulti(type, ids.split(','))
+
+        req.flash(result.status, result.message)
+    } catch (err) {
+        console.log(err)
+        req.flash('error', 'Có lỗi xảy ra, vui lòng thử lại!')
+    }
+
+    res.redirect(req.get('Referer') || `${sysConfig.prefixAdmin}/categories`)
+}
+
+// [DELETE] /admin/categories/delete-category/:id
+module.exports.deleteCategory = async (req, res) => {
+    try {
+        await categoryService.deleteCategory(req.params.id)
+
+        req.flash('success', 'Xóa danh mục thành công!')
+    } catch (err) {
+        req.flash('error', 'Có lỗi xảy ra, vui lòng thử lại!')
+    }
+
+    res.redirect(req.get('Referer') || `${sysConfig.prefixAdmin}/categories`)
+}
+
 // [GET] /admin/categories/create
 module.exports.create = async (req, res) => {
     try {

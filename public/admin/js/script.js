@@ -84,47 +84,6 @@ if (checkboxMulti){
 }
 // End Checkbox multi
 
-// Form change multi
-const formChangeMulti = document.querySelector('[form-change-multi]');
-if (formChangeMulti){
-    formChangeMulti.addEventListener('submit', (e) => {
-        e.preventDefault();
-
-        const checkBoxMulti = document.querySelector('[checkbox-multi]');
-        const inputsChecked = checkBoxMulti.querySelectorAll("input[name='id']:checked");
-        
-        const typeSelect = e.target.elements.type.value;
-
-        if (typeSelect === 'delete-all'){
-            const confirmDelete = confirm('Bạn có chắc chắn muốn xóa các sản phẩm đã chọn không?');
-            if (!confirmDelete) return;
-        }
-
-        if (inputsChecked.length === 0){
-            alert('Vui lòng chọn ít nhất một sản phẩm!');
-            return;
-        }
-
-        const ids = [];
-        const inputIds = formChangeMulti.querySelector("input[name='ids']");
-
-        inputsChecked.forEach((input) => {
-            const id = input.value;
-            
-            if (typeSelect === 'change-position'){
-                const position = input.closest('tr').querySelector("input[name='position']").value;
-                ids.push(`${id}-${position}`);
-            }else{
-                ids.push(id);
-            }
-        });
-
-        inputIds.value = ids.join(',');
-        
-        formChangeMulti.submit();
-    });
-}
-
 // End Form change multi
 
 // Show alert
