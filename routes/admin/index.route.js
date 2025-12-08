@@ -20,6 +20,5 @@ module.exports = (app) => {
 
     app.use(PATH_ADMIN + '/roles', roleRoutes);
 
-    // ⭐ Thêm phần quản lý đơn hàng trong admin
     app.use(PATH_ADMIN + '/orders', orderAdminRoutes);
 };

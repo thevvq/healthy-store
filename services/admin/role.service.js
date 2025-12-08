@@ -41,3 +41,21 @@ module.exports.detail = async (id) => {
 
     return role;
 }
+
+
+module.exports.permissions = async (id) => {
+    const role = await Role.find({ deleted: false});
+
+    return role;
+}
+
+module.exports.permissionsRole = async (body) => {
+
+    const permissions = JSON.parse(body.permissions)
+
+    for (const item of permissions){
+        await Role.updateOne({_id: item.id}, {permissions: item.permissions})
+    }
+
+}
+

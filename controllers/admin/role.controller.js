@@ -102,3 +102,34 @@ module.exports.detail = async (req, res) => {
         res.redirect(`${sysConfig.prefixAdmin}/roles`)
     }
 }
+
+// [GET] /admin/roles/permissions
+module.exports.permissions = async (req, res) => {
+    try {
+        const records = await roleService.permissions(req.params.id)
+
+        res.render('admin/pages/role/permissions', {
+            pageTitle: 'Thiết lập phân quyền',
+            records
+        })
+
+    } catch (err) {
+        req.flash('error', 'Có lỗi xảy ra, vui lòng thử lại!')
+        res.redirect(`${sysConfig.prefixAdmin}/roles`)
+    }
+}
+
+
+// [PATCH] /admin/roles/permissions
+module.exports.permissionsRole = async (req, res) => {
+    try {
+
+        await roleService.permissionsRole(req.body)
+        req.flash('success', 'Cập nhật phân quyền thành công!')
+
+    } catch (err) {
+        console.log(err)
+        req.flash('error', 'Có lỗi xảy ra, vui lòng thử lại!')
+    }
+    res.redirect(`${sysConfig.prefixAdmin}/roles/permissions`)
+}
