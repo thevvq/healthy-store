@@ -35,3 +35,9 @@ module.exports.deleteRole = async (id) => {
     )
 
 }
+
+module.exports.detail = async (id) => {
+    const role = await Role.findOne({ deleted: false, _id: id });
+
+    return role;
+}

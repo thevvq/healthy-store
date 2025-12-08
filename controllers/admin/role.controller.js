@@ -86,3 +86,19 @@ module.exports.deleteRole = async (req, res) => {
 
     res.redirect(req.get('Referer') || `${sysConfig.prefixAdmin}/roles`)
 }
+
+// [GET] /admin/roles/detail/:id
+module.exports.detail = async (req, res) => {
+    try {
+        const record = await roleService.detail(req.params.id)
+
+        res.render('admin/pages/role/detail', {
+            pageTitle: 'Chi tiết nhóm quyền',
+            record
+        })
+
+    } catch (err) {
+        req.flash('error', 'Có lỗi xảy ra, vui lòng thử lại!')
+        res.redirect(`${sysConfig.prefixAdmin}/roles`)
+    }
+}
