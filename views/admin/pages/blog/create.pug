@@ -8,24 +8,37 @@ block main
     .container.mt-4
         h2 Thêm bài viết
 
-        form(method="POST", action="/admin/blog/create" enctype="multipart/form-data")
+        form(method="POST", action="/admin/blog/create", enctype="multipart/form-data")
             .mb-3
-                label Tiêu đề
+                label.form-label(for="title") Tiêu đề
                 input.form-control(type="text", name="title", required)
 
-            .mb-3(upload-image='')
-                label.form-label(for="thumbnail") Hình ảnh
-                input.form-control(type="file" id="thumbnail" name="thumbnail" accept="image/*" required upload-image-input='') 
-                .image-preview-wrapper
-                    img(src='' upload-image-preview='')
-                    button(
-                        type='button' 
-                        upload-image-remove='' 
-                        aria-label='Close'
-                    ) x
             .mb-3
-                label Nội dung
-                textarea.form-control(name="content", rows="8", required)
+                label.form-label(for="thumbnail") Hình ảnh
+                input.form-control(type="file", name="thumbnail", accept="image/*", onchange="previewImg(event)")
+                img#preview(style="max-width:200px;margin-top:10px;border-radius:8px;display:none")
 
-            button.btn.btn-success(type="submit") Lưu bài viết
+            .mb-3
+                label.form-label(for="content") Nội dung
+                textarea.form-control#editor(name="content", rows="10", required)
+
+            button.btn.btn-success.mt-3(type="submit") Lưu bài viết
             a.btn.btn-secondary.ms-2(href="/admin/blog") Hủy
+
+block append scripts
+    script(src="https://cdn.tiny.cloud/1/no-api-key/tinymce/7/tinymce.min.js" referrerpolicy="origin")
+
+    script.
+        tinymce.init({
+            selector: '#editor',
+            plugins: 'image link media table lists code preview',
+            menubar: false,
+            toolbar: 'undo redo | bold italic underline | bullist numlist | link image media | preview code',
+            height: 350
+        });
+
+        function previewImg(e) {
+            const img = document.getElementById("preview");
+            img.src = URL.createObjectURL(e.target.files[0]);
+            img.style.display = "block";
+        }
