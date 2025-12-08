@@ -3,7 +3,8 @@ const productRoutes = require('./product.route');
 const blogRoutes = require('./blog.route');  
 const categoryRoutes = require('./category.route');
 const roleRoutes = require('./role.route');
-const orderAdminRoutes = require('./orders.route');   // ⭐ thêm route orders admin
+const accountRoutes = require('./account.route');
+const orderAdminRoutes = require('./orders.route');
 
 const systemConfig = require('../../config/system');
 
@@ -20,5 +21,8 @@ module.exports = (app) => {
 
     app.use(PATH_ADMIN + '/roles', roleRoutes);
 
+    app.use(PATH_ADMIN + '/accounts', accountRoutes);
+
     app.use(PATH_ADMIN + '/orders', orderAdminRoutes);
+    
 };
