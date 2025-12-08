@@ -2,12 +2,74 @@ const Blog = require("../../models/blog.model");
 const slugify = require("slugify");
 const uploadToCloud = require("../../helper/uploadCloud");
 
-// ========== LẤY DANH SÁCH BLOG ==========
-module.exports.getList = async () => {
-    return await Blog.find().sort({ createdAt: -1 });
+// ======================= LẤY DANH SÁCH + LỌC + SẮP XẾP + PHÂN TRANG =======================
+module.exports.getList = async (query = {}) => {
+    const filter = {};
+    let sort = {};
+
+    const keyword = query.keyword || "";
+    const sortKey = query.sort || "newest";
+    const month = parseInt(query.month);
+    const year = parseInt(query.year);
+
+    // ----- Tìm kiếm theo tiêu đề -----
+    if (keyword) {
+        filter.title = { $regex: keyword, $options: "i" };
+    }
+
+    // ----- Lọc theo tháng / năm -----
+    if (!isNaN(year)) {
+        const start = new Date(year, !isNaN(month) ? month - 1 : 0, 1);
+        const end = !isNaN(month)
+            ? new Date(year, month, 1)           // hết tháng
+            : new Date(year + 1, 0, 1);          // hết năm
+
+        filter.createdAt = { $gte: start, $lt: end };
+    }
+
+    // ----- Sắp xếp -----
+    switch (sortKey) {
+        case "oldest":
+            sort = { createdAt: 1 };     // cũ → mới
+            break;
+        case "title_az":
+            sort = { title: 1 };         // A → Z
+            break;
+        case "title_za":
+            sort = { title: -1 };        // Z → A
+            break;
+        default:
+            sort = { createdAt: -1 };    // mới → cũ
+    }
+
+    // ----- Phân trang -----
+    const limit = query.limit ? parseInt(query.limit) : 5; // mỗi trang 5 bài
+    const page = query.page && parseInt(query.page) > 0 ? parseInt(query.page) : 1;
+    const skip = (page - 1) * limit;
+
+    const [blogs, total] = await Promise.all([
+        Blog.find(filter).sort(sort).skip(skip).limit(limit),
+        Blog.countDocuments(filter)
+    ]);
+
+    // ----- Danh sách năm (để render dropdown năm) -----
+    const yearAgg = await Blog.aggregate([
+        { $group: { _id: { $year: "$createdAt" } } },
+        { $sort: { _id: -1 } }
+    ]);
+    const years = yearAgg.map(y => y._id);
+
+    return {
+        docs: blogs,
+        total,
+        page,
+        limit,
+        totalPages: Math.max(1, Math.ceil(total / limit)),
+        years
+    };
 };
 
-// ========== TẠO BÀI VIẾT ==========
+// ======================= TẠO BÀI VIẾT =======================
 module.exports.createBlog = async (req) => {
     let thumbnail = "";
 
@@ -20,18 +82,18 @@ module.exports.createBlog = async (req) => {
         title: req.body.title,
         slug: slugify(req.body.title, { lower: true, strict: true }),
         content: req.body.content,
-        thumbnail: thumbnail
+        thumbnail
     });
 
     return await blog.save();
 };
 
-// ========== LẤY 1 BÀI VIẾT ==========
+// ======================= LẤY 1 BÀI VIẾT =======================
 module.exports.getBlog = async (id) => {
     return await Blog.findById(id);
 };
 
-// ========== CẬP NHẬT BÀI VIẾT ==========
+// ======================= CẬP NHẬT BÀI VIẾT =======================
 module.exports.updateBlog = async (req, id) => {
     let thumbnail = req.body.thumbnail || "";
 
@@ -46,12 +108,12 @@ module.exports.updateBlog = async (req, id) => {
             title: req.body.title,
             slug: slugify(req.body.title, { lower: true, strict: true }),
             content: req.body.content,
-            thumbnail: thumbnail
+            thumbnail
         }
     );
 };
 
-// ========== XÓA BÀI VIẾT ==========
+// ======================= XÓA BÀI VIẾT =======================
 module.exports.deleteBlog = async (id) => {
     return await Blog.deleteOne({ _id: id });
 };
