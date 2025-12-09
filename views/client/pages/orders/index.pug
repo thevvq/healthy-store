@@ -16,7 +16,6 @@ block main
                     .d-flex.justify-content-between.align-items-center
                         h3(style="font-size:20px;") Đơn hàng ##{order._id}
 
-                        // MÀU TRẠNG THÁI
                         if order.status === 'pending'
                             span.badge.bg-warning.text-dark Đang xử lý
                         else if order.status === 'confirmed'
@@ -28,7 +27,8 @@ block main
                         else if order.status === 'cancelled'
                             span.badge.bg-danger.text-white Đã hủy
 
-                    p.text-muted.mt-1 Ngày đặt: #{order.createdAt.toLocaleString()}
+                    p.text-muted.mt-1 
+                        | Ngày đặt: #{order.createdAt.toLocaleDateString('vi-VN')} #{order.createdAt.toLocaleTimeString('vi-VN')}
 
                     hr
 
@@ -71,8 +71,5 @@ block main
                         | Tổng thanh toán: 
                         span.text-danger $#{order.total.toFixed(2)}
 
-                    // ===== CÁC NÚT CHỨC NĂNG =====
                     .mt-3
-
                         a.btn.btn-primary(href=`/orders/${order._id}`) Xem chi tiết
-

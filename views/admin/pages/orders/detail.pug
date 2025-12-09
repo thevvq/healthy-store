@@ -4,7 +4,8 @@ block main
     .container
         h2.mb-3 Chi tiết đơn hàng ##{order._id}
 
-        p.text-muted Ngày đặt: #{order.createdAt.toLocaleString()}
+        p.text-muted 
+            | Ngày đặt: #{order.createdAt.toLocaleDateString('vi-VN')} #{order.createdAt.toLocaleTimeString('vi-VN')}
 
         h4 Trạng thái hiện tại:
         span.badge(

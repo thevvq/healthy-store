@@ -2,7 +2,7 @@ const Blog = require("../../models/blog.model");
 const slugify = require("slugify");
 const uploadToCloud = require("../../helper/uploadCloud");
 
-// ======================= LẤY DANH SÁCH + LỌC + SẮP XẾP + PHÂN TRANG =======================
+// ======================= LẤY DANH SÁCH BLOG =======================
 module.exports.getList = async (query = {}) => {
     const filter = {};
     let sort = {};
@@ -12,39 +12,39 @@ module.exports.getList = async (query = {}) => {
     const month = parseInt(query.month);
     const year = parseInt(query.year);
 
-    // ----- Tìm kiếm theo tiêu đề -----
+    // tìm theo tiêu đề
     if (keyword) {
         filter.title = { $regex: keyword, $options: "i" };
     }
 
-    // ----- Lọc theo tháng / năm -----
+    // lọc theo tháng / năm
     if (!isNaN(year)) {
         const start = new Date(year, !isNaN(month) ? month - 1 : 0, 1);
         const end = !isNaN(month)
-            ? new Date(year, month, 1)           // hết tháng
-            : new Date(year + 1, 0, 1);          // hết năm
+            ? new Date(year, month, 1) // hết tháng
+            : new Date(year + 1, 0, 1); // hết năm
 
         filter.createdAt = { $gte: start, $lt: end };
     }
 
-    // ----- Sắp xếp -----
+    // sắp xếp
     switch (sortKey) {
         case "oldest":
-            sort = { createdAt: 1 };     // cũ → mới
+            sort = { createdAt: 1 };
             break;
         case "title_az":
-            sort = { title: 1 };         // A → Z
+            sort = { title: 1 };
             break;
         case "title_za":
-            sort = { title: -1 };        // Z → A
+            sort = { title: -1 };
             break;
         default:
-            sort = { createdAt: -1 };    // mới → cũ
+            sort = { createdAt: -1 };
     }
 
-    // ----- Phân trang -----
-    const limit = query.limit ? parseInt(query.limit) : 5; // mỗi trang 5 bài
-    const page = query.page && parseInt(query.page) > 0 ? parseInt(query.page) : 1;
+    // phân trang
+    const limit = parseInt(query.limit) || 5;
+    const page = parseInt(query.page) > 0 ? parseInt(query.page) : 1;
     const skip = (page - 1) * limit;
 
     const [blogs, total] = await Promise.all([
@@ -52,11 +52,12 @@ module.exports.getList = async (query = {}) => {
         Blog.countDocuments(filter)
     ]);
 
-    // ----- Danh sách năm (để render dropdown năm) -----
+    // lấy danh sách năm có bài viết
     const yearAgg = await Blog.aggregate([
         { $group: { _id: { $year: "$createdAt" } } },
         { $sort: { _id: -1 } }
     ]);
+
     const years = yearAgg.map(y => y._id);
 
     return {
@@ -95,7 +96,7 @@ module.exports.getBlog = async (id) => {
 
 // ======================= CẬP NHẬT BÀI VIẾT =======================
 module.exports.updateBlog = async (req, id) => {
-    let thumbnail = req.body.thumbnail || "";
+    let thumbnail = req.body.thumbnail;
 
     if (req.file) {
         const uploadResult = await uploadToCloud(req.file.path);
