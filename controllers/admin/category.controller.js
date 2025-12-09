@@ -113,7 +113,7 @@ module.exports.editCategory = async (req, res) => {
         await categoryService.editCategory(req)
 
         req.flash('success', 'Cập nhật doanh mục thành công!')
-        res.redirect(`${sysConfig.prefixAdmin}/categories`)
+        res.redirect(req.get('Referer') || `${sysConfig.prefixAdmin}/categories/edit/${req.params.id}`)
 
     } catch (err) {
         req.flash('error', 'Có lỗi xảy ra, vui lòng thử lại!')

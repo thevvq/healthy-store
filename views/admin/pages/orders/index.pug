@@ -1,0 +1,48 @@
+extends ../../layouts/default
+
+block main
+    .container
+        h1 Quản lý đơn hàng
+
+        if typeof error !== "undefined"
+            p.text-danger #{error}
+
+        if !orders || orders.length === 0
+            p Chưa có đơn hàng nào.
+        else
+            table.table.table-bordered.mt-3
+                thead
+                    tr
+                        th Mã đơn
+                        th Người nhận
+                        th Tổng tiền
+                        th Trạng thái
+                        th Ngày tạo
+                        th Hành động
+
+                tbody
+                    each order in orders
+                        tr
+                            td #{order._id}
+
+                            // ===== NGƯỜI NHẬN (SỬA LỖI ?. ) =====
+                            td 
+                                if order.shippingInfo && order.shippingInfo.name
+                                    | #{order.shippingInfo.name}
+                                else
+                                    | ---
+
+                            td $#{order.total.toFixed(2)}
+
+                            td
+                                span.badge(
+                                    class= order.status === 'cancelled' ? 'bg-secondary' :
+                                           order.status === 'completed' ? 'bg-success' :
+                                           order.status === 'shipping' ? 'bg-info' :
+                                           order.status === 'confirmed' ? 'bg-primary' : 'bg-warning text-dark'
+                                ) #{order.statusText}
+
+                            td #{order.createdAt.toLocaleString()}
+
+                            td
+                                a.btn.btn-primary.btn-sm(href=`/admin/orders/${order._id}`) Xem chi tiết

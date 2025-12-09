@@ -1,0 +1,31 @@
+extends ../../layouts/default.pug
+
+block main
+    .container.mt-5
+        h2 Chi tiết nhóm quyền
+
+        .card.mt-3
+            .card-body
+                h4 #{record.title}
+                p.text-muted.mt-2 #{record.description}
+
+                hr
+
+                h5 Quyền hạn (Permissions)
+                if record.permissions && record.permissions.length > 0
+                    ul
+                        each per in record.permissions
+                            li #{per}
+                else
+                    p.text-muted Không có quyền nào
+
+                hr
+
+                p
+                    strong Tạo lúc:
+                    |  #{record.createdAt.toLocaleString()}
+
+                p
+                    strong Cập nhật lúc:
+                    |  #{record.updatedAt.toLocaleString()}
+

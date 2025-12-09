@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const crypto = require("crypto");
 
 const userSchema = new mongoose.Schema(
     {
@@ -20,12 +21,16 @@ const userSchema = new mongoose.Schema(
             type: String,
             required: true
         },
-
+        token: {
+            type: String,
+            default: () => crypto.randomBytes(32).toString("hex")
+        },
         role: {
             type: String,
             enum: ["client", "admin"],
             default: "client"
         },
+        status: String,
         avatar: {
             type: String,
             default: null
@@ -46,6 +51,10 @@ const userSchema = new mongoose.Schema(
         address: {
             type: String,
             default: ""
+        },
+        deleted: {
+            type: Boolean,
+            default: false
         }
     },
     {

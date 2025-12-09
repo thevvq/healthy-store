@@ -47,13 +47,7 @@ module.exports = {
             const userId = req.session.user._id;
             const orderId = req.params.id;
 
-            // Lấy chi tiết đơn hàng theo user
             const order = await ordersService.getOrderDetail(userId, orderId);
-
-            if (!order) {
-                req.flash("error", "Đơn hàng không tồn tại!");
-                return res.redirect("/orders");
-            }
 
             return res.render("client/pages/orders/detail", {
                 pageTitle: "Chi tiết đơn hàng",
@@ -64,6 +58,33 @@ module.exports = {
             console.error("Order Detail Error:", err.message);
             req.flash("error", "Không thể xem chi tiết đơn hàng!");
             return res.redirect("/orders");
+        }
+    },
+
+
+
+    /* ======================================================
+       KHÁCH HỦY ĐƠN HÀNG
+    ====================================================== */
+    cancelOrder: async (req, res) => {
+        try {
+            if (!req.session.user) {
+                return res.redirect("/login");
+            }
+
+            const userId = req.session.user._id;
+            const orderId = req.params.id;
+
+            await ordersService.cancelOrder(userId, orderId);
+
+            req.flash("success", "Đã hủy đơn hàng thành công!");
+            return res.redirect("/orders");
+
+        } catch (err) {
+            console.error("Cancel Order Error:", err.message);
+
+            req.flash("error", err.message || "Không thể hủy đơn hàng!");
+            return res.redirect("/orders/" + req.params.id);
         }
     }
 

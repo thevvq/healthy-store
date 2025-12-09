@@ -3,7 +3,6 @@ const uploadToCloud = require("../../helper/uploadCloud")
 const createTreeHelper = require('../../helper/createTree')
 const filterStatusHelper = require('../../helper/filterStatus')
 const searchHelper = require('../../helper/search')
-const paginationHelper = require('../../helper/pagination')
 
 module.exports.getList = async (query) => {
 
@@ -18,30 +17,13 @@ module.exports.getList = async (query) => {
 
     const allCategories = await Category.find(find).sort({ position: 1 })
 
-    const fullTree = createTreeHelper.createTree(allCategories);
-
-    const totalRoot = fullTree.length;
-
-    const pagination = paginationHelper(
-        {
-            currentPage: 1,
-            limitItems: 6
-        },
-        query,
-        totalRoot
-    );
-
-    const paginatedRoot = fullTree.slice(
-        pagination.skip,
-        pagination.skip + pagination.limitItems
-    );
+    const tree = createTreeHelper.createTree(allCategories);
 
     return {
         categories: allCategories,
         filterStatus,
         keyword: searchObject.keyword,
-        pagination,
-        tree: paginatedRoot  
+        tree
     }
 }
 

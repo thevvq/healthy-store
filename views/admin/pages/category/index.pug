@@ -3,7 +3,6 @@ include ../../mixins/alert.pug
 include ../../mixins/category-rows.pug
 include ../../mixins/filter-status.pug
 include ../../mixins/search.pug
-include ../../mixins/pagination.pug
 include ../../mixins/form-change-multi.pug
 
 block main
@@ -44,10 +43,8 @@ block main
                         th Trạng thái
                         th Hành động
                 tbody
-                    - const counter = { value: pagination.skip }
+                    - const counter = { value: 0 }
                     +category-rows(tree, '', counter)
-
-    +pagination(pagination)
 
     form(
         action=""
