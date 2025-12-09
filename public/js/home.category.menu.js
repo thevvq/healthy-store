@@ -1,9 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const mainItems = document.querySelectorAll(".home.category-main-item");
-    const panels = document.querySelectorAll(".home.category-panel");
-    const detail = document.querySelector(".home.category-detail");
-    const wrapper = document.querySelector(".home.category-wrapper");
-    const container = document.querySelector(".home.category");
+    const mainItems = document.querySelectorAll(".home-category-main-item");
+    const panels = document.querySelectorAll(".home-category-panel");
+    const detail = document.querySelector(".home-category-detail");
+    const wrapper = document.querySelector(".home-category-wrapper");
+    const container = document.querySelector(".home-category");
 
     const activateById = (id) => {
         let hasActivePanel = false;

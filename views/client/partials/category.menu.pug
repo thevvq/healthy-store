@@ -1,0 +1,32 @@
+// ----- KHỐI DANH MỤC (NẰM TRÊN SLIDER) -----
+.block-home-top
+    .container
+        .home-category
+            .home-category-label
+                i.fa-solid.fa-bars
+                span Danh mục
+
+            .home-category-wrapper
+                // Cột trái: danh mục CHA
+                ul.home-category-main
+                    if categoriesMenu && categoriesMenu.length
+                        each cat in categoriesMenu
+                            // Cha: parent_category null / undefined / ""
+                            if !cat.parent_category
+                                li.home-category-main-item(data-id=cat._id data-slug=cat.slug)
+                                    span= cat.title
+                                    i.fa-solid.fa-angle-right
+
+                // Cột phải: danh mục CON
+                .home-category-detail
+                    if categoriesMenu && categoriesMenu.length
+                        each parent in categoriesMenu
+                            if !parent.parent_category
+                                .home-category-panel(data-id=parent._id)
+                                    h3.home-category-title= parent.title
+                                    ul.home-category-list
+                                        each child in categoriesMenu
+                                            // Con: parent_category === _id của cha
+                                            if child.parent_category && child.parent_category == parent._id
+                                                li
+                                                    a(href=`/products?category=${child.slug}`)= child.title
