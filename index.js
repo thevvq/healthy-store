@@ -10,11 +10,6 @@ const bodyParser = require("body-parser");
 // ROUTES
 const routeClient = require('./routes/client/index.route');
 const routeAdmin = require('./routes/admin/index.route');
-const loginRoute = require("./routes/auth/login.route");
-const registerRoute = require("./routes/auth/register.route");
-const cartRoute = require("./routes/client/cart.route");
-const checkoutRoute = require("./routes/client/checkout.route");
-const ordersRoute = require("./routes/client/orders.route");
 
 const systemConfig = require('./config/system');
 
@@ -102,22 +97,6 @@ app.use(express.static('public'));
 
 app.locals.prefixAdmin = systemConfig.prefixAdmin;
 
-
-
-/* ======================================================
-   KHAI BÁO ROUTES
-====================================================== */
-
-// Auth
-app.use("/login", loginRoute);
-app.use("/register", registerRoute);
-
-// ⭐ CART phải đứng trước client routes
-app.use("/cart", cartRoute);
-
-// Checkout + Orders
-app.use("/checkout", checkoutRoute);
-app.use("/orders", ordersRoute);
 
 // ROUTES CLIENT
 routeClient(app);
