@@ -32,22 +32,6 @@
 
 /* End header */
 
-/* box-head */
-
-/* ============================================
-   FOOTER
-============================================ */
-.footer {
-    background: #333;
-    color: #fff;
-    text-align: center;
-    padding: 10px;
-}
-
-.footer p {
-    margin: 0;
-}
-
 /* ============================================
    BOX HEAD
 ============================================ */
@@ -320,6 +304,21 @@
 
 
 /* Footer */
+
+/* ============================================
+   FOOTER
+============================================ */
+.footer {
+    background: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+}
+
+.footer p {
+    margin: 0;
+}
+
 footer.footer {
   background: #f7f8fc;
   padding: 40px 80px 50px;
@@ -339,8 +338,7 @@ footer.footer {
   flex: 1;
 }
 
-.footer-logo {
-  font-size: 32px;
+.footer-brand .inner-logo {
   margin-bottom: 16px;
 }
 

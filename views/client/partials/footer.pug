@@ -5,8 +5,10 @@ footer.footer
     .footer-container
         // CỘT 1: Logo + mô tả + Social
         .footer-column.footer-brand
-            h2.footer-logo Verdish
-            p.footer-desc Verdish – thương hiệu body spray & perfume chất lượng cao.
+            .inner-logo
+                    a(href="/")
+                        img(src="/images/logo.svg", alt="Logo")
+            p.footer-desc Cung cấp các sản phẩm healthy và organic tốt cho sức khỏe người tiêu dùng.
             .footer-social
                 a(href="#", aria-label="YouTube")
                     i.fa-brands.fa-youtube
@@ -19,12 +21,15 @@ footer.footer
 
         // CỘT 2: Verdish
         .footer-column
-            h3.footer-title Verdish
+            h3.footer-title Về chúng tôi
             ul.footer-links
-                li: a(href="#") Về chúng tôi
+                li: a(href="#") Giới thiệu
                 li: a(href="#") Sản phẩm
                 li: a(href="#") Tin tức
-                li: a(href="#") Tuyển dụng
+                li: a(href="#") Dịch vụ
+                li: a(href="#") Liên hệ
+                li: a(href="#") Hỗ trợ
+                li: a(href="#") Chăm sóc khách hàng
 
         // CỘT 3: Điều khoản sử dụng
         .footer-column
