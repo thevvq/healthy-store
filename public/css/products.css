@@ -50,7 +50,7 @@
 .product-item .inner-price-new {
   font-size: 15px;
   font-weight: 600;
-  color: #0f9d58;           /* xanh giá mới */
+  color: #0f9d58;
   margin-bottom: 2px;
 }
 
@@ -71,22 +71,37 @@
   border-radius: 999px;
 }
 
-/* Nút thêm vào giỏ */
+/* ====== NÚT ADD TO CART — phiên bản nhỏ nằm bên phải ====== */
 .btn-add-cart {
   margin-top: 10px;
-  width: 100%;
+  align-self: flex-end;          /* Đẩy nút sang phải */
+  padding: 10px 18px;             /* Thu nhỏ */
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
   border-radius: 999px;
   border: 1px solid #000;
   background: #000;
+  color: #fff;                   /* Text + icon trắng */
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: auto;                   /* Không full-width */
+}
+
+/* Icon trắng */
+.btn-add-cart i {
   color: #fff;
   font-size: 14px;
-  font-weight: 500;
-  padding: 8px 0;
-  cursor: pointer;
   transition: all 0.2s ease;
 }
 
+/* Hover → nền trắng, icon + text đen */
 .btn-add-cart:hover {
   background: #fff;
+  color: #000;
+}
+
+.btn-add-cart:hover i {
   color: #000;
 }
