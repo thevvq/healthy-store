@@ -1,16 +1,24 @@
 extends ../../layouts/default
 
+block css
+    link(rel="stylesheet", href="/css/blog.css")
+
 block main
-    .container.mt-4
+    .container.blog-detail-container
         if blog
-            h2 #{blog.title}
+            h1.blog-detail-title #{blog.title}
 
-            img(src=blog.thumbnail style="max-width:100%;border-radius:10px;margin:20px 0")
+            .blog-detail-meta
+                span
+                    i.fa-solid.fa-calendar-days
+                    | #{blog.createdAt.toLocaleDateString('vi-VN')}
 
-            p.mt-3 !{blog.content}
+            img.blog-detail-thumbnail(src=blog.thumbnail alt=blog.title)
 
-            a.btn.btn-secondary.mt-3(href="/blog") ← Quay lại blog
+            .blog-detail-content !{blog.content}
+
+            a.back-btn(href="/blog")  Quay lại Blog
 
         else
             h3 Bài viết không tồn tại!
-            a.btn.btn-primary.mt-3(href="/blog") ← Quay lại
+            a.back-btn(href="/blog")  Quay lại Blog

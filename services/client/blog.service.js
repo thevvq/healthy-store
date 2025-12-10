@@ -1,11 +1,26 @@
 const Blog = require("../../models/blog.model");
 
-module.exports.getList = async () => {
-    const blogs = await Blog.find().sort({ createdAt: -1 });
+module.exports.getList = async ({ page = 1, limit = 8 } = {}) => {
+    const skip = (page - 1) * limit;
+
+    // Tổng số bài viết
+    const totalBlogs = await Blog.countDocuments();
+
+    const totalPages = Math.ceil(totalBlogs / limit);
+
+    // Lấy danh sách blog theo phân trang
+    const blogs = await Blog.find()
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit);
 
     return {
         success: true,
-        data: blogs
+        data: blogs,
+        totalBlogs,
+        totalPages,
+        currentPage: page,
+        totalPagesArr: Array.from({ length: totalPages }, (_, i) => i + 1)
     };
 };
 
