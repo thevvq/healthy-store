@@ -46,3 +46,17 @@ module.exports.createAccount = async (req) => {
     const record = new Account(req.body);
     return record.save();
 };
+
+module.exports.changeStatus = async (id, status) => {
+    return Account.updateOne({ _id: id }, { status })
+}
+
+module.exports.deleteAccount = async (id) => {
+    return Account.updateOne(
+        { _id: id },
+        {
+            deleted: true,
+            deletedAt: new Date()
+        }
+    )
+}

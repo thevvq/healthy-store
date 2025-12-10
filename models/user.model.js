@@ -54,7 +54,8 @@ const userSchema = new mongoose.Schema(
         deleted: {
             type: Boolean,
             default: false
-        }
+        },
+        deletedAt: Date
     },
     {
         timestamps: true 

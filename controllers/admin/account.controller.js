@@ -42,8 +42,6 @@ module.exports.createAccount = async (req, res) => {
         return res.redirect(`${sysConfig.prefixAdmin}/accounts`);
         
     } catch (err) {
-        console.log("Lỗi tạo tài khoản:", err);
-
         if (err.message === "EMAIL_EXISTS") {
             req.flash('error', 'Email đã tồn tại, vui lòng chọn email khác!');
             return res.redirect('back');
@@ -52,4 +50,32 @@ module.exports.createAccount = async (req, res) => {
         req.flash('error', 'Có lỗi xảy ra, vui lòng thử lại!');
         return res.redirect('back');
     }
+}
+
+// [PATCH] /admin/accounts/change-status/:status/:id
+module.exports.changeStatus = async (req, res) => {
+    try {
+        const { id, status } = req.params
+        await accountService.changeStatus(id, status)
+
+        req.flash('success', 'Cập nhật trạng thái thành công!')
+    } catch (err) {
+        req.flash('error', 'Có lỗi xảy ra, vui lòng thử lại!')
+    }
+
+    res.redirect(req.get('Referer') || `${sysConfig.prefixAdmin}/accounts`)
+}
+
+
+// [DELETE] /admin/accounts/delete-account/:id
+module.exports.deleteAccount = async (req, res) => {
+    try {
+        await accountService.deleteAccount(req.params.id)
+
+        req.flash('success', 'Xóa tài khoản thành công!')
+    } catch (err) {
+        req.flash('error', 'Có lỗi xảy ra, vui lòng thử lại!')
+    }
+
+    res.redirect(req.get('Referer') || `${sysConfig.prefixAdmin}/accounts`)
 }
