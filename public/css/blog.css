@@ -42,6 +42,7 @@
     height: 190px;
     object-fit: cover;
     transition: 0.35s ease;
+    filter: saturate(1.15) hue-rotate(-10deg);
 }
 
 .blog-card:hover img {
@@ -89,13 +90,13 @@
     text-align: center;
 }
 
-.pagination-shopee {
+.pagination-verdish {
     display: inline-flex;
     gap: 8px;
     list-style: none;
 }
 
-.pagination-shopee li {
+.pagination-verdish li {
     padding: 8px 14px;
     border-radius: 6px;
     border: 1px solid #ddd;
@@ -104,18 +105,18 @@
     font-weight: 600;
 }
 
-.pagination-shopee li.active {
+.pagination-verdish li.active {
     background: #ff5722;
     color: #fff;
     border-color: #ff5722;
 }
 
-.pagination-shopee li.disabled {
+.pagination-verdish li.disabled {
     opacity: 0.4;
     pointer-events: none;
 }
 
-.pagination-shopee li a {
+.pagination-verdish li a {
     text-decoration: none;
     color: inherit;
 }
@@ -127,9 +128,7 @@
     }
 }
 
-/* ===========================
-   BLOG DETAIL PAGE (Shopee Style)
-=========================== */
+
 
 .blog-detail-container {
     max-width: 900px;
@@ -193,4 +192,97 @@
 .back-btn:hover {
     background: #e64a19;
     color: #fff;
+}
+/* ===========================
+   BLOG LIST — Typography nâng cấp
+=========================== */
+
+.blog-title {
+    font-size: 32px;
+    font-weight: 800;
+    color: #ff5722;
+    margin-bottom: 30px;
+    text-align: center;
+    letter-spacing: -0.5px;
+}
+
+/* TITLE mỗi bài */
+.blog-item-title {
+    font-family: "Inter", sans-serif;
+    font-size: 19px;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 8px;
+    line-height: 1.35;
+    height: 48px;
+    overflow: hidden;
+}
+
+/* MÔ TẢ */
+.blog-item-desc {
+    font-size: 15px;
+    font-weight: 400;
+    color: #555;
+    line-height: 1.45;
+    height: 42px;
+    overflow: hidden;
+    font-family: "Inter", sans-serif;
+}
+
+/* META */
+.blog-meta {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.2px;
+}
+/* ===========================
+   BLOG DETAIL — Typography
+=========================== */
+
+.blog-detail-title {
+    font-size: 34px;
+    font-weight: 800;
+    line-height: 1.25;
+    margin-bottom: 18px;
+    color: #b2f271;
+    letter-spacing: -0.3px;
+    font-family: "Inter", sans-serif;
+}
+
+/* Ngày đăng */
+.blog-detail-meta {
+    font-size: 15px;
+    font-weight: 500;
+    color: #666;
+    margin-bottom: 25px;
+}
+
+/* NỘI DUNG BÀI VIẾT */
+.blog-detail-content {
+    font-size: 18px;
+    line-height: 1.75;
+    color: #2d2d2d;
+    font-family: "Inter", sans-serif;
+    font-weight: 400;
+    letter-spacing: 0.1px;
+}
+
+/* NỘI DUNG — Đoạn văn cách nhau hợp lý */
+.blog-detail-content p {
+    margin-bottom: 18px;
+}
+
+/* Nếu có h2 trong nội dung */
+.blog-detail-content h2,
+.blog-detail-content h3 {
+    margin-top: 24px;
+    margin-bottom: 12px;
+    font-weight: 700;
+    color: #ff5722;
+}
+
+/* Danh sách đẹp hơn */
+.blog-detail-content ul li {
+    margin-bottom: 8px;
+    line-height: 1.6;
 }

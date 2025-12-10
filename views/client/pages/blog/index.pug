@@ -26,10 +26,10 @@ block main
                                     i.fa-solid.fa-calendar-days
                                     | #{item.createdAt.toLocaleDateString('vi-VN')}
 
-        // PAGINATION SHOPEE UI
+        
         if totalPages > 1
             .pagination-container
-                ul.pagination-shopee
+                ul.pagination-verdish
                     if currentPage > 1
                         li
                             a(href=`/blog?page=${currentPage - 1}`) « Trước
