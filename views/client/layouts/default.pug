@@ -30,8 +30,13 @@ html(lang="vi")
 
     // CSS chung
     link(rel="stylesheet", href="/css/style.css")
+
     link(rel="stylesheet", href="/css/home-products.css")
     link(rel="stylesheet", href="/css/blog.css")
+
+    link(rel="stylesheet", href="/css/home.products.css")
+    link(rel="stylesheet", href="/css/home.category.menu.css")
+
 
     // CSS riêng từng trang
     block css
@@ -40,9 +45,16 @@ html(lang="vi")
     // HEADER
     include ../partials/header.pug
 
+
     // MAIN CONTENT
     main
       block main
+
+    include ../partials/category.menu.pug
+
+    //- Nội dung từng trang
+    block main
+
 
     // FOOTER
     include ../partials/footer.pug
@@ -65,6 +77,7 @@ html(lang="vi")
     script(src="/js/slider.js")
     script(src="/js/cart.js")
     script(src="/js/header.js")
+    script(src="/js/home.category.menu.js")
 
     // JS riêng từng trang
     block scripts

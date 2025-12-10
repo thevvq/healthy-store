@@ -1,6 +1,9 @@
 extends ../../layouts/default
 include ../../mixins/box-head.pug
 
+block css
+    link(rel="stylesheet", href="/css/products.css")
+
 block main
     .container.my-3
         .row
@@ -28,4 +31,4 @@ block main
                             data-image=item.thumbnail
                             data-stock=item.stock
                         )
-                            | Thêm vào giỏ hàng
+                            i.fa-solid.fa-cart-shopping.cart-icon

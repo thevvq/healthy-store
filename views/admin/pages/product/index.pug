@@ -98,7 +98,8 @@ block main
                                     data-btn-delete=''
                                 ) Xóa
 
-    +pagination(pagination)
+    if products.count > pagination.limitItems
+        +pagination(pagination)
 
     form(
         action=""

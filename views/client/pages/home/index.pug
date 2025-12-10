@@ -1,82 +1,81 @@
 extends ../../layouts/default.pug
 
 block main
-  // ----- SLIDER -----
-  .slider
-    .slides
-      img(src="/images/slider1.jpg", alt="Slide 1")
-      img(src="/images/slider2.jpg", alt="Slide 2")
-      img(src="/images/slider3.jpg", alt="Slide 3")
-    .dots
+    // ----- SLIDER -----
+    .slider
+        .slides
+            img(src="/images/slider1.jpg", alt="Slide 1")
+            img(src="/images/slider2.jpg", alt="Slide 2")
+            img(src="/images/slider3.jpg", alt="Slide 3")
+        .dots
 
-  // ----- SẢN PHẨM TẠI BEN PERFUME -----
-  section.products-section
-    .container
-      h2.products-title Sản phẩm tại Ben Perfume
+    // ----- SẢN PHẨM TẠI Verdish -----
+    section.products-section
+        .container
+            h2.products-title Sản phẩm tại Verdish
 
-      // Tabs filter
-      .products-tabs
-        button.products-tab.active(type="button" data-filter="best") Bán chạy nhất
-        button.products-tab(type="button" data-filter="new") Hàng mới về
-        button.products-tab(type="button" data-filter="top") Đánh giá cao
+            .products-tabs
+                button.products-tab.active(type="button" data-filter="best") Bán chạy nhất
+                button.products-tab(type="button" data-filter="new") Hàng mới về
+                button.products-tab(type="button" data-filter="top") Đánh giá cao
 
-      .products-list
-        if productsHome && productsHome.length
-          each product, index in productsHome
-            - const cat = index % 3 === 0 ? 'best' : (index % 3 === 1 ? 'new' : 'top');
-            .product-card(data-category=cat)
-              .product-card-image
-                if product.thumbnail
-                  img(src=product.thumbnail, alt=product.title || product.name || 'Sản phẩm')
+            .products-list
+                if productsHome && productsHome.length
+                    each product, index in productsHome
+                        - const catTab = index % 3 === 0 ? 'best' : (index % 3 === 1 ? 'new' : 'top');
+                        .product-card(data-category=catTab)
+                            .product-card-image
+                                if product.thumbnail
+                                    img(src=product.thumbnail, alt=product.title || product.name || 'Sản phẩm')
+                                else
+                                    img(src="/images/logo.svg", alt=product.title || product.name || 'Sản phẩm')
+                            .product-card-body
+                                h3.product-card-name= product.title || product.name || 'Chưa có tên'
+                                if product.newPrice
+                                    p.product-card-price #{Number(product.newPrice).toLocaleString('vi-VN')}đ
+                                else if product.price
+                                    p.product-card-price #{Number(product.price).toLocaleString('vi-VN')}đ
                 else
-                  img(src="/images/logo.svg", alt=product.title || product.name || 'Sản phẩm')
-              .product-card-body
-                h3.product-card-name= product.title || product.name || 'Chưa có tên'
-                if product.newPrice
-                  p.product-card-price #{Number(product.newPrice).toLocaleString('vi-VN')}đ
-                else if product.price
-                  p.product-card-price #{Number(product.price).toLocaleString('vi-VN')}đ
-        else
-          p.text-muted.text-center Chưa có sản phẩm nào.
+                    p.text-muted.text-center Chưa có sản phẩm nào.
 
-      .products-more
-        a.products-more-btn(href="/products") Xem thêm sản phẩm →
+            .products-more
+                a.products-more-btn(href="/products") Xem thêm sản phẩm →
 
+    // ----- TẠI SAO NÊN LÀ BEN PERFUME -----
+    section.why-section
+        .container
+            h2.why-title TẠI SAO NÊN LÀ VERDISH
 
-  // ----- TẠI SAO NÊN LÀ BEN PERFUME -----
-  section.why-section
-    .container
-      h2.why-title Tại sao nên là Ben Perfume
+            .why-cards
+                .why-card
+                    .why-icon
+                        i.fa-solid.fa-id-card
+                    p.why-text
+                        | THÀNH VIÊN KIM CƯƠNG SẼ ĐƯỢC GIẢM 7% / ĐƠN HÀNG.
+                        br
+                        | THÀNH VIÊN VÀNG SẼ ĐƯỢC GIẢM 5% / ĐƠN HÀNG.
+                        br
+                        | THÀNH VIÊN BẠC SẼ ĐƯỢC GIẢM 3% / ĐƠN HÀNG.
 
-      .why-cards
-        .why-card
-          .why-icon
-            i.fa-solid.fa-id-card
-          p.why-text
-            | THÀNH VIÊN KIM CƯƠNG SẼ ĐƯỢC GIẢM 7% / ĐƠN HÀNG.
-            br
-            | THÀNH VIÊN VÀNG SẼ ĐƯỢC GIẢM 5% / ĐƠN HÀNG.
-            br
-            | THÀNH VIÊN BẠC SẼ ĐƯỢC GIẢM 3% / ĐƠN HÀNG.
+                .why-card
+                    .why-icon
+                        i.fa-solid.fa-truck-fast
+                    p.why-text
+                        | FREE SHIP TOÀN QUỐC KHI MUA SẢN PHẨM FULLSEAL
+                        br
+                        | HOẶC TỪ 2 SẢN PHẨM CHIẾT.
 
-        .why-card
-          .why-icon
-            i.fa-solid.fa-truck-fast
-          p.why-text
-            | FREE SHIP TOÀN QUỐC KHI MUA SẢN PHẨM FULLSEAL
-            br
-            | HOẶC TỪ 2 SẢN PHẨM CHIẾT.
-
-        .why-card
-          .why-icon
-            i.fa-solid.fa-award
-          p.why-text
-            | SẢN PHẨM NƯỚC HOA ĐƯỢC MUA TRỰC TIẾP TẠI CÁC STORE
-            br
-            | Ở NƯỚC NGOÀI HOẶC LÀM VIỆC TRỰC TIẾP VỚI CÁC HÃNG,
-            br
-            | CAM KẾT AUTHENTIC 100%.
+                .why-card
+                    .why-icon
+                        i.fa-solid.fa-award
+                    p.why-text
+                        | SẢN PHẨM NƯỚC HOA ĐƯỢC MUA TRỰC TIẾP TẠI CÁC STORE
+                        br
+                        | Ở NƯỚC NGOÀI HOẶC LÀM VIỆC TRỰC TIẾP VỚI CÁC HÃNG,
+                        br
+                        | CAM KẾT AUTHENTIC 100%.
 
 block scripts
-  script(src="/js/home-products.js")
+    script(src="/js/home.products.js")
     script(src="/js/slider.js")
+    

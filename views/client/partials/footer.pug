@@ -1,75 +1,73 @@
 footer.footer
-  .footer-container
-    // Cột 1: Thông tin cửa hàng
-    .footer-column.footer-brand
-      h2.footer-logo Ben Perfume
-      ul.footer-contact
-        li
-          i.fa-solid.fa-location-dot
-          span 594 Nguyễn Văn Trỗi , Hiệp Thành , Thủ Dầu Một , Bình Dương
-        li
-          i.fa-solid.fa-phone
-          span 0385.484.984 | 0922.122.221
-        li
-          i.fa-solid.fa-envelope
-          span benperfume243@gmail.com
-        li
-          i.fa-regular.fa-clock
-          span Giờ mở cửa: Các ngày trong tuần từ 10:00 - 20:00
-        li
-          span dkkd : 46A8036339
-        li
-          span cấp ngày : 19/10/2022
-        li
-          span nơi cấp : sở KH & ĐT tỉnh Bình Dương
+    // Decor hai bên
+    img.footer-decor.footer-decor-left(src="/images/footer-shape1.png" alt="Decor left")
+    img.footer-decor.footer-decor-right(src="/images/footer-shape2.png" alt="Decor right")
 
-      h3.footer-subtitle ĐIỀU KHOẢN SỬ DỤNG
-      ul.footer-links.footer-links--policy
-        li: a(href="#") Chính sách bảo mật
-        li: a(href="#") Chính sách vận chuyển
-        li: a(href="#") Chính sách và quy định chung
-        li: a(href="#") Mua hàng và thanh toán
-        li: a(href="#") Thông tin về chủ sở hữu website
-        li: a(href="#") Thông tin về điều kiện giao dịch chung
-        li: a(href="#") Thông tin về vận chuyển và giao nhận
-        li: a(href="#") Thông tin về các phương thức thanh toán
+    .footer-container
 
-    // Cột 2: Menu
-    .footer-column
-      h3.footer-title Menu
-      ul.footer-links
-        li: a(href="#") Body Spray
-        li: a(href="#") Set Perfume
-        li: a(href="#") Unisex
-        li: a(href="#") Nữ
-        li: a(href="#") Nam
+        // ======================= CỘT 1 =======================
+        .footer-column.footer-brand
+            .inner-logo
+                a(href="/")
+                    img(src="/images/logo.svg", alt="Logo")
 
-    // Cột 3: Thông tin
-    .footer-column
-      h3.footer-title Thông tin
-      ul.footer-links
-        li: a(href="#") Dịch vụ
-        li: a(href="#") Chăm sóc khách hàng
-        li: a(href="#") Tuyển dụng
-        li: a(href="#") Liên hệ
+            ul.footer-contact
+                li
+                    i.fa-solid.fa-location-dot
+                    span 70 Tô Ký, Trung Mỹ Tây, TP. HCM
+                li
+                    i.fa-solid.fa-phone
+                    span 0523.321.876 | 0392.792.057
+                li
+                    i.fa-solid.fa-envelope
+                    span vonguyenphongphu@gmail.com
+                li
+                    i.fa-regular.fa-clock
+                    span Giờ hoạt động: 7:00 - 20:00
 
-    // Cột 4: Form đăng ký
-    .footer-column.footer-newsletter
-      h3.footer-title Đăng ký nhận thông báo
-      p.footer-desc Nhập e-mail của bạn để nhận những thông tin mới nhất từ chúng tôi.
-      form.footer-form(action="#" method="post")
-        input.footer-input(type="email" placeholder="Nhập email của bạn")
-        button.footer-btn(type="submit") Đăng ký ngay
+            .footer-social
+                a(href="#", aria-label="YouTube")
+                    i.fa-brands.fa-youtube
+                a(href="#", aria-label="Facebook")
+                    i.fa-brands.fa-facebook-f
+                a(href="#", aria-label="Instagram")
+                    i.fa-brands.fa-instagram
+                a(href="#", aria-label="TikTok")
+                    i.fa-brands.fa-tiktok
 
-      .footer-social
-        a(href="#", aria-label="YouTube")
-          i.fa-brands.fa-youtube
-        a(href="#", aria-label="Facebook")
-          i.fa-brands.fa-facebook-f
-        a(href="#", aria-label="Instagram")
-          i.fa-brands.fa-instagram
-        a(href="#", aria-label="TikTok")
-          i.fa-brands.fa-tiktok
+        // ======================= CỘT 2 =======================
+        .footer-column
+            h3.footer-title Về chúng tôi
+            ul.footer-links
+                li: a(href="#") Giới thiệu
+                li: a(href="#") Sản phẩm
+                li: a(href="#") Tin tức
+                li: a(href="#") Dịch vụ
+                li: a(href="#") Liên hệ
+                li: a(href="#") Hỗ trợ
+                li: a(href="#") Chăm sóc khách hàng
 
-  .footer-bottom
-    p © 2025 thevvq. All rights reserved.
+        // ======================= CỘT 3 =======================
+        .footer-column
+            h3.footer-title Điều khoản sử dụng
+            ul.footer-links.footer-links--policy
+                li: a(href="#") Chính sách bảo mật
+                li: a(href="#") Chính sách vận chuyển
+                li: a(href="#") Chính sách và quy định chung
+                li: a(href="#") Mua hàng và thanh toán
+                li: a(href="#") Thông tin về chủ sở hữu website
+                li: a(href="#") Thông tin về điều kiện giao dịch chung
+                li: a(href="#") Thông tin về vận chuyển và giao nhận
+                li: a(href="#") Thông tin về các phương thức thanh toán
+
+        // ======================= CỘT 4 =======================
+        .footer-column.footer-newsletter
+            h3.footer-title Đăng ký nhận thông báo
+            p.footer-desc Nhập email để nhận tin mới nhất từ chúng tôi.
+            form.footer-form(action="#" method="post")
+                input.footer-input(type="email" placeholder="Nhập email của bạn")
+                button.footer-btn(type="submit") Đăng ký ngay
+
+    // ======================= FOOTER BOTTOM =======================
+    .footer-bottom
+        p © 2025 thevvq. All rights reserved.

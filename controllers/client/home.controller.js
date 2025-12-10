@@ -1,17 +1,21 @@
-const productService = require('../../services/client/product.service')
+const productService = require('../../services/client/product.service');
+const categoryService = require('../../services/client/category.service');
 
 // [GET] /
-module.exports.index = async (req, res, next) => {
-  try {
-    // Lấy tối đa 10 sản phẩm cho trang home
-    const productsHome = await productService.getProductsForHome(10)
+module.exports.index = async (req, res) => {
+    try {
+        const [productsHome, categoriesMenu] = await Promise.all([
+            productService.getProductsForHome(12),
+            categoryService.getMenuCategories()
+        ]);
 
-    res.render('client/pages/home/index', {
-      pageTitle: 'Trang chủ',
-      productsHome   // truyền sang Pug
-    })
-  } catch (error) {
-    console.error(error)
-    next(error)
-  }
-}
+        res.render('client/pages/home/index', {
+            pageTitle: 'Trang chủ',
+            productsHome,
+            categoriesMenu
+        });
+    } catch (error) {
+        console.log(error);
+        res.redirect('/');
+    }
+};

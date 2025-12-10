@@ -1,0 +1,110 @@
+.home-category {
+    position: relative;
+    display: inline-block;
+    z-index: 20;
+}
+
+.home-category-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border-radius: 999px;
+    background: #fff;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.home-category-wrapper {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 18px 40px rgba(0,0,0,0.12);
+    padding: 16px 20px;
+    gap: 16px;
+    align-items: stretch;
+}
+
+/* Hover vào "Danh mục" mới hiện popup */
+.home-category:hover .home-category-wrapper {
+    display: flex;
+}
+
+/* Cột trái – danh mục cha */
+.home-category-main {
+    width: 220px;
+    border-right: 1px solid #eee;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.home-category-main-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.home-category-main-item:hover,
+.home-category-main-item.active {
+    background: #f3f3f3;
+}
+
+.home-category-wrapper.has-detail {
+    min-width: 600px;
+}
+
+/* Cột phải – MẶC ĐỊNH ẨN HẲN */
+.home-category-detail {
+    flex: 1;
+    padding-left: 16px;
+    border-left: 1px solid #eee;
+    display: none;
+}
+
+/* Chỉ khi có danh mục con active mới hiện cột phải */
+.home-category-detail.has-active {
+    display: block;
+}
+
+/* Panel con */
+.home-category-panel {
+    display: none;
+}
+
+.home-category-panel.active {
+    display: block;
+}
+
+.home-category-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.home-category-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 16px;
+}
+
+.home-category-list a {
+    font-size: 14px;
+    text-decoration: none;
+    color: #333;
+}
+
+.home-category-list a:hover {
+    text-decoration: underline;
+}
