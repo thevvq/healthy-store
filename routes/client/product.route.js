@@ -1,9 +1,21 @@
-const express = require('express')
-const router = express.Router()
-const controller = require('../../controllers/client/product.controller')
+const express = require('express');
+const router = express.Router();
+const controller = require('../../controllers/client/product.controller');
 
-router.get('/products', controller.index)
+// Middleware bắt đăng nhập đơn giản
+function requireLogin(req, res, next) {
+  if (!req.session || !req.session.user) {
+    return res.redirect('/login');
+  }
+  next();
+}
 
-router.get('/detail/:slug', controller.detail)
+router.get('/products', controller.index);
 
-module.exports = router
+// Trang chi tiết
+router.get('/detail/:slug', controller.detail);
+
+// Gửi bình luận (chỉ user đã login)
+router.post('/detail/:slug/comment', requireLogin, controller.comment);
+
+module.exports = router;
