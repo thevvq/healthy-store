@@ -2,9 +2,7 @@ const ordersService = require("../../services/client/orders.service");
 
 module.exports = {
 
-    /* ======================================================
-       TRANG DANH SÁCH ĐƠN HÀNG
-    ====================================================== */
+
     orderList: async (req, res) => {
         try {
             // Chưa đăng nhập → không cho xem đơn hàng
@@ -35,9 +33,6 @@ module.exports = {
 
 
 
-    /* ======================================================
-       TRANG CHI TIẾT 1 ĐƠN HÀNG
-    ====================================================== */
     orderDetail: async (req, res) => {
         try {
             if (!req.session.user) {
@@ -63,9 +58,6 @@ module.exports = {
 
 
 
-    /* ======================================================
-       KHÁCH HỦY ĐƠN HÀNG
-    ====================================================== */
     cancelOrder: async (req, res) => {
         try {
             if (!req.session.user) {

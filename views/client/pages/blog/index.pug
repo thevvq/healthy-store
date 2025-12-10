@@ -1,15 +1,49 @@
 extends ../../layouts/default
 
-block main
-    .container.mt-4
-        h2.mb-4 Tin tức & Blog
+block css
+    link(rel="stylesheet", href="/css/blog.css")
 
-        .row
+block scripts
+    script(src="/js/blog.js")
+
+block main
+    .container.blog-container
+        h2.blog-title Tin tức & Blog
+
+        .row.blog-grid
             each item in blogs
-                .col-md-4.mb-4
-                    .card.blog-card
-                        img.card-img-top(src=item.thumbnail alt=item.title)
-                        .card-body
-                            h5.card-title #{item.title}
-                            p.card-text !{item.content.substring(0, 120)}...
-                            a.btn.btn-primary(href=`/blog/${item.slug}`) Đọc thêm →
+                .col-lg-3.col-md-4.col-sm-6.col-12.mb-4
+                    .blog-card(data-href=`/blog/${item.slug}`)
+                        .blog-image
+                            img(src=item.thumbnail alt=item.title)
+
+                        .blog-content-box
+                            h3.blog-item-title #{item.title}
+                            p.blog-item-desc !{item.content.substring(0, 80)}...
+
+                            .blog-meta
+                                span.meta-date
+                                    i.fa-solid.fa-calendar-days
+                                    | #{item.createdAt.toLocaleDateString('vi-VN')}
+
+        if totalPages > 1
+            .pagination-container
+                ul.pagination-verdish
+                    if currentPage > 1
+                        li
+                            a(href=`/blog?page=${currentPage - 1}`) « Trước
+                    else
+                        li.disabled « Trước
+
+                    each page in totalPagesArr
+                        if page === currentPage
+                            li.active #{page}
+                        else
+                            li
+                                a(href=`/blog?page=${page}`) #{page}
+
+                    if currentPage < totalPages
+                        li
+                            a(href=`/blog?page=${currentPage + 1}`) Sau »
+                    else
+                        li.disabled Sau »

@@ -3,17 +3,28 @@ const blogService = require("../../services/client/blog.service");
 // [GET] /blog
 module.exports.index = async (req, res) => {
     try {
-        const result = await blogService.getList();
+        // Lấy số trang từ query ?page=2
+        const page = parseInt(req.query.page) || 1;
+
+        // Lấy data từ service (đã phân trang)
+        const result = await blogService.getList({ page, limit: 8 });
 
         res.render("client/pages/blog/index", {
             pageTitle: "Tin tức & Blog",
-            blogs: result.data
+            blogs: result.data,
+            totalPages: result.totalPages,
+            currentPage: result.currentPage,
+            totalPagesArr: result.totalPagesArr
         });
 
     } catch (err) {
+        console.log(err);
         res.render("client/pages/blog/index", {
             pageTitle: "Tin tức & Blog",
-            blogs: []
+            blogs: [],
+            totalPages: 0,
+            currentPage: 1,
+            totalPagesArr: []
         });
     }
 };
@@ -36,6 +47,7 @@ module.exports.detail = async (req, res) => {
         });
 
     } catch (err) {
+        console.log(err);
         res.render("client/pages/blog/detail", {
             pageTitle: "Lỗi hệ thống",
             blog: null

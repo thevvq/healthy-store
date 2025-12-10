@@ -10,7 +10,6 @@ block main
         else
             h2.mb-3 Chi tiết đơn hàng ##{order._id}
 
-            
             h4 Trạng thái đơn hàng:
             if order.status === "pending"
                 span.badge.bg-warning.text-dark Đang xử lý
@@ -66,16 +65,16 @@ block main
 
             hr
 
-     
+            p.text-muted 
+                | Ngày đặt: #{order.createdAt.toLocaleDateString('vi-VN')} #{order.createdAt.toLocaleTimeString('vi-VN')}
+
             .mt-3
                 a.btn.btn-secondary(href="/orders") Quay lại danh sách
 
-                // Nút hủy đơn chỉ hiển thị khi pending
                 if order.status === "pending"
-                    button.btn.btn-danger.ms-2.btn-cancel-order(
-                        data-id=order._id
-                    ) Hủy đơn hàng
+                    button.btn.btn-danger.ms-2.btn-cancel-order(data-id=order._id) Hủy đơn hàng
                 else if order.status === "cancelled"
                     span.text-danger.ms-2 Đơn hàng đã bị hủy
+
 block scripts
     script(src="/js/order.js")
