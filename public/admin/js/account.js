@@ -37,5 +37,3 @@ if (buttonsDelete.length > 0) {
     });
 }
 // End Delete Account
-
-console.log('oke')

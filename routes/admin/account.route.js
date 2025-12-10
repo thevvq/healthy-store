@@ -15,4 +15,8 @@ router.patch('/change-status/:status/:id', controller.changeStatus)
 
 router.delete('/delete-account/:id', controller.deleteAccount)
 
+router.get('/edit/:id', controller.edit)
+
+router.patch('/edit/:id', upload.single('avatar'), validate.editPatch, controller.editAccount)
+
 module.exports = router  

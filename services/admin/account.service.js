@@ -60,3 +60,54 @@ module.exports.deleteAccount = async (id) => {
         }
     )
 }
+
+module.exports.edit = async (req) => { 
+    let find = {
+        _id: req.params.id,
+        deleted: false
+    } 
+
+    const account = await Account.findOne(find)
+
+    const roles = await Role.find({deleted: false})
+    return {
+        account,
+        roles
+    }
+}
+
+module.exports.editAccount = async (req) => { 
+    if (req.body.password){
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(req.body.password, salt);
+
+        req.body.password = hashedPassword;
+    }else{
+        delete req.body.password;
+    }
+
+    if (req.body.email) {
+        const email = req.body.email.trim();
+        const existEmail = await Account.findOne({
+            email: email,
+            deleted: false,
+            _id: { $ne: req.params.id}
+        });
+
+        if (existEmail) {
+            throw new Error("EMAIL_EXISTS");
+        }
+        req.body.email = email;
+    }
+
+    if (req.file) {
+        const uploadResult = await uploadToCloud(req.file.path);
+        req.body.avatar = uploadResult.secure_url;
+    }
+
+
+    delete req.body.confirmPassword;
+    await Account.updateOne({
+        _id: req.params.id
+    }, req.body)
+}

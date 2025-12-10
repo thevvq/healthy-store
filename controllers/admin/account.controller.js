@@ -17,7 +17,7 @@ module.exports.index = async (req, res) => {
     }
 }
 
-// [GET] /admin/create
+// [GET] /admin/accounts/create
 module.exports.create = async (req, res) => {
     try {
         const roles = await accountService.create()
@@ -33,7 +33,7 @@ module.exports.create = async (req, res) => {
     }
 }
 
-// [POST] /admin/create
+// [POST] /admin/accounts/create
 module.exports.createAccount = async (req, res) => {
     try {
         await accountService.createAccount(req);
@@ -44,7 +44,6 @@ module.exports.createAccount = async (req, res) => {
     } catch (err) {
         if (err.message === "EMAIL_EXISTS") {
             req.flash('error', 'Email đã tồn tại, vui lòng chọn email khác!');
-            return res.redirect('back');
         }
 
         req.flash('error', 'Có lỗi xảy ra, vui lòng thử lại!');
@@ -78,4 +77,36 @@ module.exports.deleteAccount = async (req, res) => {
     }
 
     res.redirect(req.get('Referer') || `${sysConfig.prefixAdmin}/accounts`)
+}
+
+// [GET] /admin/accounts/edit/:id
+module.exports.edit = async (req, res) => {
+    try {
+        const records = await accountService.edit(req)
+
+        res.render('admin/pages/account/edit', {
+            pageTitle: 'Chỉnh sửa tài khoản',
+            ...records
+        })
+
+    } catch (err) {
+        req.flash('error', 'Có lỗi xảy ra, vui lòng thử lại!')
+        res.redirect(`${sysConfig.prefixAdmin}/accounts`)
+    }
+}
+
+// [PATCH] /admin/accounts/edit/:id
+module.exports.editAccount = async (req, res) => {
+    try {
+        await accountService.editAccount(req)
+
+        req.flash('success', 'Cập nhật tài khoản tài khoản thành công!')
+    } catch (err) {
+        console.log(err)
+        if (err.message === "EMAIL_EXISTS") {
+            req.flash('error', 'Email đã tồn tại, vui lòng chọn email khác!');
+        }
+        req.flash('error', 'Có lỗi xảy ra, vui lòng thử lại!')
+    }
+    res.redirect(`${sysConfig.prefixAdmin}/accounts/edit/${req.params.id}`)
 }
