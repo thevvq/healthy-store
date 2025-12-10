@@ -9,6 +9,7 @@ const createTreeHelper = require('../../helper/createTree')
 module.exports.getList = async (query) => {
     const filterStatus = filterStatusHelper(query)
     const find = { deleted: false }
+    const count = await Product.countDocuments({ deleted: false })
 
     if (query.status) find.status = query.status
 
@@ -40,6 +41,7 @@ module.exports.getList = async (query) => {
         .skip(pagination.skip)
         .limit(pagination.limitItems)
 
+        products.count = count
     return {
         products,
         filterStatus,

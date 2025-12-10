@@ -56,34 +56,65 @@
 /* Show alert */
 [show-alert] {
     position: fixed;
-    top: 70px;
+    top: 20px;
     right: 20px;
-    z-index: 1000;
+    min-width: 280px;
+    padding: 12px 18px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    animation: alert-show 0.4s ease forwards;
+    z-index: 1050;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-[show-alert].alert-hide {
-    animation-name: alert-hide;
-    animation-duration: 0.5s;
-    animation-fill-mode: both;
+[show-alert].alert-success {
+    border-left: 6px solid #198754;
+}
+
+[show-alert].alert-danger {
+    border-left: 6px solid #dc3545;
+}
+
+[show-alert] span[close-alert] {
+    margin-left: auto;
+    cursor: pointer;
+    font-weight: bold;
+    opacity: 0.7;
+    transition: 0.2s;
+}
+
+[show-alert] span[close-alert]:hover {
+    opacity: 1;
+}
+
+@keyframes alert-show {
+    from {
+        opacity: 0;
+        transform: translateX(50px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+}
+
+.alert-hide {
+    animation: alert-hide 0.4s forwards ease;
 }
 
 @keyframes alert-hide {
     from {
-        right: 15px;
+        opacity: 1;
+        transform: translateX(0) scale(1);
     }
 
     to {
-        right: -100px;
-        display: none;
+        opacity: 0;
+        transform: translateX(50px) scale(0.95);
     }
-}
-
-[show-alert] span[close-alert] {
-    position: absolute;
-    top: 2px;
-    right: 8px;
-    cursor: pointer;
-    margin-left: 10px
 }
 
 /* End Show alert */
