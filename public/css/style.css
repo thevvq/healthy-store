@@ -32,22 +32,6 @@
 
 /* End header */
 
-/* box-head */
-
-/* ============================================
-   FOOTER
-============================================ */
-.footer {
-    background: #333;
-    color: #fff;
-    text-align: center;
-    padding: 10px;
-}
-
-.footer p {
-    margin: 0;
-}
-
 /* ============================================
    BOX HEAD
 ============================================ */
@@ -70,6 +54,15 @@
     border: 1px solid #ddd;
     border-radius: 8px;
     overflow: hidden;
+
+    transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+    will-change: transform;
+}
+
+.product-item:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 30px rgba(0, 0, 0, 0.12);
+    border-color: rgba(0, 0, 0, 0.12);
 }
 
 .product-item a {
@@ -177,11 +170,16 @@
     cursor: pointer;
     transition: 0.25s;
     font-size: 14px;
+
+    will-change: transform;
 }
 
 .menu-btn:hover {
     background: #e2e6ea;
     border-color: #ccc;
+
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
 }
 
 .logout-btn {
@@ -191,10 +189,15 @@
     border-radius: 6px;
     cursor: pointer;
     transition: 0.25s;
+
+    will-change: transform;
 }
 
 .logout-btn:hover {
     background: #bb2d3b;
+
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
 }
 
 /* ============================================
@@ -209,6 +212,13 @@
     font-size: 22px;
     cursor: pointer;
     color: #444;
+
+    transition: transform 0.22s ease;
+    will-change: transform;
+}
+
+.cart-icon:hover {
+    transform: translateY(-2px);
 }
 
 .cart-count {
@@ -242,10 +252,15 @@
     border-radius: 20px;
     cursor: pointer;
     transition: 0.25s;
+
+    will-change: transform;
 }
 
 .user-trigger:hover {
     background: #b0d96a;
+
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.14);
 }
 
 .avatar-user {
@@ -283,10 +298,14 @@
 
 .user-dropdown li {
     padding: 10px 16px;
+
+    transition: transform 0.18s ease, background 0.18s ease;
+    will-change: transform;
 }
 
 .user-dropdown li:hover {
     background: #f6f6f6;
+    transform: translateY(-1px);
 }
 
 .user-dropdown a {
@@ -320,8 +339,23 @@
 
 
 /* Footer */
+
+/* ============================================
+   FOOTER
+============================================ */
+.footer {
+    background: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+}
+
+.footer p {
+    margin: 0;
+}
+
 footer.footer {
-  background: #f3f3f3;
+  background: #f7f8fc;
   padding: 40px 80px 50px;
   font-size: 14px;
   color: #000;
@@ -330,17 +364,16 @@ footer.footer {
 .footer-container {
   max-width: 1200px;
   margin: 0 auto;
-  display: flex;
-  gap: 60px;
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 40px;
 }
 
 .footer-column {
   flex: 1;
 }
 
-.footer-logo {
-  font-size: 32px;
+.footer-brand .inner-logo {
   margin-bottom: 16px;
 }
 
@@ -367,6 +400,7 @@ footer.footer {
   gap: 8px;
   margin-bottom: 6px;
   line-height: 1.5;
+  justify-content: center;
 }
 
 .footer-contact i {
@@ -380,10 +414,17 @@ footer.footer {
 .footer-links a {
   text-decoration: none;
   color: #000000; /* link xanh như hình */
+
+  display: inline-block;
+  transition: transform 0.18s ease, opacity 0.18s ease;
+  will-change: transform;
 }
 
 .footer-links a:hover {
   text-decoration: underline;
+
+  transform: translateY(-1px);
+  opacity: 0.9;
 }
 
 .footer-newsletter .footer-desc {
@@ -409,8 +450,8 @@ footer.footer {
   padding: 12px 24px;
   border-radius: 999px;
   border: none;
-  background: #000;
-  color: #fff;
+  background: #3cb815;
+  color: #ffffff;
   font-weight: 600;
   cursor: pointer;
 }
@@ -421,14 +462,31 @@ footer.footer {
 
 .footer-social {
   display: flex;
-  gap: 60px;
+  gap: 20px;
   align-items: center;
+  justify-content: center;
+  padding-top: 20px;
 }
 
 .footer-social a {
   font-size: 20px;
   text-decoration: none;
-  color: #000;
+  color: #fff;                 
+  background: #000000;       
+  width: 35px;              
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;    
+  transition: 0.25s;
+
+  will-change: transform;
+}
+
+.footer-social a:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.22);
 }
 
 .footer-bottom {
@@ -437,6 +495,43 @@ footer.footer {
   text-align: center;
   font-size: 15px;
   color: #000000;
+}
+
+footer.footer {
+  position: relative;      /* để position absolute bám theo footer */
+  overflow: hidden;        /* tránh ảnh lòi ra ngoài quá nhiều */
+}
+
+/* Style chung cho ảnh trang trí */
+.footer-decor {
+  position: absolute;
+  bottom: 0;
+  width: 100px;             /* chỉnh to/nhỏ tuỳ ý: 60–120px */
+  opacity: 0.9;            /* hơi mờ nhẹ cho dịu mắt */
+  pointer-events: none;    /* không chặn click vào link/footer */
+  user-select: none;
+}
+
+/* Góc trái */
+.footer-decor-left {
+  left: 0;
+  transform: translate(-10%, 10%); /* đẩy nhẹ ra mép */
+  top: 0;
+}
+
+/* Góc phải */
+.footer-decor-right {
+  right: 0;
+  transform: translate(10%, 10%);
+  bottom: 0;
+}
+
+/* Mobile: cho nhỏ lại chút */
+@media (max-width: 768px) {
+  .footer-decor {
+    width: 50px;
+    opacity: 0.8;
+  }
 }
 
 /* Nút Zalo nổi góc dưới phải */
@@ -450,6 +545,13 @@ footer.footer {
   gap: 10px;
   text-decoration: none;
   z-index: 9999;
+
+  transition: transform 0.22s ease;
+  will-change: transform;
+}
+
+.zalo-chat-button:hover {
+  transform: translateY(-2px);
 }
 
 .zalo-chat-circle {
@@ -508,7 +610,7 @@ footer.footer {
 }
 
 
-/* ==== TẠI SAO NÊN LÀ BEN PERFUME ==== */
+/* ==== TẠI SAO NÊN LÀ Verdish ==== */
 .why-section {
   position: relative;
   padding: 80px 0 100px;
@@ -554,6 +656,14 @@ footer.footer {
   min-height: 260px;
   text-align: center;
   box-shadow: 0 18px 35px rgba(0,0,0,0.08);
+
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  will-change: transform;
+}
+
+.why-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 22px 42px rgba(0, 0, 0, 0.14);
 }
 
 .why-icon {
@@ -587,4 +697,18 @@ footer.footer {
   .why-card {
     max-width: 90%;
   }
+}
+
+@media (max-width: 768px) {
+    .product-item:hover,
+    .why-card:hover,
+    .footer-social a:hover,
+    .menu-btn:hover,
+    .logout-btn:hover,
+    .user-trigger:hover,
+    .cart-icon:hover,
+    .zalo-chat-button:hover {
+        transform: none;
+        box-shadow: none;
+    }
 }
