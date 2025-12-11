@@ -29,16 +29,19 @@ document.addEventListener("DOMContentLoaded", () => {
         if (wrapper) wrapper.classList.remove("has-detail");
     };
 
+    // Hover cha -> đổi panel
     mainItems.forEach(item => {
         item.addEventListener("mouseenter", () => {
             activateById(item.dataset.id);
         });
     });
 
+    // Rời khỏi khối category -> tắt hết
     if (container) {
         container.addEventListener("mouseleave", resetAll);
     }
 
+    // Click vào vùng text cha -> đi tới trang danh mục cha
     mainItems.forEach(item => {
         item.addEventListener("click", (e) => {
             if (e.target.tagName.toLowerCase() === "i") return;

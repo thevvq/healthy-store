@@ -1,3 +1,20 @@
+//- Mixin đệ quy render danh mục con
+mixin category-children(categories, parentId)
+    ul.home-category-list
+        each item in categories
+            //- Nếu item là con trực tiếp của parentId
+            if item.parent_category && String(item.parent_category) == String(parentId)
+                li
+                    a(href=`/products?category=${item.slug}`)= item.title
+
+                    //- Kiểm tra xem item này còn con nữa không
+                    - const hasChildren = categories.some(c => c.parent_category && String(c.parent_category) == String(item._id));
+
+                    if hasChildren
+                        //- Gọi lại mixin để vẽ cấp cháu / chắt...
+                        +category-children(categories, item._id)
+
+
 // ----- KHỐI DANH MỤC (NẰM TRÊN SLIDER) -----
 .block-home-top
     .container
@@ -13,20 +30,20 @@
                         each cat in categoriesMenu
                             // Cha: parent_category null / undefined / ""
                             if !cat.parent_category
-                                li.home-category-main-item(data-id=cat._id data-slug=cat.slug)
+                                li.home-category-main-item(
+                                    data-id=cat._id 
+                                    data-slug=cat.slug
+                                )
                                     span= cat.title
                                     i.fa-solid.fa-angle-right
 
-                // Cột phải: danh mục CON
+                // Cột phải: danh mục CON (dùng mixin đệ quy)
                 .home-category-detail
                     if categoriesMenu && categoriesMenu.length
                         each parent in categoriesMenu
                             if !parent.parent_category
                                 .home-category-panel(data-id=parent._id)
                                     h3.home-category-title= parent.title
-                                    ul.home-category-list
-                                        each child in categoriesMenu
-                                            // Con: parent_category === _id của cha
-                                            if child.parent_category && child.parent_category == parent._id
-                                                li
-                                                    a(href=`/products?category=${child.slug}`)= child.title
+
+                                    //- Gọi mixin đệ quy cho nhánh con của parent
+                                    +category-children(categoriesMenu, parent._id)

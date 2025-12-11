@@ -108,3 +108,49 @@
 .home-category-list a:hover {
     text-decoration: underline;
 }
+
+/* ============================= */
+/*    SUBMENU CẤP 2, CẤP 3 ...   */
+/* ============================= */
+
+/* Mỗi li trong danh sách con phải position: relative
+   để submenu bám theo li đó */
+.home-category-list li {
+    position: relative;            /* NEW */
+}
+
+/* Cho đẹp hơn: link full hàng, dễ hover */
+.home-category-list li > a {
+    display: inline-block;         /* NEW */
+    padding: 2px 0;
+}
+
+/* Submenu (con của con) – ẩn mặc định */
+.home-category-list li > ul {
+    display: none;                 /* NEW */
+    position: absolute;
+    top: 0;
+    left: 100%;
+    margin-left: 12px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+    padding: 8px 12px;
+    list-style: none;
+    min-width: 180px;
+    z-index: 30;
+}
+
+/* Khi hover vào li thì hiện submenu của nó */
+.home-category-list li:hover > ul {
+    display: block;                /* NEW */
+}
+
+/* Nếu muốn phân biệt item có con, thêm class .has-children ở Pug
+   rồi style thêm icon mũi tên, v.v. */
+.home-category-list li.has-children > a::after {
+    content: "›";                  /* NEW (optional) */
+    margin-left: 6px;
+    font-size: 12px;
+    opacity: 0.6;
+}
