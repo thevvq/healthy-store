@@ -5,56 +5,59 @@ block main
     +alert-success(3000)
     +alert-error(3000)
 
-    .container.mt-4
-        h2 Sửa bài viết
+    if role.permissions.includes('blogs_edit')
+        .container.mt-4
+            h2 Sửa bài viết
 
-        form(method="POST", action=`/admin/blog/edit/${blog._id}` enctype="multipart/form-data")
-  
-            .mb-3
-                label.form-label Tiêu đề
-                input.form-control(type="text", name="title", value=blog.title, required)
+            form(method="POST", action=`/admin/blog/edit/${blog._id}` enctype="multipart/form-data")
+    
+                .mb-3
+                    label.form-label Tiêu đề
+                    input.form-control(type="text", name="title", value=blog.title, required)
 
-            .mb-3
-                label.form-label Ảnh đại diện
+                .mb-3
+                    label.form-label Ảnh đại diện
 
-                input.form-control(
-                    type="file", 
-                    name="thumbnail", 
-                    accept="image/*",
-                    onchange="previewImg(event)"
-                )
+                    input.form-control(
+                        type="file", 
+                        name="thumbnail", 
+                        accept="image/*",
+                        onchange="previewImg(event)"
+                    )
 
-                if blog.thumbnail
-                    img#preview(src=blog.thumbnail style="max-width:200px;margin-top:10px;border-radius:8px")
-                else
-                    img#preview(style="max-width:200px;margin-top:10px;border-radius:8px;display:none")
+                    if blog.thumbnail
+                        img#preview(src=blog.thumbnail style="max-width:200px;margin-top:10px;border-radius:8px")
+                    else
+                        img#preview(style="max-width:200px;margin-top:10px;border-radius:8px;display:none")
 
-            .mb-3
-                label.form-label Nội dung
-                textarea.form-control#editor(name="content", rows="10") !{blog.content}
+                .mb-3
+                    label.form-label Nội dung
+                    textarea.form-control#editor(name="content", rows="10") !{blog.content}
 
-            button.btn.btn-success(type="submit") Cập nhật
-            a.btn.btn-secondary.ms-2(href="/admin/blog") Hủy
+                button.btn.btn-success(type="submit") Cập nhật
+                a.btn.btn-secondary.ms-2(href="/admin/blog") Hủy
 
 
-block append scripts
-    // TinyMCE
-    script(src="https://cdn.tiny.cloud/1/no-api-key/tinymce/7/tinymce.min.js")
+    block append scripts
+        // TinyMCE
+        script(src="https://cdn.tiny.cloud/1/no-api-key/tinymce/7/tinymce.min.js")
 
-    script.
-        tinymce.init({
-            selector: '#editor',
-            height: 350,
-            plugins: 'image link media table code lists preview',
-            toolbar: 'undo redo | formatselect | bold italic underline | \
-                      alignleft aligncenter alignright | bullist numlist | \
-                      image media link table | code preview',
-            menubar: false
-        });
+        script.
+            tinymce.init({
+                selector: '#editor',
+                height: 350,
+                plugins: 'image link media table code lists preview',
+                toolbar: 'undo redo | formatselect | bold italic underline | \
+                        alignleft aligncenter alignright | bullist numlist | \
+                        image media link table | code preview',
+                menubar: false
+            });
 
-        // Preview ảnh khi chọn file
-        function previewImg(e){
-            const img = document.getElementById("preview");
-            img.src = URL.createObjectURL(e.target.files[0]);
-            img.style.display = "block";
-        }
+            // Preview ảnh khi chọn file
+            function previewImg(e){
+                const img = document.getElementById("preview");
+                img.src = URL.createObjectURL(e.target.files[0]);
+                img.style.display = "block";
+            }
+    else
+        +alert-no-permission()

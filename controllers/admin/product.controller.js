@@ -135,6 +135,7 @@ module.exports.detail = async (req, res) => {
             product
         })
     } catch (err) {
+        console.log(err)
         req.flash('error', 'Có lỗi xảy ra, vui lòng thử lại!')
         res.redirect(`${sysConfig.prefixAdmin}/products`)
     }

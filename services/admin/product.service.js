@@ -151,14 +151,28 @@ module.exports.createProduct = async (req) => {
     return product.save()
 }
 
-module.exports.detail = async (id) => {
-    const product = await Product.findOne({ deleted: false, _id: id });
+const mongoose = require("mongoose");
 
-    const category = await Category.findOne({ deleted: false, _id: product.product_category });
-    product.nameCategory = category ? category.title : null;
+module.exports.detail = async (id) => {
+
+    const product = await Product.findOne({ deleted: false, _id: id });
+    if (!product) return null;
+
+    let categoryTitle = null;
+
+    if (product.product_category ) {
+        const category = await Category.findOne({
+            deleted: false,
+            _id: product.product_category,
+        });
+        categoryTitle = category ? category.title : null;
+    }
+
+    product.nameCategory = categoryTitle;
 
     return product;
-}
+};
+
 
 
 module.exports.edit = async (id) => {

@@ -1,4 +1,5 @@
 const Account = require('../../models/user.model');
+const Role = require('../../models/role.model');
 const sysConfig = require('../../config/system')
 
 module.exports.requireAuth = async (req, res, next) => {
@@ -9,7 +10,7 @@ module.exports.requireAuth = async (req, res, next) => {
         return res.redirect(`${sysConfig.prefixAdmin}/auth/login`);
     }
 
-    const user = await Account.findOne({ token, deleted: false });
+    const user = await Account.findOne({ token, deleted: false }).select('-password');
 
     if (!user) {
         req.flash("error", "Phiên đăng nhập không hợp lệ!");
@@ -20,7 +21,9 @@ module.exports.requireAuth = async (req, res, next) => {
         req.flash("error", "Tài khoản bị khóa!");
         return res.redirect(`${sysConfig.prefixAdmin}/auth/login`);
     }
+    const role = await Role.findById(user.role_id).select('title permissions');
 
-    req.user = user;
+    res.locals.user = user;
+    res.locals.role = role;
     next();
 };
