@@ -1,7 +1,7 @@
 const Account = require('../../models/user.model')
 const bcrypt = require("bcrypt");
 
-module.exports.loginPost = async (req) => {
+module.exports.loginPost = async (req, res) => {
     const { email, password } = req.body
 
     const user = await Account.findOne({
@@ -26,3 +26,6 @@ module.exports.loginPost = async (req) => {
     return
 };
 
+module.exports.logout = ( res) => {
+    res.clearCookie('token');
+};

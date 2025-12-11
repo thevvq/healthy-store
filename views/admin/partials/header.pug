@@ -6,3 +6,6 @@ header.header
                     a(href=`${prefixAdmin}/dashboard`) Verdish
 
             .col-9
+                .text-end
+                    form(action=`${prefixAdmin}/auth/logout` method="POST" style="display:inline;")
+                        button.btn.btn-danger.btn-sm(type="submit") Đăng xuất

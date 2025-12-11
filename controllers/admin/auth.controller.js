@@ -18,12 +18,13 @@ module.exports.login = async (req, res) => {
 // [POST] /admin/auth/login
 module.exports.loginPost = async (req, res) => {
     try {
-        await authService.loginPost(req);
+        await authService.loginPost(req, res);
         req.flash('success', 'Đăng nhập thành công!');
 
         res.redirect(`${sysConfig.prefixAdmin}/dashboard`);
         
     } catch (err) {
+        console.log(err)
         switch (err.message) {
             case "EMAIL_NOT_FOUND":
                 req.flash('error', 'Email không tồn tại!');
@@ -46,4 +47,10 @@ module.exports.loginPost = async (req, res) => {
     }
 };
 
+// [POST] /admin/auth/logout
+module.exports.logout = (req, res) => {
+    authService.logout(res)
+
+    res.redirect(`${sysConfig.prefixAdmin}/auth/login`);
+}
 
