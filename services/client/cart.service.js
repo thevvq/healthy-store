@@ -1,9 +1,20 @@
 const Cart = require("../../models/cart.model");
 const Product = require("../../models/product.model");
 
-// Tính giá sau giảm %
+/* ======================================================
+   HELPER FORMAT TIỀN VND
+====================================================== */
+function formatVND(value) {
+    return value.toLocaleString("vi-VN") + " ₫";
+}
+
+/* ======================================================
+   TÍNH GIÁ SAU GIẢM (%)
+   👉 TRẢ VỀ SỐ (VND), KHÔNG FORMAT
+====================================================== */
 function calcPrice(product) {
-    return product.price - (product.price * (product.discountPercentage || 0) / 100);
+    const discount = product.discountPercentage || 0;
+    return Math.round(product.price * (100 - discount) / 100);
 }
 
 /* ======================================================
@@ -11,25 +22,30 @@ function calcPrice(product) {
 ====================================================== */
 module.exports.getCart = async (req) => {
     if (!req.session.user)
-        return { cart: [], total: 0 };
+        return { cart: [], total: 0, totalFormatted: formatVND(0) };
 
     const userId = req.session.user._id;
-
     let cart = await Cart.findOne({ userId });
 
     if (!cart)
-        return { cart: [], total: 0 };
+        return { cart: [], total: 0, totalFormatted: formatVND(0) };
 
-    let total = cart.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    const total = cart.items.reduce(
+        (sum, item) => sum + item.price * item.quantity,
+        0
+    );
 
-    return { cart: cart.items, total };
+    return {
+        cart: cart.items,
+        total,
+        totalFormatted: formatVND(total)
+    };
 };
 
 /* ======================================================
    THÊM SẢN PHẨM VÀO GIỎ
 ====================================================== */
 module.exports.addToCart = async (req, productId, quantity) => {
-
     if (!req.session.user)
         throw new Error("Bạn phải đăng nhập!");
 
@@ -42,18 +58,18 @@ module.exports.addToCart = async (req, productId, quantity) => {
     if (qty <= 0) throw new Error("Số lượng không hợp lệ");
     if (qty > product.stock) throw new Error("Không đủ hàng");
 
-    const price = calcPrice(product);
+    const price = calcPrice(product); // 👉 VND
 
     let cart = await Cart.findOne({ userId });
 
-    // Nếu user chưa có giỏ → tạo mới
+    // Chưa có giỏ → tạo mới
     if (!cart) {
         await Cart.create({
             userId,
             items: [{
                 productId,
                 title: product.title,
-                price,
+                price, // VND
                 thumbnail: product.thumbnail,
                 quantity: qty,
                 maxStock: product.stock
@@ -62,18 +78,20 @@ module.exports.addToCart = async (req, productId, quantity) => {
         return true;
     }
 
-    // Nếu user đã có giỏ → tìm sản phẩm
+    // Đã có giỏ
     let item = cart.items.find(i => i.productId.toString() === productId);
 
     if (item) {
         const newQty = item.quantity + qty;
-        if (newQty > product.stock) throw new Error("Vượt quá tồn kho");
+        if (newQty > product.stock)
+            throw new Error("Vượt quá tồn kho");
+
         item.quantity = newQty;
     } else {
         cart.items.push({
             productId,
             title: product.title,
-            price,
+            price, // VND
             thumbnail: product.thumbnail,
             quantity: qty,
             maxStock: product.stock
@@ -98,9 +116,13 @@ module.exports.updateQuantity = async (req, productId, qty) => {
     if (!item) throw new Error("Không tìm thấy sản phẩm");
 
     if (quantity <= 0) {
-        cart.items = cart.items.filter(i => i.productId.toString() !== productId);
+        cart.items = cart.items.filter(
+            i => i.productId.toString() !== productId
+        );
     } else {
-        if (quantity > item.maxStock) throw new Error("Vượt quá tồn kho");
+        if (quantity > item.maxStock)
+            throw new Error("Vượt quá tồn kho");
+
         item.quantity = quantity;
     }
 
@@ -109,7 +131,7 @@ module.exports.updateQuantity = async (req, productId, qty) => {
 };
 
 /* ======================================================
-   XÓA SẢN PHẨM
+   XÓA 1 SẢN PHẨM
 ====================================================== */
 module.exports.removeItem = async (req, productId) => {
     const userId = req.session.user._id;
@@ -117,7 +139,9 @@ module.exports.removeItem = async (req, productId) => {
     let cart = await Cart.findOne({ userId });
     if (!cart) return true;
 
-    cart.items = cart.items.filter(i => i.productId.toString() !== productId);
+    cart.items = cart.items.filter(
+        i => i.productId.toString() !== productId
+    );
 
     await cart.save();
     return true;
