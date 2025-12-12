@@ -20,9 +20,9 @@ block main
 
                     .product-detail-price
                         if product.newPrice
-                            span.price-new #{Number(product.newPrice).toLocaleString('vi-VN')}đ
+                            span.price-new #{Number(product.newPrice).toLocaleString('vi-VN')} VND
                         if product.price
-                            span.price-old #{Number(product.price).toLocaleString('vi-VN')}đ
+                            span.price-old #{Number(product.price).toLocaleString('vi-VN')} VND
                         if product.discountPercentage
                             span.price-discount -#{product.discountPercentage}%
 
