@@ -106,6 +106,11 @@ routeClient(app);
 // ROUTES ADMIN
 routeAdmin(app);
 
+app.use((req, res, next) => {
+    res.status(404).render('client/pages/error/404', {
+        pageTitle: "404 Not Found"
+    });
+});
 
 
 /* ======================================================
