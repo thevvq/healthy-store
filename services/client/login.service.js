@@ -18,10 +18,10 @@ module.exports.login= async (req, res) => {
         throw new Error("PASSWORD_ERROR")
     }
 
-    res.cookie('token', user.token)
+    res.cookie('tokenClient', user.token)
     return
 };
 
 module.exports.logout = ( res) => {
-    res.clearCookie('token');
+    res.clearCookie('tokenClient');
 };

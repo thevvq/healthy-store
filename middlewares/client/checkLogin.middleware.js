@@ -2,7 +2,7 @@ const Account = require('../../models/user-client');
 
 module.exports.requireAuthClient = async (req, res, next) => {
     try {
-        const token = req.cookies.token;
+        const token = req.cookies.tokenClient;
 
         if (!token) {
             return res.status(401).json({
