@@ -41,7 +41,59 @@ block main
             .products-more
                 a.products-more-btn(href="/products") Xem thêm sản phẩm →
 
-    // ----- TẠI SAO NÊN LÀ BEN PERFUME -----
+    // ----- BLOG & FANPAGE -----
+    section.home-blog-fanpage
+        .container
+            .home-bf-wrapper
+                // ----- CARD BLOG -----
+                .bf-card.bf-card-blog
+                    h2.bf-title Blog
+
+                    .bf-blog-list
+                        // Item 1
+                        .bf-blog-item
+                            .bf-blog-thumb
+                                span.bf-blog-thumb-text HƯỚNG DẪN\nMUA HÀNG
+                            .bf-blog-info
+                                span.bf-blog-date 04/08/2022
+                                p.bf-blog-desc hướng dẫn mua hàng và thanh toán
+
+                        // Item 2
+                        .bf-blog-item
+                            .bf-blog-thumb
+                                span.bf-blog-thumb-text CHÍNH SÁCH\nVẬN CHUYỂN\nVÀ\nGIAO NHẬN
+                            .bf-blog-info
+                                span.bf-blog-date 23/07/2022
+                                p.bf-blog-desc chính sách vận chuyển và giao nhận
+
+                        // Item 3
+                        .bf-blog-item
+                            .bf-blog-thumb
+                                span.bf-blog-thumb-text CHÍNH SÁCH\nVÀ\nQUY ĐỊNH\nCHUNG
+                            .bf-blog-info
+                                span.bf-blog-date 23/07/2022
+                                p.bf-blog-desc chính sách và quy định chung
+
+                    a.bf-btn(href="/blog")
+                        span Xem thêm
+                        span.bf-btn-arrow →
+                
+                // ----- CARD FANPAGE -----
+                .bf-card.bf-card-fanpage
+                    h2.bf-title Fanpage
+
+                    .bf-fan-cover
+                        img(src="/images/slider1.jpg", alt="Fanpage Verdish")
+
+                    .bf-fan-content
+                        h3.bf-fan-name Verdish
+                        p.bf-fan-desc Cập nhật ưu đãi & bí quyết sống xanh mỗi ngày.
+
+                        a.bf-btn(href="https://facebook.com" target="_blank")
+                            span Ghé Fanpage
+                            span.bf-btn-arrow →
+
+    // ----- TẠI SAO NÊN LÀ VERDISH -----
     section.why-section
         .container
             h2.why-title TẠI SAO NÊN LÀ VERDISH
@@ -75,7 +127,45 @@ block main
                         br
                         | CAM KẾT AUTHENTIC 100%.
 
+    // ----- CÁC ĐỊA CHỈ MUA HÀNG -----
+    section.shop-address-section
+        .container
+            h2.shop-address-title Các địa chỉ mua hàng
+
+            .shop-address-wrapper
+                // Card TikTok
+                .shop-card.shop-tiktok
+                    .shop-badge
+                        span.shop-badge-text TikTok
+                    .shop-cover
+                        img(src="/images/slider1.jpg", alt="TikTok store")
+                    h3.shop-name tiktok
+                    a.shop-btn(href="#" target="_blank")
+                        span Mua hàng ngay
+                        span.shop-btn-arrow →
+
+                // Card Instagram
+                .shop-card.shop-instagram
+                    .shop-badge
+                        span.shop-badge-text Instagram
+                    .shop-cover
+                        img(src="/images/slider2.jpg", alt="Instagram store")
+                    h3.shop-name Instagram
+                    a.shop-btn(href="#" target="_blank")
+                        span Mua hàng ngay
+                        span.shop-btn-arrow →
+
+                // Card Facebook
+                .shop-card.shop-facebook
+                    .shop-badge
+                        span.shop-badge-text Facebook
+                    .shop-cover
+                        img(src="/images/slider3.jpg", alt="Facebook store")
+                    h3.shop-name facebook
+                    a.shop-btn(href="#" target="_blank")
+                        span Mua hàng ngay
+                        span.shop-btn-arrow →
+
 block scripts
     script(src="/js/home.products.js")
     script(src="/js/slider.js")
-    
