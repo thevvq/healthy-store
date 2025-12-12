@@ -111,3 +111,33 @@ module.exports.editAccount = async (req) => {
         _id: req.params.id
     }, req.body)
 }
+// ======================================================
+// DETAIL ACCOUNT (ADMIN)
+// ======================================================
+module.exports.detail = async (req) => {
+    const id = req.params.id;
+
+    const account = await Account.findOne({
+        _id: id,
+        deleted: false
+    }).select('-password -token');
+
+    if (!account) {
+        throw new Error("ACCOUNT_NOT_FOUND");
+    }
+
+    // LẤY ROLE (GIỐNG LOGIC getList)
+    let role = null;
+    if (account.role_id) {
+        role = await Role.findOne({
+            _id: account.role_id,
+            deleted: false
+        });
+    }
+
+    account.role = role;
+
+    return {
+        account
+    };
+};

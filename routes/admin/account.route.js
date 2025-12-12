@@ -17,6 +17,8 @@ router.delete('/delete-account/:id', controller.deleteAccount)
 
 router.get('/edit/:id', controller.edit)
 
+router.get('/detail/:id', controller.detail)
+
 router.patch('/edit/:id', upload.single('avatar'), validate.editPatch, controller.editAccount)
 
 module.exports = router  

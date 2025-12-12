@@ -110,3 +110,19 @@ module.exports.editAccount = async (req, res) => {
     }
     res.redirect(`${sysConfig.prefixAdmin}/accounts/edit/${req.params.id}`)
 }
+
+// [GET] /admin/accounts/detail/:id
+module.exports.detail = async (req, res) => {
+    try {
+        const records = await accountService.detail(req);
+
+        res.render('admin/pages/account/detail', {
+            pageTitle: 'Chi tiết tài khoản',
+            ...records
+        });
+
+    } catch (err) {
+        req.flash('error', 'Không tìm thấy tài khoản!');
+        res.redirect(`${sysConfig.prefixAdmin}/accounts`);
+    }
+};
