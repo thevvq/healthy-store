@@ -100,7 +100,7 @@
     font-size: 16px;
     margin-bottom: 4px;
     font-weight: 600;
-    color: #0d6efd;         /* xanh link */
+    color: #000000;         /* xanh link */
 
     /* Giới hạn 2 dòng, không cho tràn */
     display: -webkit-box;

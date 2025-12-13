@@ -28,14 +28,14 @@ block main
     .container.my-3
         .row
             .col-12
-                +box-head('Danh sách sản phẩm')
+
 
         .row.mt-3
             // ================== CỘT TRÁI: SIDEBAR ==================
             .col-lg-3.col-md-4.mb-3
                 // ----- BOX CATEGORIES -----
                 .sidebar-box
-                    h3.sidebar-title Categories
+                    h3.sidebar-title Danh mục
                     ul.sidebar-cat-list
                         if categoriesMenu && categoriesMenu.length
                             +sidebarCategoryTree(categoriesMenu, null)
@@ -45,17 +45,17 @@ block main
 
                 // ----- BOX LỌC GIÁ -----
                 .sidebar-box
-                    h3.sidebar-title Filter By Price
+                    h3.sidebar-title Bộ lọc giá
                     hr
                     .price-filter-row
                         .price-field
-                            label(for="price-from") From
+                            label(for="price-from") Từ
                             .price-input-wrap
                                 span.price-prefix VND
                                 input#price-from(type="number" min="0" value="")
                         .price-sep -
                         .price-field
-                            label(for="price-to") To
+                            label(for="price-to") Đến
                             .price-input-wrap
                                 span.price-prefix VND
                                 input#price-to(type="number" min="0" value="")
@@ -65,22 +65,15 @@ block main
             .col-lg-9.col-md-8
                 // ===== THANH LỌC SẢN PHẨM =====
                 .product-toolbar
+                    
                     .product-toolbar-group
-                        label(for="filter-per-page") Prev Page:
-                        select#filter-per-page
-                            option(value="10" selected) 10
-                            option(value="20") 20
-                            option(value="30") 30
-                            option(value="50") 50
-
-                    .product-toolbar-group
-                        label(for="filter-sort") Sort By:
+                        label(for="filter-sort") Sắp xếp   :
                         select#filter-sort
-                            option(value="latest" selected) Sort by latest
-                            option(value="price_asc") Price: low → high
-                            option(value="price_desc") Price: high → low
-                            option(value="discount_desc") Biggest discount
-                            option(value="name_asc") Name A → Z
+                            option(value="latest" selected) Theo mới nhất
+                            option(value="price_asc") Giá: thấp → cao
+                            option(value="price_desc") Giá: cao → thấp
+                            option(value="discount_desc") Giảm giá lớn nhất
+                            option(value="name_asc") Tên A → Z
 
                     .product-toolbar-group.product-toolbar-view
                         button.view-btn.is-active(type="button" data-view="grid" title="Grid view")
@@ -88,11 +81,7 @@ block main
                         button.view-btn(type="button" data-view="list" title="List view")
                             i.fa-solid.fa-list
 
-                    .product-toolbar-group.product-toolbar-search
-                        .search-input-wrapper
-                            input#filter-search(type="text" placeholder="Search by")
-                            button#filter-search-btn(type="button")
-                                i.fa-solid.fa-magnifying-glass
+
 
                 // ===== DANH SÁCH SẢN PHẨM =====
                 .product-list

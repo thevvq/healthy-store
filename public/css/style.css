@@ -476,3 +476,25 @@ footer.footer {
   }
 }
 
+/* Canh hàng bên phải (search + menu) nằm giữa theo chiều dọc */
+.header .col-9{
+  display: flex;
+  align-items: center;   /* ✅ hết bị đội lên cao */
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+/* Search không bị chiếm hết ngang */
+.header-search{
+  flex: 0 0 auto;
+}
+
+.header-search .search-input-wrapper{
+  max-width: 320px;
+  width: 320px;          /* muốn nhỏ hơn thì giảm */
+}
+
+/* Menu vẫn nằm gọn */
+.inner-menu{
+  flex: 0 0 auto;
+}
