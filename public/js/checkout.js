@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // KIỂM TRA selectedItems
         // ============================
         if (!selectedItemsInput || !selectedItemsInput.value) {
-            Swal.fire("Lỗi!", "Không có sản phẩm nào được chọn!", "error");
+          
             return;
         }
 
@@ -25,12 +25,12 @@ document.addEventListener("DOMContentLoaded", () => {
         try {
             parsedSelected = JSON.parse(selectedItemsInput.value);
         } catch (err) {
-            Swal.fire("Lỗi!", "Danh sách sản phẩm không hợp lệ!", "error");
+            
             return;
         }
 
         if (parsedSelected.length === 0) {
-            Swal.fire("Lỗi!", "Không có sản phẩm nào để đặt hàng!", "error");
+            
             return;
         }
 

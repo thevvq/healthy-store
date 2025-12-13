@@ -13,12 +13,12 @@ module.exports.getSelectedItems = async (req, selectedItems) => {
         }
 
         if (!Array.isArray(selectedItems) || selectedItems.length === 0) {
-            throw new Error("Không có sản phẩm nào được chọn!");
+            
         }
 
         const cart = await Cart.findOne({ userId });
         if (!cart || !cart.items || cart.items.length === 0) {
-            throw new Error("Giỏ hàng đang trống!");
+            
         }
 
         // Lọc các item được chọn
@@ -27,7 +27,7 @@ module.exports.getSelectedItems = async (req, selectedItems) => {
         );
 
         if (selected.length === 0) {
-            throw new Error("Không có sản phẩm nào được chọn!");
+            
         }
 
         const total = selected.reduce(
@@ -42,7 +42,7 @@ module.exports.getSelectedItems = async (req, selectedItems) => {
 
     } catch (err) {
         console.error("Get Selected Items Error:", err);
-        throw new Error(err.message || "Lỗi khi lấy danh sách sản phẩm để thanh toán!");
+    
     }
 };
 
@@ -59,7 +59,7 @@ module.exports.createOrder = async (req, selectedItems) => {
         }
 
         if (!Array.isArray(selectedItems) || selectedItems.length === 0) {
-            throw new Error("Không có sản phẩm nào được chọn để đặt hàng!");
+            
         }
 
         const { name, phone, address } = req.body;
@@ -71,7 +71,7 @@ module.exports.createOrder = async (req, selectedItems) => {
 
         const cart = await Cart.findOne({ userId });
         if (!cart || !cart.items || cart.items.length === 0) {
-            throw new Error("Giỏ hàng rỗng, không thể đặt hàng!");
+            
         }
 
         // Lọc các item được chọn
@@ -80,7 +80,7 @@ module.exports.createOrder = async (req, selectedItems) => {
         );
 
         if (selected.length === 0) {
-            throw new Error("Không có sản phẩm nào được chọn để đặt hàng!");
+          
         }
 
         /* ======================================================
@@ -90,12 +90,12 @@ module.exports.createOrder = async (req, selectedItems) => {
             const product = await Product.findById(item.productId);
 
             if (!product) {
-                throw new Error("Sản phẩm không tồn tại!");
+                
             }
 
             if (product.stock < item.quantity) {
                 throw new Error(
-                    `Sản phẩm "${product.title}" chỉ còn ${product.stock} cái trong kho!`
+                  
                 );
             }
         }

@@ -21,14 +21,14 @@ module.exports = {
                 try {
                     selectedItems = JSON.parse(req.body.selectedItems);
                 } catch (err) {
-                    req.flash("error", "Dữ liệu sản phẩm không hợp lệ!");
+                    
                     return res.redirect("/cart");
                 }
             }
 
             // Không có sản phẩm được chọn
             if (!Array.isArray(selectedItems) || selectedItems.length === 0) {
-                req.flash("error", "Vui lòng chọn sản phẩm để thanh toán!");
+                
                 return res.redirect("/cart");
             }
 
@@ -53,7 +53,7 @@ module.exports = {
 
         } catch (err) {
             console.error("Checkout Render Error:", err);
-            req.flash("error", err.message || "Không thể tải trang thanh toán!");
+            
             return res.redirect("/cart");
         }
     },
@@ -90,14 +90,14 @@ module.exports = {
         } catch (err) {
             return res.json({
                 success: false,
-                message: "Dữ liệu sản phẩm không hợp lệ!"
+                
             });
         }
 
         if (!Array.isArray(ids) || ids.length === 0) {
             return res.json({
                 success: false,
-                message: "Không có sản phẩm nào được chọn!"
+                
             });
         }
 
