@@ -1,3 +1,7 @@
+/* ================================
+   PRODUCT PAGE (/products)
+================================ */
+
 /* ==== THANH LỌC SẢN PHẨM (/products) ==== */
 
 .product-toolbar {
@@ -34,7 +38,7 @@
 }
 
 .product-toolbar select:focus {
-    border-color: #0f9d58; /* cùng màu với giá */
+    border-color: #0f9d58;
 }
 
 /* View buttons (grid / list) */
@@ -57,13 +61,9 @@
     font-size: 15px;
 }
 
-.view-btn i {
-    pointer-events: none;
-}
+.view-btn i { pointer-events: none; }
 
-.view-btn:hover {
-    border-color: #0f9d58;
-}
+.view-btn:hover { border-color: #0f9d58; }
 
 .view-btn.is-active {
     background: #0f9d58;
@@ -100,7 +100,7 @@
 #filter-search-btn {
     border: none;
     width: 40px;
-    background: #0f9d58; /* xanh đồng bộ */
+    background: #0f9d58;
     color: #fff;
     display: inline-flex;
     align-items: center;
@@ -115,67 +115,216 @@
         align-items: stretch;
         gap: 10px;
     }
-
-    .product-toolbar-group {
-        justify-content: space-between;
-    }
-
-    .product-toolbar-search {
-        margin-left: 0;
-        justify-content: stretch;
-    }
-
-    .search-input-wrapper {
-        max-width: 100%;
-    }
+    .product-toolbar-group { justify-content: space-between; }
+    .product-toolbar-search { margin-left: 0; justify-content: stretch; }
+    .search-input-wrapper { max-width: 100%; }
 }
 
+/* ==== SIDEBAR (CATEGORIES + FILTER PRICE) ==== */
+.sidebar-box {
+    background: #fff;
+    border-radius: 16px;
+    padding: 16px 18px 18px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.04);
+    border: 1px solid #e5e7eb;
+    margin-bottom: 18px;
+}
+
+.sidebar-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.sidebar-cat-list,
+.sidebar-sub-list {
+    list-style: none;
+    margin: 0;
+    padding-left: 0;
+}
+
+.sidebar-cat-empty {
+    font-size: 13px;
+    color: #6b7280;
+}
+
+.sidebar-cat-item {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: #ffffff;
+    margin-bottom: 8px;
+    overflow: hidden;
+}
+
+.sidebar-cat-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    padding: 8px 10px;
+    cursor: pointer;
+}
+
+.sidebar-cat-item.has-children .sidebar-cat-row:hover {
+    background: #f9fafb;
+}
+
+.sidebar-cat-link {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: #111827;
+    font-size: 14px;
+}
+
+.sidebar-cat-link:hover {
+    text-decoration: none;
+    color: #0f9d58;
+}
+
+.sidebar-cat-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #f3f4f6;
+    color: #22c55e;
+    flex-shrink: 0;
+}
+
+.sidebar-cat-toggle {
+    border: none;
+    background: transparent;
+    padding: 0 4px;
+    cursor: pointer;
+    color: #6b7280;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar-cat-toggle i {
+    font-size: 12px;
+    transition: transform 0.18s ease;
+}
+
+.sidebar-sub-list {
+    display: none;
+    padding: 4px 10px 8px 44px;
+    background: #ffffff;
+}
+
+.sidebar-cat-item.is-open > .sidebar-sub-list { display: block; }
+
+.sidebar-cat-item.is-open > .sidebar-cat-row .sidebar-cat-toggle i {
+    transform: rotate(180deg);
+}
+
+.sidebar-sub-list .sidebar-cat-item {
+    border: none;
+    margin-bottom: 2px;
+}
+
+.sidebar-sub-list .sidebar-cat-row { padding: 4px 0; }
+
+.sidebar-sub-list .sidebar-cat-link { font-size: 13px; }
+
+.sidebar-sub-list .sidebar-cat-icon { display: none; }
+
+/* ---- Filter price ---- */
+.price-filter-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    margin-top: 10px;
+    margin-bottom: 12px;
+}
+
+.price-field { flex: 1; }
+
+.price-field label {
+    display: block;
+    font-size: 13px;
+    margin-bottom: 4px;
+}
+
+.price-input-wrap {
+    display: flex;
+    align-items: center;
+    border-radius: 999px;
+    border: 1px solid #d4d7dd;
+    padding: 4px 10px;
+    background: #fff;
+}
+
+.price-prefix {
+    font-size: 13px;
+    color: #6b7280;
+    margin-right: 4px;
+}
+
+.price-input-wrap input[type="number"] {
+    border: none;
+    outline: none;
+    width: 100%;
+    font-size: 14px;
+}
+
+.price-sep {
+    padding-bottom: 6px;
+    font-size: 16px;
+}
+
+.price-filter-btn {
+    display: inline-block;
+    padding: 8px 18px;
+    border-radius: 999px;
+    border: none;
+    background: #0f9d58;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.price-filter-btn:hover { opacity: 0.92; }
+
 /* ==== DANH SÁCH SẢN PHẨM (/products) ==== */
-/* Dùng flex để hàng cuối căn giữa, thay cho grid cũ */
 
 .product-list {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;      /* ⭐ Hàng cuối sẽ luôn ra giữa */
+    justify-content: center;
     gap: 18px 16px;
 }
 
-/* Mỗi ô chứa 1 product-item, chiếm 1/5 hàng ở desktop */
 .product-list-item {
-    flex: 0 1 calc(20% - 16px);  /* khoảng 5 cột */
+    flex: 0 1 calc(20% - 16px);
     display: flex;
 }
 
-/* Responsive: chỉnh lại số cột bằng cách đổi flex-basis */
 @media (max-width: 1200px) {
-    .product-list-item {
-        flex: 0 1 calc(25% - 16px);   /* 4 cột */
-    }
+    .product-list-item { flex: 0 1 calc(25% - 16px); }
 }
 
 @media (max-width: 992px) {
-    .product-list-item {
-        flex: 0 1 calc(33.333% - 16px);   /* 3 cột */
-    }
+    .product-list-item { flex: 0 1 calc(33.333% - 16px); }
 }
 
 @media (max-width: 768px) {
-    .product-list-item {
-        flex: 0 1 calc(50% - 16px);   /* 2 cột */
-    }
+    .product-list-item { flex: 0 1 calc(50% - 16px); }
 }
 
 @media (max-width: 480px) {
-    .product-list-item {
-        flex: 0 1 100%;               /* 1 cột */
-    }
+    .product-list-item { flex: 0 1 100%; }
 }
 
 /* ==== VIEW LIST (khi bấm nút list) ==== */
-
-.product-list.list-view {
-    display: block;   /* bỏ flex, để từng item xuống dòng */
-}
+.product-list.list-view { display: block; }
 
 .product-list.list-view .product-list-item {
     display: block;
@@ -183,32 +332,7 @@
     margin-bottom: 14px;
 }
 
-.product-list.list-view .product-item {
-    flex-direction: row;
-    text-align: left;
-    padding: 14px 16px;
-}
-
-.product-list.list-view .inner-image {
-    width: 180px;
-    max-width: 180px;
-    flex-shrink: 0;
-    margin-right: 16px;
-    margin-bottom: 0;
-}
-
-.product-list.list-view .inner-content {
-    flex: 1;
-}
-
-.product-list.list-view .btn-add-cart {
-    margin-top: 0;
-    align-self: flex-start;
-    margin-left: 16px;
-}
-
-/* ==== CARD SẢN PHẨM CHUNG ==== */
-
+/* ==== CARD SẢN PHẨM CHUNG (GRID) ==== */
 .product-item {
     background: #fff;
     border-radius: 24px;
@@ -220,7 +344,6 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-
     transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
     will-change: transform;
 }
@@ -231,7 +354,12 @@
     border-color: rgba(0, 0, 0, 0.10);
 }
 
-/* Ảnh */
+.product-item a {
+    text-decoration: none;
+    color: inherit;
+}
+.product-item a:hover { text-decoration: none; }
+
 .product-item .inner-image {
     width: 100%;
     aspect-ratio: 4 / 3;
@@ -247,23 +375,23 @@
     transition: transform 0.25s ease;
 }
 
-/* Hover phóng nhẹ ảnh */
-.product-item:hover .inner-image img {
-    transform: scale(1.03);
-}
+.product-item:hover .inner-image img { transform: scale(1.03); }
 
-/* Nội dung */
-.product-item .inner-content {
-    padding: 4px 2px 10px;
-}
+.product-item .inner-content { padding: 4px 2px 10px; }
 
 .product-item .inner-title {
     font-size: 16px;
     font-weight: 500;
     margin-bottom: 6px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    word-break: break-word;
+    overflow-wrap: anywhere;
 }
 
-/* Giá */
 .product-item .inner-price-new {
     font-size: 15px;
     font-weight: 600;
@@ -288,11 +416,11 @@
     border-radius: 999px;
 }
 
-/* ====== NÚT ADD TO CART — phiên bản nhỏ nằm bên phải ====== */
+/* Nút add to cart (GRID mặc định) */
 .btn-add-cart {
     margin-top: 10px;
-    align-self: flex-end;          /* Đẩy nút sang phải */
-    padding: 10px 18px;            /* Thu nhỏ */
+    align-self: flex-end;
+    padding: 10px 18px;
     font-size: 13px;
     display: flex;
     align-items: center;
@@ -300,39 +428,121 @@
     border-radius: 999px;
     border: 1px solid #000;
     background: #000;
-    color: #fff;                   /* Text + icon trắng */
+    color: #fff;
     cursor: pointer;
     transition: all 0.2s ease;
-    width: auto;                   /* Không full-width */
+    width: auto;
     will-change: transform;
 }
 
-/* Icon trắng */
-.btn-add-cart i {
-    color: #fff;
-    font-size: 14px;
-    transition: all 0.2s ease;
-}
+.btn-add-cart i { color: #fff; font-size: 14px; transition: all 0.2s ease; }
 
-/* Hover → nền trắng, icon + text đen */
 .btn-add-cart:hover {
     background: #fff;
     color: #000;
-
     transform: translateY(-2px);
     box-shadow: 0 12px 26px rgba(0, 0, 0, 0.18);
 }
 
-.btn-add-cart:hover i {
-    color: #000;
-}
+.btn-add-cart:hover i { color: #000; }
 
-/* Trên mobile tắt hiệu ứng hover để đỡ giật */
+/* Trên mobile tắt hover để đỡ giật */
 @media (max-width: 768px) {
     .product-item:hover,
     .btn-add-cart:hover,
     .product-item:hover .inner-image img {
         transform: none;
         box-shadow: none;
+    }
+}
+
+/* ================================
+   LIST VIEW: CHIA 2 NỬA (TRÁI info, PHẢI description)
+================================ */
+
+/* Ẩn description ở grid */
+.list-desc { display: none; }
+
+/* ✅ Product ở list-view thành grid 2 cột (GIẢM khoảng trắng) */
+.product-list.list-view .product-item{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    column-gap: 12px;   /* ✅ giảm khoảng giữa 2 nửa */
+    row-gap: 10px;      /* ✅ giảm khoảng giữa hàng */
+    text-align: left;
+    padding: 12px;      /* ✅ giảm padding */
+}
+
+/* Left: a nằm cột 1 */
+.product-list.list-view .product-item > a{
+    grid-column: 1;
+    display: block;
+}
+
+/* ✅ Nút mua: nằm trong cột trái nhưng canh phải trong box trái */
+.product-list.list-view .btn-add-cart{
+    grid-column: 1;
+    justify-self: end;
+    align-self: start;
+    margin-top: 8px;    /* ✅ giảm khoảng trống dưới */
+
+    background: #3cb815;
+    border-color: #3cb815;
+    color: #fff;
+}
+
+.product-list.list-view .btn-add-cart i { color: #fff; }
+
+.product-list.list-view .btn-add-cart:hover{
+    opacity: .92;
+    transform: translateY(-1px);
+    box-shadow: none;
+}
+
+/* Ảnh ở list-view cho gọn */
+.product-list.list-view .inner-image{
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    margin-bottom: 10px; /* ✅ giảm */
+}
+
+/* Right: description cột 2 (chiếm cả 2 hàng) */
+.product-list.list-view .list-desc{
+    display: flex;
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    border-left: 1px solid #eef0f4;
+    padding-left: 12px; /* ✅ giảm */
+}
+
+.product-list.list-view .product-desc{
+    margin: 0;
+    width: 100%;
+    color: #374151;
+    font-size: 14px;
+    line-height: 1.7;
+    white-space: normal;
+    word-break: break-word;
+}
+
+/* Mobile: về 1 cột, desc xuống dưới */
+@media (max-width: 768px){
+    .product-list.list-view .product-item{
+        grid-template-columns: 1fr;
+    }
+
+    .product-list.list-view .list-desc{
+        grid-column: 1;
+        grid-row: auto;
+        border-left: none;
+        padding-left: 0;
+        border-top: 1px solid #eef0f4;
+        padding-top: 12px;
+    }
+
+    .product-list.list-view .btn-add-cart{
+        width: 100%;
+        justify-content: center;
     }
 }

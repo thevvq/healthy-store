@@ -11,11 +11,17 @@ document.addEventListener("DOMContentLoaded", () => {
     const searchBtn = document.getElementById("filter-search-btn");
     const viewButtons = document.querySelectorAll(".view-btn");
 
+    const priceFromInput = document.getElementById("price-from");
+    const priceToInput = document.getElementById("price-to");
+    const priceBtn = document.getElementById("btn-price-filter");
+
     const state = {
         perPage: parseInt(perPageSelect?.value || items.length, 10) || items.length,
         sort: sortSelect?.value || "latest",
         search: "",
         view: "grid",
+        minPrice: null,
+        maxPrice: null,
     };
 
     const getNumber = (el, key) => {
@@ -32,8 +38,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const applyFilters = () => {
         const keyword = (state.search || "").trim().toLowerCase();
 
-        // 1. Lọc theo search (theo title)
         let filtered = items;
+
+        // 1. Lọc theo search (theo title)
+        
         if (keyword) {
             filtered = filtered.filter((el) => {
                 const title = (el.dataset.title || "").toLowerCase();
@@ -41,7 +49,17 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         }
 
-        // 2. Sắp xếp
+        // 2. Lọc theo khoảng giá
+        if (state.minPrice != null || state.maxPrice != null) {
+            filtered = filtered.filter((el) => {
+                const price = getNumber(el, "price");
+                if (state.minPrice != null && price < state.minPrice) return false;
+                if (state.maxPrice != null && price > state.maxPrice) return false;
+                return true;
+            });
+        }
+
+        // 3. Sắp xếp
         const sorted = [...filtered].sort((a, b) => {
             switch (state.sort) {
                 case "price_asc":
@@ -63,15 +81,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const limit = state.perPage || sorted.length;
 
-        // 3. Ẩn hết trước
+        // 4. Ẩn hết trước
         items.forEach((el) => {
             el.style.display = "none";
         });
 
-        // 4. Sắp xếp lại DOM + show theo perPage
+        // 5. Sắp xếp lại DOM + show theo perPage
         sorted.forEach((el, idx) => {
-            // appendChild sẽ "di chuyển" node, không nhân bản
-            listEl.appendChild(el);
+            listEl.appendChild(el); // move node
 
             if (idx < limit) {
                 el.style.display = "";
@@ -116,6 +133,19 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
+    // Lọc theo giá
+    if (priceBtn) {
+        priceBtn.addEventListener("click", () => {
+            const fromVal = priceFromInput?.value;
+            const toVal = priceToInput?.value;
+
+            state.minPrice = fromVal !== "" ? parseFloat(fromVal) : null;
+            state.maxPrice = toVal !== "" ? parseFloat(toVal) : null;
+
+            applyFilters();
+        });
+    }
+
     // View grid / list
     viewButtons.forEach((btn) => {
         btn.addEventListener("click", () => {
@@ -130,6 +160,33 @@ document.addEventListener("DOMContentLoaded", () => {
                 listEl.classList.add("list-view");
             } else {
                 listEl.classList.remove("list-view");
+            }
+        });
+    });
+
+    // ================== SIDEBAR CATEGORY TOGGLE ==================
+    const sidebarToggleButtons = document.querySelectorAll(".sidebar-cat-toggle");
+
+    sidebarToggleButtons.forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const li = btn.closest(".sidebar-cat-item");
+            if (!li) return;
+
+            const isOpen = li.classList.contains("is-open");
+
+            // Đóng các item khác (accordion)
+            document.querySelectorAll(".sidebar-cat-item.is-open").forEach((other) => {
+                if (other !== li) other.classList.remove("is-open");
+            });
+
+            // Mở / đóng item hiện tại
+            if (!isOpen) {
+                li.classList.add("is-open");
+            } else {
+                li.classList.remove("is-open");
             }
         });
     });

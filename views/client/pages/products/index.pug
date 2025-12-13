@@ -1,6 +1,26 @@
 extends ../../layouts/default
 include ../../mixins/box-head.pug
 
+//- Mixin đệ quy vẽ cây danh mục sidebar (cha / con / cháu...)
+mixin sidebarCategoryTree(categories, parentId)
+    each cat in categories
+        if ((!cat.parent_category && !parentId) || (cat.parent_category && String(cat.parent_category) == String(parentId)))
+            - const hasChildren = categories.some(c => c.parent_category && String(c.parent_category) == String(cat._id));
+
+            li.sidebar-cat-item(class=hasChildren ? 'has-children' : '')
+                .sidebar-cat-row
+                    a.sidebar-cat-link(href=`/products?category=${cat.slug}`)
+                        span.sidebar-cat-icon
+                            i.fa-solid.fa-carrot
+                        span.sidebar-cat-text= cat.title
+                    if hasChildren
+                        button.sidebar-cat-toggle(type="button" aria-label="Mở danh mục con")
+                            i.fa-solid.fa-chevron-down
+
+                if hasChildren
+                    ul.sidebar-sub-list
+                        +sidebarCategoryTree(categories, cat._id)
+
 block css
     link(rel="stylesheet", href="/css/products.css")
 
@@ -10,70 +30,113 @@ block main
             .col-12
                 +box-head('Danh sách sản phẩm')
 
-        // ================== THANH LỌC SẢN PHẨM ==================
-        .product-toolbar
-            // Số sản phẩm / trang
-            .product-toolbar-group
-                label(for="filter-per-page") Prev Page:
-                select#filter-per-page
-                    option(value="10" selected) 10
-                    option(value="20") 20
-                    option(value="30") 30
-                    option(value="50") 50
+        .row.mt-3
+            // ================== CỘT TRÁI: SIDEBAR ==================
+            .col-lg-3.col-md-4.mb-3
+                // ----- BOX CATEGORIES -----
+                .sidebar-box
+                    h3.sidebar-title Categories
+                    ul.sidebar-cat-list
+                        if categoriesMenu && categoriesMenu.length
+                            +sidebarCategoryTree(categoriesMenu, null)
+                        else
+                            li
+                                span.sidebar-cat-empty Chưa có danh mục
 
-            // Sắp xếp
-            .product-toolbar-group
-                label(for="filter-sort") Sort By:
-                select#filter-sort
-                    option(value="latest" selected) Sort by latest
-                    option(value="price_asc") Price: low → high
-                    option(value="price_desc") Price: high → low
-                    option(value="discount_desc") Biggest discount
-                    option(value="name_asc") Name A → Z
+                // ----- BOX LỌC GIÁ -----
+                .sidebar-box
+                    h3.sidebar-title Filter By Price
+                    hr
+                    .price-filter-row
+                        .price-field
+                            label(for="price-from") From
+                            .price-input-wrap
+                                span.price-prefix VND
+                                input#price-from(type="number" min="0" value="")
+                        .price-sep -
+                        .price-field
+                            label(for="price-to") To
+                            .price-input-wrap
+                                span.price-prefix VND
+                                input#price-to(type="number" min="0" value="")
+                    button#btn-price-filter.price-filter-btn(type="button") Lọc
 
-            // Nút đổi view (grid / list)
-            .product-toolbar-group.product-toolbar-view
-                button.view-btn.is-active(type="button" data-view="grid" title="Grid view")
-                    i.fa-solid.fa-border-all
-                button.view-btn(type="button" data-view="list" title="List view")
-                    i.fa-solid.fa-list
+            // ================== CỘT PHẢI: TOOLBAR + LIST ==================
+            .col-lg-9.col-md-8
+                // ===== THANH LỌC SẢN PHẨM =====
+                .product-toolbar
+                    .product-toolbar-group
+                        label(for="filter-per-page") Prev Page:
+                        select#filter-per-page
+                            option(value="10" selected) 10
+                            option(value="20") 20
+                            option(value="30") 30
+                            option(value="50") 50
 
-            // Ô search
-            .product-toolbar-group.product-toolbar-search
-                .search-input-wrapper
-                    input#filter-search(type="text" placeholder="Search by")
-                    button#filter-search-btn(type="button")
-                        i.fa-solid.fa-magnifying-glass
+                    .product-toolbar-group
+                        label(for="filter-sort") Sort By:
+                        select#filter-sort
+                            option(value="latest" selected) Sort by latest
+                            option(value="price_asc") Price: low → high
+                            option(value="price_desc") Price: high → low
+                            option(value="discount_desc") Biggest discount
+                            option(value="name_asc") Name A → Z
 
-        // ================== DANH SÁCH SẢN PHẨM ==================
-        .product-list
-            each item, index in products
-                .product-list-item(
-                    data-title=item.title
-                    data-price=item.newPrice
-                    data-discount=item.discountPercentage
-                    data-index=index
-                )
-                    .product-item
-                        a(href=`/detail/${item.slug}`)
-                            .inner-image
-                                img(src=item.thumbnail, alt=item.title)
+                    .product-toolbar-group.product-toolbar-view
+                        button.view-btn.is-active(type="button" data-view="grid" title="Grid view")
+                            i.fa-solid.fa-border-all
+                        button.view-btn(type="button" data-view="list" title="List view")
+                            i.fa-solid.fa-list
 
-                            .inner-content
-                                h3.inner-title #{item.title}
-                                .inner-price-new #{item.newPrice} VND
-                                .inner-price-old #{item.price} VND
-                                .inner-discount -#{item.discountPercentage}%
+                    .product-toolbar-group.product-toolbar-search
+                        .search-input-wrapper
+                            input#filter-search(type="text" placeholder="Search by")
+                            button#filter-search-btn(type="button")
+                                i.fa-solid.fa-magnifying-glass
 
-                        button.btn-add-cart(
-                            data-id=item._id
-                            data-title=item.title
-                            data-price=item.newPrice
-                            data-image=item.thumbnail
-                            data-stock=item.stock
-                        )
-                            i.fa-solid.fa-cart-shopping.cart-icon
-                            
+                // ===== DANH SÁCH SẢN PHẨM =====
+                .product-list
+                    if products && products.length
+                        each item, index in products
+                            .product-list-item(
+                                data-title=item.title
+                                data-price=item.newPriceNumber
+                                data-discount=item.discountPercentage
+                                data-index=index
+                            )
+                                .product-item
+                                    // ===== NỬA TRÁI: ảnh + giá + nút =====
+                                    a(href=`/detail/${item.slug}`)
+                                        .inner-image
+                                            img(src=item.thumbnail, alt=item.title)
+
+                                        .inner-content
+                                            h3.inner-title= item.title
+                                            if item.newPrice
+                                                .inner-price-new #{item.newPrice} VND
+                                            if item.oldPrice
+                                                .inner-price-old #{item.oldPrice} VND
+                                            if item.discountPercentage
+                                                .inner-discount -#{item.discountPercentage}%
+
+                                    button.btn-add-cart(
+                                        type="button"
+                                        data-id=item._id
+                                        data-title=item.title
+                                        data-price=item.newPriceNumber
+                                        data-image=item.thumbnail
+                                        data-stock=item.stock
+                                    )
+                                        i.fa-solid.fa-cart-shopping.cart-icon
+
+                                    // ===== NỬA PHẢI: description =====
+                                    .list-desc
+                                        if item.shortDescription
+                                            p.product-desc= item.shortDescription
+                                        else
+                                            p.product-desc.text-muted Chưa có mô tả.
+                    else
+                        p.text-muted.mt-3 Không tìm thấy sản phẩm nào.
 
 block scripts
     script(src="/js/products.js")
