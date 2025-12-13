@@ -75,7 +75,5 @@ block main
                         option(value="cancelled", selected=order.status === 'cancelled') Đã hủy
 
                     button.btn.btn-success.mt-3(type="submit") Lưu trạng thái
-
-                a.btn.btn-secondary.mt-3.ms-2(href="/admin/orders") Quay lại danh sách
     else
         +alert-no-permission()

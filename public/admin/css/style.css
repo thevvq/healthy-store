@@ -1,59 +1,305 @@
-/* Header */
-.header {
-    background: #202020;
-    padding: 10px 0;
-    position: sticky;
-    top: 0;
-    z-index: 999;
+/* =========================
+   RESET + FIX BOOTSTRAP
+========================= */
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
 }
 
-.header .inner-logo a {
-    text-decoration: none;
-    font-size: 24px;
-    font-weight: 700;
-    color: #fff
+*, *::before, *::after {
+    box-sizing: border-box;
 }
 
-/* End header */
+/* =========================
+   LAYOUT
+========================= */
+.body {
+    display: block;
+}
 
-/* Body */
-.body .sider {
-    width: 200px;
-    background: #323232;
-    color: #fff;
-    height: calc(100vh - 56px);
+/* =========================
+   SIDEBAR
+========================= */
+.sider {
     position: fixed;
-    top: 56px;
+    top: 0;
     left: 0;
+    width: 260px;
+    height: 100vh;
+    background: #1e2333;
+    color: #cbd5e1;
+    z-index: 1200;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.35);
 }
 
-.body .main {
-    margin: 15px;
-    position: relative;
-    left: 200px;
-    width: calc(100% - 230px);
+/* logo */
+.sider-logo {
+    height: 68px;
+    display: flex;
+    align-items: center;
+    padding: 0 22px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
 }
 
-/* End body */
+.sider-logo a {
+    text-decoration: none;
+}
 
-/* Sider */
+.sider-logo .brand {
+    font-size: 28px;
+    font-weight: 900;
+    letter-spacing: 1.2px;
+    color: #16a34a;
+}
+
+/* menu */
+.sider .inner-menu {
+    flex: 1;
+    overflow-y: auto;
+    padding: 14px 0;
+}
+
+.sider .inner-menu::-webkit-scrollbar {
+    width: 5px;
+}
+.sider .inner-menu::-webkit-scrollbar-thumb {
+    background: #2c3348;
+    border-radius: 6px;
+}
+
 .sider .inner-menu ul {
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
-.sider .inner-menu ul li a {
-    display: block;
-    text-decoration: none;
-    color: #fff;
-    padding: 6px 10px;
-    border-bottom: 1px solid #515151;
+.sider .menu-section {
+    padding: 14px 22px 6px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.4px;
+    color: #6b7280;
 }
 
-/* End Sider */
+.sider .inner-menu ul li a {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 22px;
+    text-decoration: none;
+    color: #cbd5e1;
+    font-size: 14px;
+    transition: background 0.2s ease, color 0.2s ease;
+}
 
-/* Show alert */
+.sider .inner-menu ul li a i {
+    width: 18px;
+    text-align: center;
+    font-size: 15px;
+    color: #6b7280;
+}
+
+.sider .inner-menu ul li a:hover {
+    background: #262c40;
+    color: #ffffff;
+}
+
+.sider .inner-menu ul li a:hover i {
+    color: #ffffff;
+}
+
+.sider .inner-menu ul li.active > a {
+    background: #2b3150;
+    color: #ffffff;
+}
+
+.sider .inner-menu ul li.active > a i {
+    color: #60a5fa;
+}
+
+/* =========================
+   HEADER
+========================= */
+.header {
+    position: fixed;
+    top: 0;
+    left: 260px;
+    width: calc(100% - 260px);
+    height: 68px;
+    background: #f8fafc;
+    border-bottom: 1px solid #e5e7eb;
+    z-index: 1100;
+    display: flex;
+    align-items: center;
+}
+
+.header .container-fluid {
+    padding-right: 24px;
+}
+
+.admin-user {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    padding: 8px 14px;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.admin-avatar {
+    border: 2px solid #e5e7eb;
+}
+
+/* =========================
+   MAIN CONTENT
+========================= */
+.body .main {
+    margin-left: 260px;
+    padding: 24px;
+    padding-top: 96px;
+    width: calc(100% - 260px);
+    min-height: 100vh;
+    background: #f3f4f6;
+}
+
+/* =========================
+   TITLES
+========================= */
+.body .main h1,
+.body .main h2 {
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+}
+
+/* =========================
+   FORM
+========================= */
+.body .main form {
+    background: #ffffff;
+    padding: 16px 18px;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    margin-bottom: 16px;
+}
+
+.body .main label.form-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #374151;
+}
+
+.body .main input.form-control,
+.body .main select.form-select,
+.body .main textarea.form-control {
+    font-size: 14px;
+    border-radius: 8px;
+}
+
+/* =========================
+   BLOG TABLE – CLEAN & DEEP LIGHT TONE
+========================= */
+.body .main table {
+    background: #e5e7eb;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid #cbd5e1;
+}
+
+.body .main table thead {
+    background: #d1d5db;
+}
+
+.body .main table thead tr {
+    height: 56px;
+}
+
+.body .main table thead th {
+    padding: 14px 18px;
+    font-size: 15px;
+    font-weight: 800;
+    color: #111827;
+    border-bottom: 1px solid #9ca3af;
+    letter-spacing: 0.3px;
+    vertical-align: middle;
+}
+
+.body .main table tbody td {
+    background: #f1f5f9;
+    font-size: 14px;
+    vertical-align: middle;
+    border-color: #cbd5e1;
+}
+
+.body .main table tbody tr:hover td {
+    background: #dbeafe;
+}
+
+/* căn giữa ngày & hành động */
+.body .main table thead th:nth-child(3),
+.body .main table thead th:nth-child(4),
+.body .main table tbody td:nth-child(3),
+.body .main table tbody td:nth-child(4) {
+    text-align: center;
+}
+
+.body .main table td.text-muted {
+    background: #e5e7eb;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+.body .main .btn {
+    border-radius: 8px;
+}
+
+.body .main .btn-sm {
+    padding: 4px 10px;
+    font-size: 12px;
+}
+
+/* clear button */
+.body .main a.btn.btn-secondary {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+    color: #334155;
+    font-weight: 600;
+}
+
+.body .main a.btn.btn-secondary:hover {
+    background: #e2e8f0;
+    border-color: #94a3b8;
+    color: #111827;
+}
+
+/* =========================
+   PAGINATION
+========================= */
+.body .main .pagination {
+    justify-content: center;
+}
+
+.body .main .page-link {
+    font-size: 13px;
+    border-radius: 6px;
+}
+
+.body .main .page-item.active .page-link {
+    background: #2563eb;
+    border-color: #2563eb;
+}
+
+/* =========================
+   ALERT
+========================= */
 [show-alert] {
     position: fixed;
     top: 20px;
@@ -61,7 +307,7 @@
     min-width: 280px;
     padding: 12px 18px;
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     animation: alert-show 0.4s ease forwards;
     z-index: 1050;
     display: flex;
@@ -82,44 +328,16 @@
     cursor: pointer;
     font-weight: bold;
     opacity: 0.7;
-    transition: 0.2s;
-}
-
-[show-alert] span[close-alert]:hover {
-    opacity: 1;
 }
 
 @keyframes alert-show {
-    from {
-        opacity: 0;
-        transform: translateX(50px) scale(0.95);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateX(0) scale(1);
-    }
+    from { opacity: 0; transform: translateX(50px) scale(0.95); }
+    to { opacity: 1; transform: translateX(0) scale(1); }
 }
 
-.alert-hide {
-    animation: alert-hide 0.4s forwards ease;
-}
-
-@keyframes alert-hide {
-    from {
-        opacity: 1;
-        transform: translateX(0) scale(1);
-    }
-
-    to {
-        opacity: 0;
-        transform: translateX(50px) scale(0.95);
-    }
-}
-
-/* End Show alert */
-
-/* Wrapper Image */
+/* =========================
+   UPLOAD IMAGE
+========================= */
 .image-preview-wrapper {
     position: relative;
     display: inline-block;
@@ -141,21 +359,291 @@
     background: white;
     border: 1px solid #ccc;
     border-radius: 50%;
-    display: none;
     font-size: 14px;
     font-weight: bold;
-    color: black;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    line-height: normal;
-    text-align: initial;
 }
 
-[upload-image-remove]:hover {
-    background-color: #f5f5f5;
-    border-color: #999;
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 768px) {
+    .sider {
+        width: 72px;
+    }
+
+    .header {
+        left: 72px;
+        width: calc(100% - 72px);
+    }
+
+    .body .main {
+        margin-left: 72px;
+        width: calc(100% - 72px);
+        padding: 16px;
+        padding-top: 88px;
+    }
+
+    .menu-text,
+    .menu-section {
+        display: none;
+    }
+}
+/* =========================
+   ORDERS PAGE
+========================= */
+
+/* wrapper */
+.body .main .container {
+    max-width: 100%;
 }
 
-/* End Wrapper Image */
+/* =========================
+   TITLE
+========================= */
+.body .main h1 {
+    font-weight: 800;
+    color: #271111;
+    margin-bottom: 30px;
+}
+
+/* =========================
+   FILTER FORM
+========================= */
+.body .main #filterForm {
+    background: #ffffff;
+    padding: 18px 20px;
+    border-radius: 14px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+}
+
+.body .main #filterForm label.form-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #374151;
+}
+
+.body .main #filterForm input.form-control,
+.body .main #filterForm select.form-select {
+    font-size: 14px;
+    border-radius: 10px;
+}
+
+/* nút xóa lọc */
+.body .main #filterForm .btn-danger {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+    color: #334155;
+    font-weight: 600;
+}
+
+.body .main #filterForm .btn-danger:hover {
+    background: #e2e8f0;
+    border-color: #94a3b8;
+    color: #111827;
+}
+
+/* =========================
+   TABLE ORDERS
+========================= */
+.body .main table {
+    background: #e5e7eb;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid #cbd5e1;
+}
+
+/* header */
+.body .main table thead {
+    background: #d1d5db;
+}
+
+.body .main table thead tr {
+    height: 56px;
+}
+
+.body .main table thead th {
+    padding: 14px 16px;
+    font-size: 14px;
+    font-weight: 800;
+    color: #111827;
+    border-bottom: 1px solid #9ca3af;
+    vertical-align: middle;
+}
+
+/* body */
+.body .main table tbody td {
+    background: #f1f5f9;
+    font-size: 14px;
+    vertical-align: middle;
+    border-color: #cbd5e1;
+}
+
+.body .main table tbody tr:hover td {
+    background: #dbeafe;
+}
+
+/* căn giữa tiền + trạng thái */
+.body .main table th:nth-child(3),
+.body .main table td:nth-child(3),
+.body .main table th:nth-child(4),
+.body .main table td:nth-child(4) {
+    text-align: center;
+}
+
+
+.body .main .badge {
+    padding: 6px 12px;
+    font-size: 12px;
+    border-radius: 999px;
+    font-weight: 600;
+}
+
+
+.body .main .btn-sm {
+    padding: 6px 12px;
+    font-size: 13px;
+    border-radius: 8px;
+}
+
+
+.body .main p.text-danger {
+    font-size: 15px;
+    font-weight: 600;
+    margin-top: 16px;
+}
+
+.body .main .pagination {
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.body .main .page-link {
+    font-size: 14px;
+    border-radius: 8px;
+    color: #374151;
+}
+
+.body .main .page-item.active .page-link {
+    background: #2563eb;
+    border-color: #2563eb;
+}
+/* =========================
+   ROLE PERMISSIONS – INDENT TEXT
+========================= */
+
+/* các dòng quyền (Xem, Thêm, Sửa, Xóa...) */
+table[table-permissions] tbody tr[data-name] td:first-child {
+    padding-left: 36px;          /* 👈 thụt vào */
+    position: relative;
+}
+
+/* thêm dấu gạch nhỏ cho dễ nhìn (tuỳ chọn) */
+table[table-permissions] tbody tr[data-name] td:first-child::before {
+    content: "–";
+    position: absolute;
+    left: 18px;
+    color: #9ca3af;
+}
+
+/* tiêu đề nhóm (Sản phẩm, Danh mục, ...) */
+table[table-permissions] tbody tr td[colspan] {
+    padding-left: 16px;
+    background: #d8dde6;
+    font-weight: 700;
+    color: #111827;
+}
+
+/* làm chữ nhóm to & rõ hơn */
+table[table-permissions] tbody tr td[colspan] b {
+    font-size: 15px;
+}
+/* =========================
+   ACCOUNTS BUTTON STYLE
+========================= */
+
+/* nút chung */
+.body .main .btn {
+    border-radius: 10px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+/* + Thêm mới */
+.body .main .btn-outline-success {
+    border-color: #22c55e;
+    color: #16a34a;
+    background: #ecfdf5;
+}
+
+.body .main .btn-outline-success:hover {
+    background: #22c55e;
+    color: #ffffff;
+}
+
+/* Chi tiết */
+.body .main .btn-secondary {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+    color: #334155;
+}
+
+.body .main .btn-secondary:hover {
+    background: #e2e8f0;
+    color: #111827;
+}
+
+/* Sửa */
+.body .main .btn-warning {
+    background: #facc15;
+    border-color: #eab308;
+    color: #111827;
+}
+
+.body .main .btn-warning:hover {
+    background: #eab308;
+    color: #111827;
+}
+
+/* Xóa */
+.body .main .btn-danger {
+    background: #ef4444;
+    border-color: #dc2626;
+}
+
+.body .main .btn-danger:hover {
+    background: #dc2626;
+}
+
+/* =========================
+   STATUS BADGE
+========================= */
+.body .main .badge {
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* trạng thái hoạt động */
+.body .main .badge.bg-success {
+    background: #22c55e !important;
+}
+
+/* trạng thái dừng */
+.body .main .badge.bg-danger {
+    background: #ef4444 !important;
+}
+
+/* hover badge (nếu có click) */
+.body .main a.badge:hover {
+    opacity: 0.85;
+    text-decoration: none;
+}
+.body .main {
+    padding-top: 30px; /* mặc định bạn đang ~96px */
+}

@@ -9,7 +9,7 @@ block main
         .container.mt-4
             h2 Quản lý Blog
             if roleUser.permissions.includes('blogs_create')
-                a.btn.btn-primary.mt-2(href="/admin/blog/create") + Thêm bài viết
+                a.btn.btn-primary.mt-2(href="/admin/blog/create") Thêm bài viết
 
             // ===================== FORM LỌC =====================
             form.mt-4(method="GET", action="/admin/blog")
@@ -63,7 +63,7 @@ block main
 
             // ===================== BẢNG DANH SÁCH BLOG =====================
             table.table.table-bordered.mt-3
-                thead.table-dark
+                thead.table
                     tr
                         th(style="width:120px") Ảnh
                         th Tiêu đề
