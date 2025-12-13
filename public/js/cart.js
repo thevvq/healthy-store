@@ -206,4 +206,22 @@ document.addEventListener("DOMContentLoaded", () => {
         qtyInputs.forEach(input => input.addEventListener("change", updateTotal));
         updateTotal();
     }
+
+    // ============================================================
+    // NGĂT SUBMIT KHI KHÔNG CHỌN SẢN PHẨM (Tiến hành đặt hàng)
+    // ============================================================
+    const cartForm = document.querySelector("form[action='/checkout']");
+    if (cartForm) {
+        cartForm.addEventListener("submit", (e) => {
+            const anyChecked = Array.from(document.querySelectorAll(".select-item")).some(cb => cb.checked);
+            if (!anyChecked) {
+                e.preventDefault();
+                Swal.fire({
+                    icon: "error",
+                    title: "Vui lòng chọn sản phẩm đặt hàng!"
+                });
+                return false;
+            }
+        });
+    }
 });

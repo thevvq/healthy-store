@@ -35,7 +35,9 @@ block main
                             span.badge.bg-danger.text-white Đã hủy
 
                     p.text-muted.mt-1
-                        | Ngày đặt: #{order.createdAt.toLocaleString("vi-VN")}
+
+                        | Ngày đặt: #{order.createdAt.toLocaleDateString('vi-VN')} #{order.createdAt.toLocaleTimeString('vi-VN')}
+
                     hr
 
                     h4(style="font-size:18px;margin-top:10px;") Thông tin giao hàng
@@ -71,15 +73,12 @@ block main
                                         )
                                     td #{item.title}
                                     td #{item.quantity}
-                                    td
-                                        | #{item.price.toLocaleString("vi-VN")} ₫
-                                    td
-                                        | #{(item.quantity * item.price).toLocaleString("vi-VN")} VND
+                                    td #{item.price.toLocaleString("vi-VN")} ₫
+                                    td #{(item.quantity * item.price).toLocaleString("vi-VN")} ₫
 
                     h4.mt-3
                         | Tổng thanh toán:
-                        span.text-danger
-                            | #{order.total.toLocaleString("vi-VN")} VND
+                        span.text-danger #{order.total.toLocaleString("vi-VN")} ₫
 
                     .mt-3
                         a.btn.btn-primary(href=`/orders/${order._id}`) Xem chi tiết
