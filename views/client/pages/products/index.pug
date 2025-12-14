@@ -18,7 +18,7 @@ mixin sidebarCategoryTree(categories, parentId)
                                 i.fa-solid.fa-carrot
 
                         span.sidebar-cat-text= cat.title
-                        
+
                     if hasChildren
                         button.sidebar-cat-toggle(type="button" aria-label="Mở danh mục con")
                             i.fa-solid.fa-chevron-down
@@ -34,7 +34,7 @@ block main
     .container.my-3
         .row
             .col-12
-                +box-head('Danh sách sản phẩm')
+            
 
         .row.mt-3
             // ================== CỘT TRÁI: SIDEBAR ==================
