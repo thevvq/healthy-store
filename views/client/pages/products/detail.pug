@@ -20,9 +20,9 @@ block main
 
                     .product-detail-price
                         if product.newPrice
-                            span.price-new #{Number(product.newPrice).toLocaleString('vi-VN')} VND
+                            span.price-new #{Number(product.newPriceNumber).toLocaleString('vi-VN')} VND
                         if product.price
-                            span.price-old #{Number(product.price).toLocaleString('vi-VN')} VND
+                            span.price-old #{Number(product.oldPriceNumber).toLocaleString('vi-VN')} VND
                         if product.discountPercentage
                             span.price-discount -#{product.discountPercentage}%
 
@@ -44,7 +44,7 @@ block main
                             button.btn-add-cart(
                                 data-id=product._id
                                 data-title=product.title
-                                data-price=product.newPrice
+                                data-price=product.newPriceNumber
                                 data-image=product.thumbnail
                                 data-stock=product.stock
                             ) Thêm vào giỏ hàng
