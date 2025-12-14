@@ -47,13 +47,31 @@ module.exports.index = async (req, res) => {
         // 3. Lấy danh mục cho menu + sidebar
         const categoriesMenu = await categoryService.getMenuCategories();
 
+        // PAGINATION
+        const page = Math.max(1, parseInt(req.query.page) || 1);
+        const perPage = Math.max(1, parseInt(req.query.perPage) || parseInt(req.query.limit) || 10);
+        const totalItems = products.length;
+        const totalPages = Math.max(1, Math.ceil(totalItems / perPage));
+
+        // Clamp page
+        const currentPage = Math.min(page, totalPages);
+        const start = (currentPage - 1) * perPage;
+        const end = start + perPage;
+
+        const pagedProducts = products.slice(start, end);
+
         // 4. Render ra trang products
         res.render('client/pages/products/index', {
             pageTitle: 'Trang danh sách sản phẩm',
-            products,
+            products: pagedProducts,
             categoriesMenu,
             // cho Pug/JS dùng lại keyword ban đầu (nếu muốn set vào ô search)
-            keyword
+            keyword,
+            // pagination meta
+            page: currentPage,
+            perPage,
+            totalPages,
+            totalItems
         });
     } catch (error) {
         console.log(error);
@@ -82,8 +100,8 @@ module.exports.detail = async (req, res) => {
             });
         }
 
-        // Lấy bình luận của sản phẩm
-        const comments = await Comment.find({ productId: product._id })
+        // Lấy bình luận đã được duyệt của sản phẩm
+        const comments = await Comment.find({ productId: product._id, deleted: false, status: 'approved' })
             .sort({ createdAt: -1 })
             .lean();
 
@@ -189,11 +207,12 @@ module.exports.comment = async (req, res) => {
             return res.status(400).send('Nội dung bình luận không được để trống');
         }
 
-        // Tạo bình luận mới
+        // Tạo bình luận mới (mặc định status = 'pending')
         await Comment.create({
             productId: product._id,
             userId: user._id,
             userName: user.fullName || user.email,
+            userEmail: user.email || '',
             rating: ratingNumber,
             content: content.trim()
         });

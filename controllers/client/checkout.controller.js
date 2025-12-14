@@ -14,6 +14,36 @@ module.exports = {
                 return res.redirect("/login");
             }
 
+            // Nếu POST từ product (direct checkout) gửi `directItems`
+            if (req.body.directItems) {
+                let payload = [];
+                try {
+                    payload = JSON.parse(req.body.directItems);
+                } catch (err) {
+                    return res.redirect('/cart');
+                }
+
+                if (!Array.isArray(payload) || payload.length === 0) {
+                    return res.redirect('/cart');
+                }
+
+                const data = await checkoutService.getSelectedItemsFromPayload(req, payload);
+
+                return res.render("client/pages/checkout/index", {
+                    pageTitle: "Thanh toán",
+                    items: data.items,
+                    total: data.total,
+                    // gửi directItems để placeOrder có thể xử lý
+                    directItems: JSON.stringify(payload),
+                    selectedItems: JSON.stringify([]),
+                    profile: {
+                        fullName: req.session.user.fullName || "",
+                        phone: req.session.user.phone || "",
+                        address: req.session.user.address || ""
+                    }
+                });
+            }
+
             let selectedItems = [];
 
             // Lấy selectedItems từ POST giỏ hàng
@@ -21,14 +51,12 @@ module.exports = {
                 try {
                     selectedItems = JSON.parse(req.body.selectedItems);
                 } catch (err) {
-                    
                     return res.redirect("/cart");
                 }
             }
 
             // Không có sản phẩm được chọn
             if (!Array.isArray(selectedItems) || selectedItems.length === 0) {
-                
                 return res.redirect("/cart");
             }
 
@@ -39,11 +67,7 @@ module.exports = {
                 pageTitle: "Thanh toán",
                 items: data.items,
                 total: data.total,
-
-                // ⭐ GỬI XUỐNG VIEW DƯỚI DẠNG CHUỖI JSON
                 selectedItems: JSON.stringify(selectedItems),
-
-                // ⭐ LẤY THÔNG TIN TỪ PROFILE (KHÔNG ẢNH HƯỞNG CŨ)
                 profile: {
                     fullName: req.session.user.fullName || "",
                     phone: req.session.user.phone || "",
@@ -84,31 +108,30 @@ module.exports = {
 
         let ids = [];
 
-        // Parse selectedItems
+        // Support directItems payload (from product detail) or selectedItems from cart
         try {
-            ids = JSON.parse(req.body.selectedItems);
+            if (req.body.directItems) {
+                ids = JSON.parse(req.body.directItems);
+            } else {
+                ids = JSON.parse(req.body.selectedItems);
+            }
         } catch (err) {
-            return res.json({
-                success: false,
-                
-            });
+            return res.json({ success: false, message: 'Dữ liệu không hợp lệ' });
         }
 
         if (!Array.isArray(ids) || ids.length === 0) {
-            return res.json({
-                success: false,
-                
-            });
+            return res.json({ success: false, message: 'Không có sản phẩm để đặt hàng' });
         }
 
         try {
-            const order = await checkoutService.createOrder(req, ids);
+            let order;
+            if (req.body.directItems) {
+                order = await checkoutService.createOrderFromPayload(req, ids);
+            } else {
+                order = await checkoutService.createOrder(req, ids);
+            }
 
-            return res.json({
-                success: true,
-                message: "Đặt hàng thành công!",
-                orderId: order._id
-            });
+            return res.json({ success: true, message: 'Đặt hàng thành công!', orderId: order._id });
 
         } catch (err) {
             console.error("Place Order Error:", err);

@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const form = document.querySelector("#checkoutForm");
     const btn = document.querySelector("#btnPlaceOrder");
     const selectedItemsInput = document.querySelector("#selectedItemsInput");
+    const directItemsInput = document.querySelector('#directItemsInput');
 
     if (!form) return;
 
@@ -30,26 +31,26 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log("Selected Items tại trang checkout:", selectedItemsInput?.value);
 
         // ============================
-        // KIỂM TRA selectedItems
+        // KIỂM TRA selectedItems hoặc directItems
         // ============================
-        if (!selectedItemsInput || !selectedItemsInput.value) {
-          
-            return;
-        }
-
         let parsedSelected = [];
+        if (directItemsInput && directItemsInput.value) {
+            try {
+                parsedSelected = JSON.parse(directItemsInput.value);
+            } catch (err) {
+                return;
+            }
+        } else {
+            if (!selectedItemsInput || !selectedItemsInput.value) return;
 
-        try {
-            parsedSelected = JSON.parse(selectedItemsInput.value);
-        } catch (err) {
-            
-            return;
+            try {
+                parsedSelected = JSON.parse(selectedItemsInput.value);
+            } catch (err) {
+                return;
+            }
         }
 
-        if (parsedSelected.length === 0) {
-            
-            return;
-        }
+        if (!Array.isArray(parsedSelected) || parsedSelected.length === 0) return;
 
         // Disable nút để tránh spam
         btn.disabled = true;
@@ -59,8 +60,12 @@ document.addEventListener("DOMContentLoaded", () => {
         const formData = new FormData(form);
         let data = Object.fromEntries(formData);
 
-        // ⭐ THÊM selectedItems VÀO DATA GỬI LÊN BACKEND ⭐
-        data.selectedItems = selectedItemsInput.value;
+        // ⭐ THÊM selectedItems HOẶC directItems VÀO DATA GỬI LÊN BACKEND ⭐
+        if (directItemsInput && directItemsInput.value) {
+            data.directItems = directItemsInput.value;
+        } else {
+            data.selectedItems = selectedItemsInput.value;
+        }
 
         try {
             const res = await fetch("/checkout/place-order", {

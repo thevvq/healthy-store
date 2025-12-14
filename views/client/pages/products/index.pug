@@ -140,6 +140,30 @@ block main
                                         else
                                             p.product-desc.text-muted Chưa có mô tả.
 
+                // PAGINATION UI
+                if totalPages && totalPages > 1
+                    .pagination-container
+                        ul.pagination-verdish
+                            if page > 1
+                                li
+                                    a(href=`?page=${page - 1}&perPage=${perPage}`) ‹
+                            else
+                                li.disabled
+                                    span ‹
+
+                            // PAGE NUMBER
+                            each p in [...Array(totalPages).keys()]
+                                - const pageNumber = p + 1
+                                li(class=pageNumber === page ? "active" : "")
+                                    a(href=`?page=${pageNumber}&perPage=${perPage}`)= pageNumber
+
+                            if page < totalPages
+                                li
+                                    a(href=`?page=${page + 1}&perPage=${perPage}`) ›
+                            else
+                                li.disabled
+                                    span ›
+
 block scripts
     // keyword để JS phía client đọc lại (search từ header)
     script.

@@ -45,6 +45,10 @@ block main
                 value=selectedItems
             )
 
+            // nếu direct checkout gửi directItems
+            if (typeof directItems !== 'undefined' && directItems)
+                input#directItemsInput(type="hidden", name="directItems", value=directItems)
+
             h4.mt-4.mb-3 Thông tin giao hàng
 
             .mb-3

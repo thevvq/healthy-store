@@ -56,8 +56,32 @@ block main
                 else
                     p.text-muted.text-center Chưa có sản phẩm nào.
 
-            .products-more
-                a.products-more-btn(href="/products") Xem thêm sản phẩm →
+            // PAGINATION / XEM THÊM
+            if totalPages && totalPages > 1
+                .products-more
+                    .pagination-container
+                        ul.pagination-verdish
+                            if page > 1
+                                li
+                                    a(href=`/?page=${page - 1}`) ‹
+                            else
+                                li.disabled
+                                    span ‹
+
+                            each p in [...Array(totalPages).keys()]
+                                - const pageNumber = p + 1
+                                li(class=pageNumber === page ? "active" : "")
+                                    a(href=`/?page=${pageNumber}`)= pageNumber
+
+                            if page < totalPages
+                                li
+                                    a(href=`/?page=${page + 1}`) ›
+                            else
+                                li.disabled
+                                    span ›
+            else
+                .products-more
+                    a.products-more-btn(href="/products") Xem thêm sản phẩm →
 
     // ----- BLOG & FANPAGE -----
     section.home-blog-fanpage

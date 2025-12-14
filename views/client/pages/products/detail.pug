@@ -50,7 +50,7 @@ block main
                             ) Thêm vào giỏ hàng
 
                         // Hàng dưới: nút mua ngay
-                        button.btn-buy-now(type="button") Mua ngay
+                        button.btn-buy-now(type="button", data-id=product._id, data-stock=product.stock, data-logged=(user ? '1' : '0')) Mua ngay
 
                         // Ghi chú dưới nút mua ngay (đã tách câu + icon mới)
                         ul.buy-note-list
@@ -147,4 +147,5 @@ block main
             h1.mb-4 Sản phẩm không tồn tại
 
 block scripts
+    script(src="/js/product.buy.js")
     script(src="/js/product.review.js")
