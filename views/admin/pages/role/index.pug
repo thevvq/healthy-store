@@ -13,7 +13,7 @@ block main
                 a.btn.btn-primary.mb-3(href=`${prefixAdmin}/roles/create`) Thêm Role mới
 
             table.table.table-bordered.table-hover
-                thead
+                thead 
                     tr
                         th STT
                         th Nhóm quyền
@@ -38,7 +38,7 @@ block main
                                             data-btn-delete=''
                                         ) Xóa
 
-        form(
+        form.d-none(
             action=""
             method="POST"
             id="form-delete-role"

@@ -7,6 +7,7 @@ const registerRoute = require("./register.route");
 const cartRoute = require("./cart.route");
 const checkoutRoute = require("./checkout.route");
 const ordersRoute = require("./orders.route");
+const passwordRoute = require("./password.route");
 
 const middlewareCheckLogin = require("../../middlewares/client/checkLogin.middleware");
 // 👇 THÊM: service lấy danh mục
@@ -35,6 +36,8 @@ module.exports = (app) => {
     app.use("/", homeRoutes);
 
     app.use("/login", loginRoute);
+
+    app.use("/password", passwordRoute);
 
     app.use("/register", registerRoute);
     

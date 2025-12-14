@@ -8,17 +8,6 @@ block main
         .auth-box
             h2.title Đăng nhập
 
-            // ===== LỖI TỪ SERVICE (EMAIL / PASSWORD) =====
-            if error
-                .alert.alert-danger #{error}
-
-            // ===== LỖI VALIDATE =====
-            if errors && errors.length
-                .alert.alert-danger
-                    ul.mb-0
-                        each err in errors
-                            li= err.msg
-
             form(method="POST", action="/login")
                 .form-group
                     label Email
@@ -37,8 +26,11 @@ block main
                         placeholder="Nhập mật khẩu..."
                     )
 
+                .forgot-password
+                    a(href="/password/forgot") Quên mật khẩu? 
+
                 button.btn-login(type="submit") Đăng nhập
 
             p.switch-text
-                | Chưa có tài khoản?
+                | Chưa có tài khoản? 
                 a(href="/register") Đăng ký ngay 

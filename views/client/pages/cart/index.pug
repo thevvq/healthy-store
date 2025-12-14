@@ -4,8 +4,12 @@ block main
     .container.my-4
         h2.mb-4 Giỏ hàng của bạn
 
-        if cart.length === 0
-            p Giỏ hàng đang trống.
+        if !cart || cart.length === 0
+            .empty-state.text-center(style="padding:60px 0;")
+                img(src="/images/none cart.jpg" width="120" alt="empty-cart")
+                h4.mt-3 Giỏ hàng đang trống
+                p.text-muted Bạn chưa thêm sản phẩm nào vào giỏ hàng.
+                a.btn.btn-success.mt-3(href="/products") Tiếp tục mua sắm
         else
 
             // Nút xóa toàn bộ giỏ hàng

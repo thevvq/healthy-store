@@ -121,6 +121,7 @@ button[type="submit"]:active {
         font-size: 20px;
     }
 }
+
 /* ===== PASSWORD TOGGLE ===== */
 .password-wrapper {
     position: relative;
@@ -144,3 +145,4 @@ button[type="submit"]:active {
 .toggle-password:hover {
     opacity: 1;
 }
+

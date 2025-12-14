@@ -5,6 +5,15 @@ const cartService = require("../../services/client/cart.service");
 =================================================== */
 module.exports.add = async (req, res) => {
     try {
+        // ✅ Kiểm tra đăng nhập
+        if (!req.session.user) {
+            return res.json({
+                success: false,
+                message: "Vui lòng đăng nhập để thêm vào giỏ hàng!",
+                requireLogin: true
+            });
+        }
+
         const { productId, quantity } = req.body;
 
         await cartService.addToCart(req, productId, quantity);
@@ -28,6 +37,15 @@ module.exports.add = async (req, res) => {
 =================================================== */
 module.exports.update = async (req, res) => {
     try {
+        // ✅ Kiểm tra đăng nhập
+        if (!req.session.user) {
+            return res.json({
+                success: false,
+                message: "Vui lòng đăng nhập để cập nhật giỏ hàng!",
+                requireLogin: true
+            });
+        }
+
         const { productId, quantity } = req.body;
 
         await cartService.updateQuantity(req, productId, quantity);
@@ -51,6 +69,15 @@ module.exports.update = async (req, res) => {
 =================================================== */
 module.exports.delete = async (req, res) => {
     try {
+        // ✅ Kiểm tra đăng nhập
+        if (!req.session.user) {
+            return res.json({
+                success: false,
+                message: "Vui lòng đăng nhập để xóa sản phẩm!",
+                requireLogin: true
+            });
+        }
+
         const { productId } = req.body;
 
         await cartService.removeItem(req, productId);
@@ -74,6 +101,15 @@ module.exports.delete = async (req, res) => {
 =================================================== */
 module.exports.clear = async (req, res) => {
     try {
+        // ✅ Kiểm tra đăng nhập
+        if (!req.session.user) {
+            return res.json({
+                success: false,
+                message: "Vui lòng đăng nhập để xóa giỏ hàng!",
+                requireLogin: true
+            });
+        }
+
         await cartService.clearCart(req);
 
         return res.json({

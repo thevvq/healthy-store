@@ -61,7 +61,8 @@
 .price-new {
     font-size: 24px;
     font-weight: 700;
-    color: green; /* đồng bộ với list sản phẩm */
+    color: green;
+    /* đồng bộ với list sản phẩm */
 }
 
 .price-old {
@@ -105,7 +106,8 @@
 /* --- Nút + số lượng --- */
 .product-detail-actions {
     display: flex;
-    flex-direction: column;  /* xếp dọc: qty + thêm giỏ + mua ngay */
+    flex-direction: column;
+    /* xếp dọc: qty + thêm giỏ + mua ngay */
     gap: 12px;
     align-items: flex-start;
 }
@@ -179,15 +181,19 @@
 }
 
 .btn-buy-now {
-    display: block;          /* cho phép width 100% */
-    width: 100%;             /* dài full dòng */
+    display: block;
+    /* cho phép width 100% */
+    width: 100%;
+    /* dài full dòng */
     text-align: center;
     padding: 12px 32px;
     border-radius: 999px;
-    background: #28a745;     /* xanh lá */
+    background: #28a745;
+    /* xanh lá */
     color: #fff;
     text-decoration: none;
     font-weight: 600;
+    border: none;
 
     transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
     will-change: transform;
@@ -324,12 +330,14 @@
     font-size: 26px;
     cursor: pointer;
     transition: transform 0.15s ease, filter 0.15s ease, color 0.15s ease;
-    color: #e5e7eb; /* xám khi chưa chọn */
+    color: #e5e7eb;
+    /* xám khi chưa chọn */
 }
 
 /* Sao đang active (được chọn) */
 .rating-stars .star.active span {
-    color: #fbbf24; /* vàng */
+    color: #fbbf24;
+    /* vàng */
     filter: none;
 }
 
@@ -473,12 +481,14 @@
     font-size: 26px;
     cursor: pointer;
     transition: transform 0.15s ease, filter 0.15s ease, color 0.15s ease;
-    color: #e5e7eb; /* xám khi chưa chọn */
+    color: #e5e7eb;
+    /* xám khi chưa chọn */
 }
 
 /* Sao đang active (được chọn) */
 .rating-stars .star.active span {
-    color: #fbbf24; /* vàng */
+    color: #fbbf24;
+    /* vàng */
     filter: none;
 }
 

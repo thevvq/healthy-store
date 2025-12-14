@@ -180,5 +180,3 @@ if (sort){
     }
 
 }
-// End Sort
-

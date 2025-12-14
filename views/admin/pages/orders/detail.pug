@@ -15,8 +15,9 @@ block main
                 class= order.status === 'cancelled' ? 'bg-secondary' :
                       order.status === 'completed' ? 'bg-success' :
                       order.status === 'shipping' ? 'bg-info' :
-                      order.status === 'confirmed' ? 'bg-primary' : 'bg-warning text-dark'
-            ) #{order.statusText}
+                      order.status === 'confirmed' ? 'bg-primary' :
+                      'bg-warning text-dark'
+            ) #{order.statusText || order.status}
 
             hr
 
@@ -40,16 +41,25 @@ block main
                         th Giá
                         th Thành tiền
                 tbody
-                    each item in order.items
-                        - const priceVND = Number(item.price) || 0;
-                        - const lineTotalVND = (Number(item.quantity) || 0) * priceVND;
+                    if order.items && order.items.length
+                        each item in order.items
+                            - const priceVND = Number(item.price) || 0;
+                            - const qty = Number(item.quantity) || 0;
+                            - const lineTotalVND = qty * priceVND;
+                            tr
+                                td
+                                    img(
+                                        src=item.thumbnail,
+                                        width="60",
+                                        style="border-radius:6px;object-fit:cover;"
+                                    )
+                                td #{item.title}
+                                td #{qty}
+                                td #{priceVND.toLocaleString('vi-VN')} VND
+                                td #{lineTotalVND.toLocaleString('vi-VN')} VND
+                    else
                         tr
-                            td
-                                img(src=item.thumbnail, width="60", style="border-radius:6px;")
-                            td #{item.title}
-                            td #{item.quantity}
-                            td #{priceVND.toLocaleString('vi-VN')} VND
-                            td #{lineTotalVND.toLocaleString('vi-VN')} VND
+                            td(colspan="5").text-muted Không có sản phẩm.
 
             h3.mt-3
                 | Tổng thanh toán:
@@ -61,7 +71,11 @@ block main
             if permissions.includes('orders_edit')
                 h3 Cập nhật trạng thái đơn
 
-                form(method="POST", action=`/admin/orders/${order._id}/status`, style="max-width:300px;")
+                form(
+                    method="POST",
+                    action=`/admin/orders/${order._id}/status`,
+                    style="max-width:300px;"
+                )
                     select.form-select(name="status")
                         option(value="pending", selected=order.status === 'pending') Đang xử lý
                         option(value="confirmed", selected=order.status === 'confirmed') Đã duyệt

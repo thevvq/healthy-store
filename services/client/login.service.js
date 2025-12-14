@@ -18,10 +18,11 @@ module.exports.login = async (req, res) => {
         throw new Error("PASSWORD_ERROR");
     }
 
-    // cookie
+    // cookie - ✅ Giữ token lâu hơn (7 ngày)
     res.cookie("tokenClient", user.token, {
         httpOnly: true,
-        sameSite: "lax"
+        sameSite: "lax",
+        maxAge: 7 * 24 * 60 * 60 * 1000  // 7 ngày
     });
 
     // session

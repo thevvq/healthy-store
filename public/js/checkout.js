@@ -6,17 +6,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!form) return;
 
-    // Debug kiểm tra dữ liệu
-    console.log("Selected Items tại trang checkout:", selectedItemsInput?.value);
-
+    // ✅ KIỂM TRA ĐĂNG NHẬP TRƯỚC KHI BẤM ĐẶT HÀNG
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
+
+        if (!isLoggedIn) {
+            Swal.fire({
+                icon: "warning",
+                title: "Chưa đăng nhập",
+                text: "Vui lòng đăng nhập để đặt hàng",
+                confirmButtonText: "Đăng nhập",
+                showCancelButton: true,
+                cancelButtonText: "Hủy"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = "/login";
+                }
+            });
+            return;
+        }
+
+        // Debug kiểm tra dữ liệu
+        console.log("Selected Items tại trang checkout:", selectedItemsInput?.value);
 
         // ============================
         // KIỂM TRA selectedItems
         // ============================
         if (!selectedItemsInput || !selectedItemsInput.value) {
-            Swal.fire("Lỗi!", "Không có sản phẩm nào được chọn!", "error");
+          
             return;
         }
 
@@ -25,12 +42,12 @@ document.addEventListener("DOMContentLoaded", () => {
         try {
             parsedSelected = JSON.parse(selectedItemsInput.value);
         } catch (err) {
-            Swal.fire("Lỗi!", "Danh sách sản phẩm không hợp lệ!", "error");
+            
             return;
         }
 
         if (parsedSelected.length === 0) {
-            Swal.fire("Lỗi!", "Không có sản phẩm nào để đặt hàng!", "error");
+            
             return;
         }
 
@@ -65,7 +82,19 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
 
             } else {
-                Swal.fire("Lỗi!", json.message, "error");
+                // ✅ Nếu cần đăng nhập
+                if (json.requireLogin) {
+                    Swal.fire({
+                        icon: "warning",
+                        title: "Chưa đăng nhập",
+                        text: json.message,
+                        confirmButtonText: "Đăng nhập"
+                    }).then(() => {
+                        window.location.href = "/login";
+                    });
+                } else {
+                    Swal.fire("Lỗi!", json.message, "error");
+                }
             }
 
         } catch (error) {

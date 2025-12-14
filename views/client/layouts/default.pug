@@ -35,6 +35,10 @@ html(lang="vi")
     block css
 
   body
+    //- ✅ THÊM: Biến global để check login ở JavaScript
+    script.
+      const isLoggedIn = !{user ? 'true' : 'false'};
+    
     // HEADER
     include ../partials/header.pug
 

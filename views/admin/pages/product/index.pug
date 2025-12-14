@@ -115,14 +115,14 @@ block main
         if products.count > pagination.limitItems
             +pagination(pagination)
 
-        form(
+        form.d-none(
             action=""
             method="POST"
             id="form-change-status"
             data-path=`${prefixAdmin}/products/change-status`
         ) 
 
-        form(
+        form.d-none(
             action=""
             method="POST"
             id="form-delete-product"

@@ -48,14 +48,14 @@ block main
                         - const counter = { value: 0 }
                         +category-rows(tree, '', counter)
 
-        form(
+        form.d-none(
             action=""
             method="POST"
             id="form-change-status"
             data-path=`${prefixAdmin}/categories/change-status`
         ) 
 
-        form(
+        form.d-none(
             action=""
             method="POST"
             id="form-delete-category"

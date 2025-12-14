@@ -31,7 +31,5 @@ block main
                     textarea.form-control#editor(name="content", rows="10") !{blog.content}
 
                 button.btn.btn-success(type="submit") Cập nhật
-                a.btn.btn-secondary.ms-2(href="/admin/blog") Hủy
-
     else
         +alert-no-permission()

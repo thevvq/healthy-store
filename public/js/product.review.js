@@ -27,3 +27,31 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    const buyNowBtn = document.querySelector('.btn-buy-now');
+    
+    if (buyNowBtn) {
+        buyNowBtn.addEventListener('click', function() {
+            // ✅ KIỂM TRA ĐĂNG NHẬP TRƯỚC
+            if (!isLoggedIn) {
+                Swal.fire({
+                    icon: "warning",
+                    title: "Chưa đăng nhập",
+                    text: "Vui lòng đăng nhập để mua hàng",
+                    confirmButtonText: "Đăng nhập",
+                    showCancelButton: true,
+                    cancelButtonText: "Hủy"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = "/login";
+                    }
+                });
+                return;
+            }
+            
+            // Nếu đã đăng nhập, chuyển tới giỏ hàng
+            window.location.href = "/cart";
+        });
+    }
+});

@@ -7,22 +7,28 @@ block main
   .container.blog-container
     h2.blog-title Tin tức & Blog
 
-    .row.g-4
-      each item in blogs
-        .col-md-4
-          a.blog-card(href=`/blog/${item.slug}`)
-            .blog-image
-              img(src=item.thumbnail || "/images/no-image.png")
+    if !blogs || blogs.length === 0
+      .empty-state.text-center(style="padding:60px 0;")
+        img(src="/images/none blog.jpg" width="120" alt="no-blogs")
+        h4.mt-3 Chưa có bài viết nào
+        p.text-muted Vui lòng quay lại sau để xem tin tức.
+    else
+      .row.g-4
+        each item in blogs
+          .col-md-4
+            a.blog-card(href=`/blog/${item.slug}`)
+              .blog-image
+                img(src=item.thumbnail || "/images/no-image.png")
 
-            .blog-body
-              h3.blog-name #{item.title}
+              .blog-body
+                h3.blog-name #{item.title}
 
-              p.blog-desc #{item.description || ""}
+                p.blog-desc #{item.description || ""}
 
-              .blog-date
-                i.fa-regular.fa-calendar
-                span
-                  |  #{item.createdAt.toLocaleDateString("vi-VN")}
+                .blog-date
+                  i.fa-regular.fa-calendar
+                  span
+                    |  #{item.createdAt.toLocaleDateString("vi-VN")}
 
     // =======================
     // PAGINATION
