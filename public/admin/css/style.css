@@ -878,22 +878,355 @@ table[checkbox-multi] tbody td:nth-child(5) input[type="number"] {
     width: 64px;
 }
 /* ===============================
-   PRODUCTS TABLE – CENTER ACTION
+   FORCE CENTER COLUMN "MÔ TẢ" – ROLES
 =============================== */
 
-/* Header "Hành động" */
-table thead th:last-child {
+/* Header Mô tả */
+.body .main table.roles-table thead th:nth-child(3) {
     text-align: center !important;
 }
 
-/* Ô chứa các nút hành động */
-table tbody td:last-child {
+/* Nội dung Mô tả */
+.body .main table.roles-table tbody td:nth-child(3) {
     text-align: center !important;
+    vertical-align: middle !important;
+}
+/* ===============================
+   ROLES TABLE – CENTER STT + MÔ TẢ
+   Chỉ áp dụng cho trang Roles
+=============================== */
+
+/* STT (cột 1) */
+.body .main table.roles-table thead th:nth-child(1),
+.body .main table.roles-table tbody td:nth-child(1) {
+    text-align: center !important;
+    vertical-align: middle !important;
+    font-weight: 600;
+    width: 80px;
+}
+
+/* Mô tả (cột 3) */
+.body .main table.roles-table thead th:nth-child(3),
+.body .main table.roles-table tbody td:nth-child(3) {
+    text-align: center !important;
+    vertical-align: middle !important;
+}
+/* ===============================
+   ACCOUNTS TABLE – CENTER STT & ACTION
+   Chỉ áp dụng trang Quản lý tài khoản
+=============================== */
+
+/* STT (cột 1) */
+.body .main table.accounts-table thead th:nth-child(1),
+.body .main table.accounts-table tbody td:nth-child(1) {
+    text-align: center !important;
+    vertical-align: middle !important;
+    width: 70px;
+    font-weight: 600;
+}
+
+/* Hành động (cột cuối) */
+.body .main table.accounts-table thead th:last-child,
+.body .main table.accounts-table tbody td:last-child {
+    text-align: center !important;
+    vertical-align: middle !important;
     white-space: nowrap;
 }
 
-/* Nhóm nút (Chi tiết / Sửa / Xóa) */
-table tbody td:last-child .btn {
+/* Khoảng cách nút hành động */
+.body .main table.accounts-table tbody td:last-child .btn {
     margin: 0 4px;
 }
+/* ===============================
+   ACCOUNTS TABLE – EMAIL ALIGN FIX
+=============================== */
 
+/* Header cột Email – căn giữa */
+.body .main table.accounts-table thead th:nth-child(5) {
+    text-align: center !important;
+}
+
+/* Nội dung Email – căn trái */
+.body .main table.accounts-table tbody td:nth-child(5) {
+    text-align: left !important;
+    padding-left: 70px;
+    font-weight: 500;
+    word-break: break-all; /* email dài không vỡ layout */
+}
+/* ===============================
+   BLOG TABLE – CENTER DATE COLUMN
+=============================== */
+
+/* Header cột Ngày đăng */
+.body .main table.blog-table thead th:nth-child(3) {
+    text-align: center !important;
+}
+
+/* Nội dung Ngày đăng */
+.body .main table.blog-table tbody td:nth-child(3) {
+    text-align: center !important;
+    font-weight: 500;
+    color: #111827;
+}
+/* =========================================
+   ORDER DETAIL PAGE – TABLE UNIFORM LAYOUT
+   Áp dụng CHỈ cho chi tiết đơn hàng
+========================================= */
+
+/* === Table wrapper === */
+.order-detail-table {
+    table-layout: fixed;              /* BẮT BUỘC để chia đều cột */
+    width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+    border-collapse: collapse;
+}
+
+/* =========================================
+   HEADER
+========================================= */
+.order-detail-table thead th {
+    background: #e5e7eb;
+    font-weight: 700;
+    font-size: 14px;
+    color: #111827;
+    text-align: center;
+    vertical-align: middle;
+    padding: 14px 10px;
+    border: 1px solid #d1d5db;
+}
+
+/* =========================================
+   BODY
+========================================= */
+.order-detail-table tbody td {
+    background: #f8fafc;
+    font-size: 14px;
+    vertical-align: middle;
+    padding: 14px 10px;
+    border: 1px solid #e5e7eb;
+}
+
+/* Hover row */
+.order-detail-table tbody tr:hover td {
+    background: #eef2ff;
+}
+
+/* =========================================
+   COLUMN WIDTH + ALIGNMENT
+========================================= */
+
+/* 1️⃣ Ảnh */
+.order-detail-table th:nth-child(1),
+.order-detail-table td:nth-child(1) {
+    width: 18%;
+    text-align: center;
+}
+
+/* 2️⃣ Tên */
+.order-detail-table th:nth-child(2),
+.order-detail-table td:nth-child(2) {
+    width: 24%;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* 3️⃣ SL (ngắn + căn giữa) */
+.order-detail-table th:nth-child(3),
+.order-detail-table td:nth-child(3) {
+    width: 10%;
+    text-align: center !important;
+    font-weight: 600;
+}
+
+/* 4️⃣ Giá (căn phải) */
+.order-detail-table th:nth-child(4),
+.order-detail-table td:nth-child(4) {
+    width: 24%;
+    text-align: right !important;
+    padding-right: 24px;
+    font-variant-numeric: tabular-nums;
+}
+
+/* 5️⃣ Thành tiền (căn phải + đậm) */
+.order-detail-table th:nth-child(5),
+.order-detail-table td:nth-child(5) {
+    width: 24%;
+    text-align: right !important;
+    padding-right: 24px;
+    font-weight: 700;
+    color: #111827;
+}
+
+/* =========================================
+   IMAGE
+========================================= */
+.order-detail-table td img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+/* =========================================
+   TOTAL PAYMENT
+========================================= */
+.order-total {
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.order-total span {
+    color: #dc2626;
+}
+
+/* =========================================
+   STATUS BADGE
+========================================= */
+.order-status-badge {
+    padding: 6px 14px;
+    font-size: 12px;
+    border-radius: 999px;
+    font-weight: 600;
+}
+
+/* =========================================
+   RESPONSIVE (MOBILE)
+========================================= */
+@media (max-width: 768px) {
+    .order-detail-table {
+        font-size: 13px;
+    }
+
+    .order-detail-table td img {
+        width: 48px;
+        height: 48px;
+    }
+}
+/* =========================================
+   CATEGORY TABLE – FIX ALIGN + NO BROKEN TEXT
+   Chỉ áp dụng cho bảng Danh mục (category-table)
+========================================= */
+
+table.category-table{
+  width: 100%;
+  table-layout: fixed;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+}
+
+/* ===== Header ===== */
+table.category-table thead th{
+  background: #f1f5f9;
+  font-weight: 700;
+  font-size: 14px;
+  color: #111827;
+  vertical-align: middle;
+  padding: 12px 10px;
+
+  /* FIX lỗi bẻ chữ từng ký tự */
+  white-space: nowrap !important;
+  word-break: keep-all !important;
+  overflow-wrap: normal !important;
+}
+
+/* ===== Body ===== */
+table.category-table tbody td{
+  background: #f8fafc;
+  font-size: 14px;
+  vertical-align: middle;
+  padding: 12px 10px;
+  border-color: #e5e7eb;
+}
+
+table.category-table tbody tr:hover td{
+  background: #eef2ff;
+}
+
+/* ===== Cột 1: checkbox ===== */
+table.category-table th:nth-child(1),
+table.category-table td:nth-child(1){
+  width: 48px;
+  text-align: center;
+}
+
+/* ===== Cột 2: STT (căn giữa) ===== */
+table.category-table th:nth-child(2),
+table.category-table td:nth-child(2){
+  width: 70px;
+  text-align: center;
+  font-weight: 600;
+}
+
+/* ===== Cột 3: Hình ảnh (căn giữa) ===== */
+table.category-table th:nth-child(3),
+table.category-table td:nth-child(3){
+  width: 140px; /* tăng lên để không bị hẹp */
+  text-align: center;
+}
+
+/* ===== Cột 4: Tiêu đề (căn trái) ===== */
+table.category-table th:nth-child(4),
+table.category-table td:nth-child(4){
+  width: 38%;
+  text-align: left !important;
+  padding-left: 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ===== Cột 5: Vị trí (căn giữa) ===== */
+/* ===== Cột Vị trí ===== */
+.category-table th:nth-child(5),
+.category-table td:nth-child(5){
+    width: 140px;              /* 👈 tăng độ rộng */
+    text-align: center;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+/* input vị trí */
+.category-table td:nth-child(5) input{
+    width: 70px;               /* 👈 ô nhập rộng hơn */
+    text-align: center;
+}
+
+
+/* ===== Cột 6: Trạng thái (căn giữa) ===== */
+table.category-table th:nth-child(6),
+table.category-table td:nth-child(6){
+  width: 150px;
+  text-align: center;
+}
+
+/* ===== Cột 7: Hành động (căn giữa) ===== */
+table.category-table th:nth-child(7),
+table.category-table td:nth-child(7){
+  width: 190px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* Image */
+table.category-table td img{
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+/* Buttons */
+table.category-table .btn{
+  margin: 0 4px;
+}
+
+/* Responsive: cho phép cuộn ngang nếu màn nhỏ */
+@media (max-width: 768px){
+  table.category-table{
+    min-width: 900px;
+  }
+}

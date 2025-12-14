@@ -12,7 +12,8 @@ block main
             if roleUser.permissions.includes('roles_create')
                 a.btn.btn-primary.mb-3(href=`${prefixAdmin}/roles/create`) Thêm Role mới
 
-            table.table.table-bordered.table-hover
+            table.table.table-bordered.table-hover.roles-table
+
                 thead 
                     tr
                         th STT

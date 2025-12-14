@@ -7,7 +7,7 @@ module.exports.index = async (req, res) => {
         const records = await categoryService.getList(req.query)
 
         res.render('admin/pages/category/index', {
-            pageTitle: 'Trang danh mục sản phẩm',
+            pageTitle: 'Danh mục sản phẩm',
             ...records
         })
 

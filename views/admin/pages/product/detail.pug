@@ -15,25 +15,30 @@ block main
                                 src=product.thumbnail
                                 alt=product.title
                             )
+
                         .col-md-8
-                            h3 $#{product.price}
+                            h3 #{product.price.toLocaleString('vi-VN')} VND
+
                             p Giảm giá: #{product.discountPercentage}%
                             p Còn lại: #{product.stock}
-                            p Trạng thái: 
+
+                            p Trạng thái:
                                 if product.status === 'active'
-                                    span.badge.bg-success Hoạt động
+                                    span.badge.bg-success.ms-2 Hoạt động
                                 else if product.status === 'inactive'
-                                    span.badge.bg-danger Dừng hoạt động
+                                    span.badge.bg-danger.ms-2 Dừng hoạt động
+
                             p Danh mục: #{product.nameCategory}
                             p Vị trí: #{product.position}
+
                             p !{product.description}
+
                             a.btn.btn-warning(
                                 href=`${prefixAdmin}/products/edit/${product._id}`
                             ) Chỉnh sửa sản phẩm
         else
             h1.mb-4 Sản phẩm không tồn tại
 
-
-        script(src="/admin/js/product.js") 
+        script(src="/admin/js/product.js")
     else
         +alert-no-permission()
