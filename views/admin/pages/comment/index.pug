@@ -1,0 +1,133 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+block main
+    +alert-success(3000)
+    +alert-error(5000)
+
+    if roleUser.permissions.includes('products_view')
+        h1.mb-4 Quản lý bình luận
+
+        if comments && comments.length
+            .card
+                .card-header Danh sách bình luận
+                .card-body
+                    .table-responsive
+                        table.table.table-hover.table-sm
+                            thead
+                                tr
+                                    th STT
+                                    th Khách hàng
+                                    th Sản phẩm
+                                    th Nội dung
+                                    th Sao
+                                    th Trạng thái
+                                    th Hành động
+                            tbody
+                                each comment, index in comments
+                                    tr
+                                        td #{index + 1}
+                                        td 
+                                            strong #{comment.userName}
+                                            br
+                                            small.text-muted= comment.userEmail || (comment.userId && comment.userId.email)
+                                        td
+                                            a(href=`/detail/${comment.productId.slug}`)= comment.productId.title
+                                        td
+                                            p.text-truncate(title=comment.content)= comment.content.substring(0, 50) + '...'
+                                        td
+                                            - for (var i = 1; i <= 5; i++)
+                                                if i <= comment.rating
+                                                    span.text-warning ★
+                                                else
+                                                    span.text-muted ☆
+                                        td
+                                            if comment.status === 'approved'
+                                                span.badge.bg-success Hiển thị
+                                            else if comment.status === 'pending'
+                                                span.badge.bg-warning Chờ duyệt
+                                            else if comment.status === 'rejected'
+                                                span.badge.bg-danger Ẩn
+                                        td
+                                            a.btn.btn-sm.btn-primary(
+                                                href=`${prefixAdmin}/comments/${comment._id}/detail`
+                                            ) Xem & Trả lời
+                                            button.btn.btn-sm.btn-danger.ms-1(
+                                                data-id=comment._id
+                                                data-btn-delete=''
+                                            ) Xóa
+        else
+            .alert.alert-info Chưa có bình luận nào.
+
+        form.d-none(
+            action=""
+            method="POST"
+            id="form-delete-comment"
+            data-path=`${prefixAdmin}/comments`
+        )
+
+        script.
+            const buttonsDelete = document.querySelectorAll('[data-btn-delete]');
+            if (buttonsDelete.length > 0) {
+                const path = '/admin/comments';
+                
+                buttonsDelete.forEach(button => {
+                    button.addEventListener('click', async (e) => {
+                        e.preventDefault();
+                        
+                        const isConfirmed = await Swal.fire({
+                            title: 'Xác nhận xóa',
+                            text: 'Bạn có chắc chắn muốn xóa bình luận này không?',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#d33',
+                            cancelButtonColor: '#3085d6',
+                            confirmButtonText: 'Xóa',
+                            cancelButtonText: 'Hủy'
+                        });
+
+                        if (!isConfirmed.isConfirmed) return;
+
+                        const id = button.getAttribute('data-id');
+
+                        try {
+                            const response = await fetch(`${path}/${id}/delete`, {
+                                method: 'DELETE',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                }
+                            });
+
+                            if (response.ok) {
+                                const row = button.closest('tr');
+                                row.style.opacity = '0.5';
+                                
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Thành công',
+                                    text: 'Xóa bình luận thành công!',
+                                    timer: 1500,
+                                    timerProgressBar: true
+                                }).then(() => {
+                                    row.style.display = 'none';
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Lỗi',
+                                    text: 'Xóa bình luận thất bại!'
+                                });
+                            }
+                        } catch (err) {
+                            console.error('Error:', err);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Lỗi',
+                                text: 'Có lỗi xảy ra, vui lòng thử lại!'
+                            });
+                        }
+                    });
+                });
+            }
+    else
+        +alert-no-permission()
