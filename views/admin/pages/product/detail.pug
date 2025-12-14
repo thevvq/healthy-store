@@ -11,50 +11,27 @@ block main
                 .card-body
                     .row
                         .col-md-4
-                            if product.thumbnail
-                                img.img-fluid.rounded(
-                                    src=product.thumbnail
-                                    alt=product.title
-                                )
-                            else
-                                .border.rounded.text-center.p-4
-                                    | Không có ảnh
+                            img.img-fluid(
+                                src=product.thumbnail
+                                alt=product.title
+                            )
 
                         .col-md-8
-                            - const priceVND = Number(product.price) || 0;
-                            p
-                                strong Giá:
-                                span.text-danger.ms-2 #{priceVND.toLocaleString('vi-VN')} VND
+                            h3 #{product.price.toLocaleString('vi-VN')} VND
 
-                            p
-                                strong Giảm giá:
-                                |  #{product.discountPercentage}%
+                            p Giảm giá: #{product.discountPercentage}%
+                            p Còn lại: #{product.stock}
 
-                            p
-                                strong Tồn kho:
-                                |  #{product.stock}
-
-                            p
-                                strong Trạng thái:
-
+                            p Trạng thái:
                                 if product.status === 'active'
                                     span.badge.bg-success.ms-2 Hoạt động
-                                else
+                                else if product.status === 'inactive'
                                     span.badge.bg-danger.ms-2 Dừng hoạt động
 
-                            p
-                                strong Danh mục:
-                                |  #{product.nameCategory || 'Chưa phân loại'}
+                            p Danh mục: #{product.nameCategory}
+                            p Vị trí: #{product.position}
 
-                            p
-                                strong Vị trí hiển thị:
-                                |  #{product.position}
-
-                            hr
-
-                            p.mb-1
-                                strong Mô tả:
-                            .border.rounded.p-2.mb-3 !{product.description}
+                            p !{product.description}
 
                             a.btn.btn-warning(
                                 href=`${prefixAdmin}/products/edit/${product._id}`

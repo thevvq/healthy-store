@@ -7,7 +7,7 @@ module.exports.index = async (req, res) => {
         const data = await productService.getList(req.query)
 
         res.render('admin/pages/product/index', {
-            pageTitle: 'Trang sản phẩm',
+            pageTitle: 'Sản phẩm',
             ...data
         })
     } catch (err) {

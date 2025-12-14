@@ -1,0 +1,295 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+block main
+    +alert-success(3000)
+    +alert-error(5000)
+
+    if roleUser.permissions.includes('products_view')
+        if comment
+            h1.mb-4 Chi tiết bình luận
+
+            // ===== THÔNG TIN BÌNH LUẬN =====
+            .card.mb-4
+                .card-header Thông tin bình luận
+                .card-body
+                    .row
+                        .col-md-6
+                            p
+                                strong Khách hàng:
+                                |  #{comment.userName}
+                                br
+                                small.text-muted= comment.userEmail
+                            
+                            p
+                                strong Sản phẩm:
+                                |  
+                                a(href=`/detail/${comment.productId.slug}`)= comment.productId.title
+                            
+                            p
+                                strong Ngày bình luận:
+                                |  #{new Date(comment.createdAt).toLocaleString('vi-VN')}
+
+                        .col-md-6
+                            p
+                                strong Đánh giá:
+                                br
+                                - for (var i = 1; i <= 5; i++)
+                                    if i <= comment.rating
+                                        span.text-warning(style="font-size: 20px;") ★
+                                    else
+                                        span.text-muted(style="font-size: 20px;") ☆
+                            
+                            p
+                                strong Trạng thái:
+                                br
+                                - const statusMap = { 'approved': 'success', 'pending': 'warning', 'rejected': 'danger' };
+                                - const statusLabels = { 'approved': 'Hiển thị', 'pending': 'Chờ duyệt', 'rejected': 'Ẩn' };
+                                span(class=`badge bg-${statusMap[comment.status]}`)= statusLabels[comment.status]
+                                
+                                .mt-2
+                                    - const nextStatus = comment.status === 'approved' ? 'rejected' : 'approved';
+                                    - const nextStatusLabel = comment.status === 'approved' ? 'Ẩn' : 'Hiển thị';
+                                    button.btn.btn-sm(
+                                        class=comment.status === 'approved' ? 'btn-danger' : 'btn-success',
+                                        data-id=comment._id,
+                                        data-status=nextStatus,
+                                        data-btn-change-status=''
+                                    )= 'Chuyển sang: ' + nextStatusLabel
+
+            // ===== NỘI DUNG BÌNH LUẬN =====
+            .card.mb-4
+                .card-header Nội dung bình luận
+                .card-body
+                    p= comment.content
+
+            // ===== TRẢ LỜI =====
+            .card.mb-4
+                .card-header Trả lời từ admin
+                .card-body
+                    if replies && replies.length
+                        .mb-3
+                            each reply in replies
+                                if !reply.deleted
+                                    .border.rounded.p-3.mb-2
+                                        .d-flex.justify-content-between.align-items-start.mb-2
+                                            div
+                                                strong.text-primary #{reply.accountName}
+                                                br
+                                                small.text-muted= new Date(reply.createdAt).toLocaleString('vi-VN')
+                                            button.btn.btn-sm.btn-danger(
+                                                data-reply-id=reply._id,
+                                                data-btn-delete-reply=''
+                                            ) Xóa
+                                        p.mb-0= reply.content
+                    else
+                        p.text-muted Chưa có trả lời nào.
+
+            // ===== FORM TRẢ LỜI =====
+            .card.mb-4
+                .card-header Trả lời bình luận
+                .card-body
+                    form(method="POST", action=`${prefixAdmin}/comments/${comment._id}/reply`)
+                        .form-group.mb-3
+                            label.form-label Nội dung trả lời
+                            textarea.form-control(
+                                name="content"
+                                rows="4"
+                                placeholder="Nhập nội dung trả lời..."
+                                required
+                            )
+                        
+                        button.btn.btn-primary(type="submit") Gửi trả lời
+
+            // ===== CÁC NÚT HÀNH ĐỘNG =====
+            .d-flex.gap-2
+                a.btn.btn-secondary(href=`${prefixAdmin}/comments`) Quay lại
+                button.btn.btn-danger(id="btn-delete-comment" data-id=comment._id) Xóa bình luận
+
+            form.d-none(
+                action=""
+                method="POST"
+                id="form-change-status"
+                data-path=`${prefixAdmin}/comments`
+            )
+
+            form.d-none(
+                action=""
+                method="POST"
+                id="form-delete-reply"
+                data-path=`${prefixAdmin}/comments/${comment._id}/reply`
+            )
+
+            script.
+                // ===== CHANGE STATUS =====
+                const btnChangeStatus = document.querySelector('[data-btn-change-status]');
+                if (btnChangeStatus) {
+                    btnChangeStatus.addEventListener('click', async (e) => {
+                        e.preventDefault();
+                        
+                        const commentId = btnChangeStatus.getAttribute('data-id');
+                        const newStatus = btnChangeStatus.getAttribute('data-status');
+                        const path = '/admin/comments';
+
+                        try {
+                            const response = await fetch(`${path}/${commentId}/status/${newStatus}`, {
+                                method: 'PATCH',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                }
+                            });
+
+                            const result = await response.json();
+
+                            if (result.success) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Thành công',
+                                    text: result.message,
+                                    timer: 1500,
+                                    timerProgressBar: true
+                                }).then(() => {
+                                    location.reload();
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Lỗi',
+                                    text: result.message
+                                });
+                            }
+                        } catch (err) {
+                            console.error('Error:', err);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Lỗi',
+                                text: 'Có lỗi xảy ra, vui lòng thử lại!'
+                            });
+                        }
+                    });
+                }
+
+                // ===== DELETE REPLY =====
+                const btnsDeleteReply = document.querySelectorAll('[data-btn-delete-reply]');
+                if (btnsDeleteReply.length > 0) {
+                    const commentId = '#{comment._id}';
+                    const path = `/admin/comments/${commentId}/reply`;
+
+                    btnsDeleteReply.forEach(btn => {
+                        btn.addEventListener('click', async (e) => {
+                            e.preventDefault();
+
+                            const replyId = btn.getAttribute('data-reply-id');
+
+                            const isConfirmed = await Swal.fire({
+                                title: 'Xác nhận xóa',
+                                text: 'Bạn có chắc chắn muốn xóa trả lời này không?',
+                                icon: 'warning',
+                                showCancelButton: true,
+                                confirmButtonColor: '#d33',
+                                cancelButtonColor: '#3085d6',
+                                confirmButtonText: 'Xóa',
+                                cancelButtonText: 'Hủy'
+                            });
+
+                            if (!isConfirmed.isConfirmed) return;
+
+                            try {
+                                const response = await fetch(`${path}/${replyId}/delete`, {
+                                    method: 'DELETE',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    }
+                                });
+
+                                if (response.ok) {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Thành công',
+                                        text: 'Xóa trả lời thành công!',
+                                        timer: 1500,
+                                        timerProgressBar: true
+                                    }).then(() => {
+                                        location.reload();
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Lỗi',
+                                        text: 'Xóa trả lời thất bại!'
+                                    });
+                                }
+                            } catch (err) {
+                                console.error('Error:', err);
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Lỗi',
+                                    text: 'Có lỗi xảy ra, vui lòng thử lại!'
+                                });
+                            }
+                        });
+                    });
+                }
+
+                // ===== DELETE COMMENT =====
+                const btnDeleteComment = document.querySelector('#btn-delete-comment');
+                if (btnDeleteComment) {
+                    const commentId = btnDeleteComment.getAttribute('data-id');
+                    const path = '/admin/comments';
+
+                    btnDeleteComment.addEventListener('click', async (e) => {
+                        e.preventDefault();
+
+                        const isConfirmed = await Swal.fire({
+                            title: 'Xác nhận xóa',
+                            text: 'Bạn có chắc chắn muốn xóa bình luận này không?',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#d33',
+                            cancelButtonColor: '#3085d6',
+                            confirmButtonText: 'Xóa',
+                            cancelButtonText: 'Hủy'
+                        });
+
+                        if (!isConfirmed.isConfirmed) return;
+
+                        try {
+                            const response = await fetch(`${path}/${commentId}/delete`, {
+                                method: 'DELETE',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                }
+                            });
+
+                            if (response.ok) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Thành công',
+                                    text: 'Xóa bình luận thành công!',
+                                    timer: 1500,
+                                    timerProgressBar: true
+                                }).then(() => {
+                                    window.location.href = `${path}`;
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Lỗi',
+                                    text: 'Xóa bình luận thất bại!'
+                                });
+                            }
+                        } catch (err) {
+                            console.error('Error:', err);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Lỗi',
+                                text: 'Có lỗi xảy ra, vui lòng thử lại!'
+                            });
+                        }
+                    });
+                }
+        else
+            .alert.alert-danger Bình luận không tồn tại!
+            a.btn.btn-secondary(href=`${prefixAdmin}/comments`) Quay lại
+    else
+        +alert-no-permission()
