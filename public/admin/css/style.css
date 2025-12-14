@@ -168,6 +168,7 @@ body {
     margin-left: 260px;
     padding: 24px;
     padding-top: 96px;
+    margin-top: 68px;
     width: calc(100% - 260px);
     min-height: 100vh;
     background: #f3f4f6;
@@ -585,7 +586,7 @@ table[table-permissions] tbody tr td[colspan] b {
 .body .main .btn {
     border-radius: 10px;
     font-weight: 600;
-    transition: all 0.2s ease;
+    /* transition: all 0.2s ease; */
 }
 
 /* + Thêm mới */
@@ -674,13 +675,16 @@ table[table-permissions] tbody tr td[colspan] b {
     background-color: #ffffffcc;
     /* trắng mờ */
     backdrop-filter: blur(10px);
-    transition: transform 0.3s, box-shadow 0.3s;
+    /* transition: transform 0.3s, box-shadow 0.3s; */
 }
 
-.card:hover {
+
+/* .card:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-}
+} */
+
+
 
 /* CARD HEADER */
 .card-header {
@@ -693,7 +697,7 @@ table[table-permissions] tbody tr td[colspan] b {
 /* INPUT FOCUS */
 input.form-control {
     border-radius: 10px;
-    transition: all 0.3s;
+    /* transition: all 0.3s; */
     border: 1px solid #ced4da;
 }
 
@@ -708,7 +712,7 @@ button.btn-primary {
     border-color: #6c5ce7;
     font-weight: 600;
     border-radius: 10px;
-    transition: all 0.3s;
+    /* transition: all 0.3s; */
 }
 
 button.btn-primary:hover {

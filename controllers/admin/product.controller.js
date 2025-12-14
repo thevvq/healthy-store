@@ -77,11 +77,12 @@ module.exports.create = async (req, res) => {
 // [POST] /admin/products/create
 module.exports.createProduct = async (req, res) => {
     try {
-        await productService.createProduct(req)
+        await productService.createProduct(req, res)
 
         req.flash('success', 'Thêm sản phẩm thành công!')
         res.redirect(`${sysConfig.prefixAdmin}/products`)
     } catch (err) {
+        console.log(err)
         req.flash('error', 'Có lỗi xảy ra, vui lòng thử lại!')
         res.redirect(`${sysConfig.prefixAdmin}/products`)
     }
@@ -105,7 +106,7 @@ module.exports.edit = async (req, res) => {
 // [PATCH] /admin/products/edit/:id
 module.exports.editProduct = async (req, res) => {
     try {
-        const updated = await productService.editProduct(req, req.params.id)
+        const updated = await productService.editProduct(req, req.params.id, res)
 
         if (!updated) {
             req.flash('error', 'Sản phẩm không tồn tại!')

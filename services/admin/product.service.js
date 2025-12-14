@@ -1,4 +1,5 @@
 const Product = require('../../models/product.model')
+const Account = require('../../models/user.model')
 const filterStatusHelper = require('../../helper/filterStatus')
 const searchHelper = require('../../helper/search')
 const paginationHelper = require('../../helper/pagination')
@@ -128,7 +129,7 @@ module.exports.create = async () => {
     return categories
 }
 
-module.exports.createProduct = async (req) => {
+module.exports.createProduct = async (req, res) => {
     const body = req.body
 
     body.price = parseInt(body.price)
@@ -145,6 +146,10 @@ module.exports.createProduct = async (req) => {
     if (req.file) {
         const uploadResult = await uploadToCloud(req.file.path)
         body.thumbnail = uploadResult.secure_url
+    }
+
+    req.body.createdBy = {
+        account_id: res.locals.user.id,
     }
 
     const product = new Product(body)
@@ -168,6 +173,21 @@ module.exports.detail = async (id) => {
         categoryTitle = category ? category.title : null;
     }
 
+    const user = await Account.findOne({
+        _id: product.createdBy.account_id
+    });
+    if (user) {
+        product.createdBy.fullName = user.fullName;
+    }
+
+    const updatedUser = await Account.findOne({
+        _id: product.updatedBy.account_id
+    });
+
+    if (updatedUser) {
+        product.updatedBy.fullName = updatedUser.fullName;
+    }
+
     product.nameCategory = categoryTitle;
 
     return product;
@@ -189,7 +209,7 @@ module.exports.edit = async (id) => {
     }
 }
 
-module.exports.editProduct = async (req, id) => {
+module.exports.editProduct = async (req, id, res) => {
     const body = req.body
 
     body.price = parseInt(body.price)
@@ -206,6 +226,10 @@ module.exports.editProduct = async (req, id) => {
         body.thumbnail = uploadResult.secure_url
     }
 
+    req.body.updatedBy = {
+        account_id: res.locals.user.id,
+        updatedAt: new Date()
+    }
     const result = await Product.updateOne({ _id: id }, body)
     return result.modifiedCount > 0
 }
