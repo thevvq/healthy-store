@@ -1,3 +1,5 @@
+// public/js/products.js
+
 document.addEventListener("DOMContentLoaded", () => {
     const listEl = document.querySelector(".product-list");
     if (!listEl) return;
@@ -24,6 +26,17 @@ document.addEventListener("DOMContentLoaded", () => {
         maxPrice: null,
     };
 
+    // ⚙️ Bỏ dấu tiếng Việt + đưa về chữ thường
+    const normalizeText = (str) => {
+        return (str || "")
+            .normalize("NFD")                 // tách dấu
+            .replace(/[\u0300-\u036f]/g, "")  // xoá dấu
+            .replace(/đ/g, "d")
+            .replace(/Đ/g, "d")
+            .toLowerCase()
+            .trim();
+    };
+
     const getNumber = (el, key) => {
         const val = el.dataset[key];
         const num = parseFloat(val);
@@ -36,16 +49,15 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     const applyFilters = () => {
-        const keyword = (state.search || "").trim().toLowerCase();
+        const keyword = normalizeText(state.search);
 
         let filtered = items;
 
-        // 1. Lọc theo search (theo title)
-        
+        // 1. Lọc theo search (KHÔNG phân biệt dấu)
         if (keyword) {
             filtered = filtered.filter((el) => {
-                const title = (el.dataset.title || "").toLowerCase();
-                return title.includes(keyword);
+                const titleNorm = normalizeText(el.dataset.title || "");
+                return titleNorm.includes(keyword);   // "nuoc" match cả "nuoc" lẫn "nước"
             });
         }
 
@@ -74,7 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     );
                 case "latest":
                 default:
-                    // index lớn hơn = mới hơn (giữ logic cũ)
+                    
                     return getIndex(b) - getIndex(a);
             }
         });

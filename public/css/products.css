@@ -78,35 +78,7 @@
     justify-content: flex-end;
 }
 
-.search-input-wrapper {
-    display: flex;
-    align-items: stretch;
-    max-width: 320px;
-    width: 100%;
-    background: #fff;
-    border-radius: 999px;
-    overflow: hidden;
-    border: 1px solid #d4d7dd;
-}
 
-#filter-search {
-    flex: 1;
-    border: none;
-    padding: 6px 12px;
-    font-size: 14px;
-    outline: none;
-}
-
-#filter-search-btn {
-    border: none;
-    width: 40px;
-    background: #0f9d58;
-    color: #fff;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-}
 
 /* Mobile: toolbar xuống nhiều dòng */
 @media (max-width: 768px) {
