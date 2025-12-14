@@ -1,49 +1,57 @@
-//- Mixin đệ quy render danh mục con
-mixin category-children(categories, parentId)
-    ul.home-category-list
-        each item in categories
-            //- Nếu item là con trực tiếp của parentId
-            if item.parent_category && String(item.parent_category) == String(parentId)
-                li
-                    a(href=`/products?category=${item.slug}`)= item.title
+//- views/client/partials/category.menu.pug
 
-                    //- Kiểm tra xem item này còn con nữa không
-                    - const hasChildren = categories.some(c => c.parent_category && String(c.parent_category) == String(item._id));
-
-                    if hasChildren
-                        //- Gọi lại mixin để vẽ cấp cháu / chắt...
-                        +category-children(categories, item._id)
+//- Mixin đệ quy render danh mục con (cho cột bên phải)
+mixin homeCategoryChildren(categories, parentId, level)
+  - level = level || 1
+  ul(class= level === 1 ? 'home-category-list' : 'home-category-submenu')
+    each item in categories
+      if item.parent_category && String(item.parent_category) == String(parentId)
+        - const hasChildren = categories.some(c => c.parent_category && String(c.parent_category) == String(item._id));
+        li(class= hasChildren ? 'has-children' : '')
+          a(href=`/products?category=${item.slug}`)= item.title
+          if hasChildren
+            +homeCategoryChildren(categories, item._id, level + 1)
 
 
 // ----- KHỐI DANH MỤC (NẰM TRÊN SLIDER) -----
 .block-home-top
-    .container
-        .home-category
-            .home-category-label
-                i.fa-solid.fa-bars
-                span Danh mục
+  .container
+    .home-top-inner
+      // ====== NÚT DANH MỤC + DROPDOWN ======
+      .home-category
+        .home-category-label
+          i.fa-solid.fa-bars
+          span Danh mục
 
-            .home-category-wrapper
-                // Cột trái: danh mục CHA
-                ul.home-category-main
-                    if categoriesMenu && categoriesMenu.length
-                        each cat in categoriesMenu
-                            // Cha: parent_category null / undefined / ""
-                            if !cat.parent_category
-                                li.home-category-main-item(
-                                    data-id=cat._id 
-                                    data-slug=cat.slug
-                                )
-                                    span= cat.title
-                                    i.fa-solid.fa-angle-right
+        .home-category-wrapper
+          // Cột trái: danh mục CHA
+          ul.home-category-main
+            if categoriesMenu && categoriesMenu.length
+              each cat in categoriesMenu
+                if !cat.parent_category
+                  li.home-category-main-item(
+                    data-id=cat._id
+                    data-slug=cat.slug
+                  )
+                    span.home-category-main-text= cat.title
+                    i.fa-solid.fa-angle-right
+            else
+              li.home-category-main-empty Không có danh mục
 
-                // Cột phải: danh mục CON (dùng mixin đệ quy)
-                .home-category-detail
-                    if categoriesMenu && categoriesMenu.length
-                        each parent in categoriesMenu
-                            if !parent.parent_category
-                                .home-category-panel(data-id=parent._id)
-                                    h3.home-category-title= parent.title
+          // Cột phải: danh mục CON (panel theo từng cha)
+          .home-category-detail
+            if categoriesMenu && categoriesMenu.length
+              each parent in categoriesMenu
+                if !parent.parent_category
+                  .home-category-panel(data-id=parent._id)
+                    h3.home-category-title= parent.title
 
-                                    //- Gọi mixin đệ quy cho nhánh con của parent
-                                    +category-children(categoriesMenu, parent._id)
+                    //- Cấp con / cháu / chắt...
+                    +homeCategoryChildren(categoriesMenu, parent._id, 1)
+            else
+              p.home-category-empty Chưa có danh mục
+
+      // ====== NÚT BLOG KẾ BÊN DANH MỤC ======
+      a.home-top-blog(href="/blog")
+        i.fa-regular.fa-newspaper
+        span Tin tức
