@@ -222,3 +222,51 @@
     background: #f3f3f3;
     color: #0f9d58;
 }
+
+/* =============================
+   CĂN "24/7 SUPPORT" SÁT BÊN PHẢI
+============================= */
+
+/* Thanh top: cho phép tách trái/phải */
+.home-top-inner{
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+/* Cụm bên trái: Danh mục + Blog */
+.home-top-left{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Nút Support tự đẩy qua phải */
+.home-top-support{
+  margin-left: auto;              /* quan trọng */
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+/* Text support (nếu bạn muốn đẹp hơn) */
+.home-top-support .support-text{
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.home-top-support .support-title{
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.home-top-support .support-phone{
+  font-weight: 700;
+  font-size: 13px;
+}
