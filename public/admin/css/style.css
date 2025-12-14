@@ -659,13 +659,6 @@ table[table-permissions] tbody tr td[colspan] b {
     opacity: 0.85;
     text-decoration: none;
 }
-
-.body .main {
-    padding-top: 30px;
-    /* mặc định bạn đang ~96px */
-}
-
-
 /* CARD */
 .card {
     border-radius: 15px;
@@ -722,3 +715,185 @@ button.btn-primary:hover {
         width: 90%;
     }
 }
+/* =========================
+   DISABLE CARD MOVE ON HOVER
+========================= */
+.card:hover {
+    transform: none !important;
+}
+/* =========================
+   CATEGORY TABLE FIX
+========================= */
+
+/* ===== 1. Checkbox đồng đều ===== */
+table[checkbox-multi] input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+/* căn giữa checkbox trong cột */
+table[checkbox-multi] th:first-child,
+table[checkbox-multi] td:first-child {
+    text-align: center;
+    vertical-align: middle;
+    width: 48px;
+}
+
+/* ===== 2. Header text canh trái đồng đều ===== */
+table[checkbox-multi] thead th {
+    text-align: left;
+    vertical-align: middle;
+}
+
+/* ===== 3. Cột STT căn giữa chuẩn ===== */
+/* STT là cột thứ 2 */
+table[checkbox-multi] thead th:nth-child(2),
+table[checkbox-multi] tbody td:nth-child(2) {
+    text-align: center;
+    width: 70px;
+    font-weight: 600;
+}
+
+/* ===== Cột hình ảnh căn giữa cho gọn ===== */
+table[checkbox-multi] thead th:nth-child(3),
+table[checkbox-multi] tbody td:nth-child(3) {
+    text-align: center;
+    width: 110px;
+}
+
+/* ===== Trạng thái & hành động căn giữa ===== */
+table[checkbox-multi] thead th:nth-child(6),
+table[checkbox-multi] tbody td:nth-child(6),
+table[checkbox-multi] thead th:nth-child(7),
+table[checkbox-multi] tbody td:nth-child(7) {
+    text-align: center;
+    vertical-align: middle;
+}
+/* ===== Căn giữa số trong input cột Vị trí ===== */
+table[checkbox-multi] tbody td:nth-child(5) input {
+    text-align: center;          /* căn giữa ngang */
+    font-weight: 600;
+    font-size: 14px;
+    padding-right: 6px;          /* tránh dính nút tăng/giảm */
+}
+/* Cột Tiêu đề – luôn căn trái */
+table[checkbox-multi] thead th:nth-child(4),
+table[checkbox-multi] tbody td:nth-child(4) {
+    text-align: left !important;
+}
+/* Input vị trí – căn giữa số */
+table[checkbox-multi] tbody td:nth-child(6) input {
+    text-align: center;
+    font-weight: 600;
+    padding-right: 4px;
+}
+/* Input số 1 2 3 */
+table[checkbox-multi] tbody td:nth-child(6) input {
+    text-align: center;
+    margin-left: 50px;      /* 👈 đẩy qua phải nhẹ */
+    font-weight: 600;
+}
+/* ===============================
+   PRODUCT TABLE – SHIFT TITLE & PRICE
+================================ */
+
+/* Cột Tiêu đề (th + td) */
+table[checkbox-multi] thead th:nth-child(4),
+table[checkbox-multi] tbody td:nth-child(4) {
+    padding-left: 42px !important;   /* 👉 kéo qua phải */
+    text-align: left !important;
+}
+
+/* Cột Giá (th + td) */
+table[checkbox-multi] thead th:nth-child(5){
+    padding-left: 90px !important;   /* 👉 kéo qua phải nhẹ hơn */
+    
+}
+table[checkbox-multi] tbody td:nth-child(5) {
+    padding-left: 80px !important;   /* 👉 kéo qua phải nhẹ hơn */
+    text-align: left !important;
+}
+/* ===============================
+   CATEGORIES TABLE – SHIFT IMAGE & TITLE
+   Chỉ áp dụng cho bảng checkbox-multi
+================================ */
+
+/* Cột Hình ảnh */
+table[checkbox-multi] thead th:nth-child(3),
+table[checkbox-multi] tbody td:nth-child(3) {
+    padding-left: 100px !important;   /* 👈 kéo nhẹ sang phải */
+    text-align: left !important;
+}
+
+/* Cột Tiêu đề */
+table[checkbox-multi] thead th:nth-child(4),
+table[checkbox-multi] tbody td:nth-child(4) {
+    padding-left: 120px !important;   /* 👈 kéo rõ hơn */
+    text-align: left !important;
+}
+/* ===============================
+   ORDERS TABLE – ALIGNMENT FIX
+   Chỉ áp dụng trang quản lý đơn hàng
+================================ */
+
+/* Người nhận – căn giữa */
+.body .main table thead th:nth-child(2),
+.body .main table tbody td:nth-child(2) {
+    text-align: center !important;
+    vertical-align: middle;
+}
+
+/* Tổng tiền – căn phải */
+.body .main table thead th:nth-child(3),
+.body .main table tbody td:nth-child(3) {
+    text-align: right !important;
+    padding-right: 24px;
+}
+
+/* Ngày tạo – căn phải */
+.body .main table thead th:nth-child(5),
+.body .main table tbody td:nth-child(5) {
+    text-align: right !important;
+    padding-right: 24px;
+}
+/* input số 1 2 3 */
+.body .main table[checkbox-multi] td:nth-child(6) input[type="number"] {
+    margin-left: 15px;          /* reset */
+}
+/* ===============================
+   ĐẨY Ô VỊ TRÍ (1 2 3) QUA PHẢI
+   Trang danh mục sản phẩm
+=============================== */
+
+/* cột Vị trí */
+table[checkbox-multi] tbody td:nth-child(5) {
+    text-align: left !important;
+    padding-left: 24px;   /* 👈 đẩy cả nội dung qua phải */
+}
+
+/* riêng input số */
+table[checkbox-multi] tbody td:nth-child(5) input[type="number"] {
+    margin-left: -20px;    /* 👈 tinh chỉnh thêm nếu cần */
+    width: 64px;
+}
+/* ===============================
+   PRODUCTS TABLE – CENTER ACTION
+=============================== */
+
+/* Header "Hành động" */
+table thead th:last-child {
+    text-align: center !important;
+}
+
+/* Ô chứa các nút hành động */
+table tbody td:last-child {
+    text-align: center !important;
+    white-space: nowrap;
+}
+
+/* Nhóm nút (Chi tiết / Sửa / Xóa) */
+table tbody td:last-child .btn {
+    margin: 0 4px;
+}
+
