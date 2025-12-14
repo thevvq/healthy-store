@@ -2,21 +2,32 @@ const productService = require('../../services/client/product.service');
 const Order = require('../../models/order.model');
 const Comment = require('../../models/comment.model');
 
-// ✨ THÊM: dùng lại helper search + service lấy danh mục
+// Dùng lại helper search + service danh mục
 const searchHelper = require('../../helper/search');
 const categoryService = require('../../services/client/category.service');
-const Category = require('../../models/category.model');
+
+// Hàm bỏ dấu tiếng Việt (giống bên products.js)
+const normalizeText = (str = "") =>
+    str
+        .toString()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/đ/g, "d")
+        .replace(/Đ/g, "d")
+        .toLowerCase();
 
 // [GET] /products
 module.exports.index = async (req, res) => {
     try {
         const categorySlug = req.query.category;
-        const searchObject = searchHelper(req.query); // lấy keyword từ ?keyword=...
+        const searchObject = searchHelper(req.query);   // lấy keyword từ ?keyword=...
+        const keyword = searchObject.keyword || "";
+
         let products;
 
-        // 1. Lấy danh sách sản phẩm từ service (giữ API cũ)
+        // 1. Lấy danh sách sản phẩm từ service
         if (categorySlug) {
-            // nếu bạn đã có hàm này trong services/client/product.service
+            // Hàm này bạn đã có trong services/client/product.service
             products = await productService.getListByCategorySlug(categorySlug);
         } else {
             products = await productService.getList();
@@ -24,12 +35,13 @@ module.exports.index = async (req, res) => {
 
         products = products || [];
 
-        // 2. Nếu có keyword → lọc lại theo title (phía server)
-        if (searchObject.keyword) {
-            const kw = searchObject.keyword.toLowerCase();
-            products = products.filter((p) =>
-                (p.title || "").toLowerCase().includes(kw)
-            );
+        // 2. Nếu có keyword → lọc lại theo title (bỏ dấu, giống phía client)
+        if (keyword) {
+            const kwNorm = normalizeText(keyword);
+            products = products.filter((p) => {
+                const titleNorm = normalizeText(p.title || "");
+                return titleNorm.includes(kwNorm);
+            });
         }
 
         // 3. Lấy danh mục cho menu + sidebar
@@ -40,7 +52,8 @@ module.exports.index = async (req, res) => {
             pageTitle: 'Trang danh sách sản phẩm',
             products,
             categoriesMenu,
-            keyword: searchObject.keyword || ''
+            // cho Pug/JS dùng lại keyword ban đầu (nếu muốn set vào ô search)
+            keyword
         });
     } catch (error) {
         console.log(error);
@@ -54,7 +67,7 @@ module.exports.detail = async (req, res) => {
         const slug = req.params.slug;
         const product = await productService.detail(slug);
 
-        // Lấy danh mục cho header + sidebar (cho trang chi tiết luôn đồng bộ)
+        // Lấy danh mục cho header + sidebar
         const categoriesMenu = await categoryService.getMenuCategories();
 
         if (!product) {
@@ -144,14 +157,14 @@ module.exports.comment = async (req, res) => {
             return res.status(404).send('Product not found');
         }
 
-        // ❗ Kiểm tra đã từng review sản phẩm này chưa
+        // Kiểm tra đã từng review sản phẩm này chưa
         const existingComment = await Comment.findOne({
             productId: product._id,
             userId: user._id
         });
 
         if (existingComment) {
-
+            
             return res.status(400).send('Bạn chỉ có thể đánh giá sản phẩm này một lần.');
         }
 
