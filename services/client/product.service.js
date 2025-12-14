@@ -2,102 +2,118 @@ const Product = require('../../models/product.model');
 const Category = require('../../models/category.model');
 
 // helper format tiền VND
-const formatVND = (value) => {
-    return value.toLocaleString("vi-VN") + "";
-};
+const formatVND = (value) => value.toLocaleString("vi-VN") + "";
+
+// helper bỏ HTML (nếu mô tả là TinyMCE)
+const stripHtml = (html = "") =>
+  String(html).replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
 
 const getList = async () => {
-    const products = await Product.find({
-        status: 'active',
-        deleted: false
-    }).sort({ position: 1 });
+  const products = await Product.find({
+    status: 'active',
+    deleted: false
+  }).sort({ position: 1 });
 
-    const newProducts = products.map(item => {
-        const newPriceNumber = Math.round(
-            item.price * (100 - item.discountPercentage) / 100
-        );
+  const newProducts = products.map(item => {
+    const newPriceNumber = Math.round(
+      item.price * (100 - (item.discountPercentage || 0)) / 100
+    );
 
-        item.newPrice = formatVND(newPriceNumber);   // 👉 VND
-        item.oldPrice = formatVND(item.price);       // 👉 giá gốc (nếu cần)
+    // ✅ dùng để filter/sort ở frontend
+    item.newPriceNumber = newPriceNumber;
+    item.oldPriceNumber = item.price;
 
-        return item;
-    });
+    // ✅ dùng để hiển thị
+    item.newPrice = formatVND(newPriceNumber);
+    item.oldPrice = formatVND(item.price);
 
-    return newProducts;
+    // ✅ mô tả ngắn để lấp chỗ trống (lấy từ description hoặc content)
+    const rawDesc = item.description || item.content || "";
+    item.shortDescription = stripHtml(rawDesc).slice(0, 260);
+
+    return item;
+  });
+
+  return newProducts;
 };
 
 module.exports.getList = getList;
 
 // ✅ Dùng cho trang home
 module.exports.getProductsForHome = async (limit = 10) => {
-    const products = await getList();
-    return products.slice(0, limit);
+  const products = await getList();
+  return products.slice(0, limit);
 };
 
 module.exports.detail = async (slug) => {
-    const product = await Product.findOne({
-        deleted: false,
-        slug: slug,
-        status: 'active'
-    });
+  const product = await Product.findOne({
+    deleted: false,
+    slug: slug,
+    status: 'active'
+  });
 
-    if (!product) return null;
+  if (!product) return null;
 
-    const newPriceNumber = Math.round(
-        product.price * (100 - product.discountPercentage) / 100
-    );
+  const newPriceNumber = Math.round(
+    product.price * (100 - (product.discountPercentage || 0)) / 100
+  );
 
-    product.newPrice = formatVND(newPriceNumber);
-    product.oldPrice = formatVND(product.price);
+  product.newPriceNumber = newPriceNumber;
+  product.oldPriceNumber = product.price;
 
-    return product;
+  product.newPrice = formatVND(newPriceNumber);
+  product.oldPrice = formatVND(product.price);
+
+  const rawDesc = product.description || product.content || "";
+  product.shortDescription = stripHtml(rawDesc).slice(0, 260);
+
+  return product;
 };
 
 // ✅ Lấy sản phẩm theo slug danh mục (cha hoặc con)
 module.exports.getListByCategorySlug = async (slug) => {
-    // 1. Tìm danh mục
-    const category = await Category.findOne({
-        slug,
-        deleted: false,
-        status: 'active'
+  const category = await Category.findOne({
+    slug,
+    deleted: false,
+    status: 'active'
+  });
+
+  if (!category) return [];
+
+  const categoryIds = [category._id.toString()];
+
+  if (!category.parent_category) {
+    const children = await Category.find({
+      parent_category: category._id.toString(),
+      deleted: false,
+      status: 'active'
     });
 
-    if (!category) return [];
+    children.forEach(child => categoryIds.push(child._id.toString()));
+  }
 
-    // 2. Gom id danh mục
-    const categoryIds = [category._id.toString()];
+  const products = await Product.find({
+    product_category: { $in: categoryIds },
+    status: 'active',
+    deleted: false
+  }).sort({ position: 1 });
 
-    // 3. Nếu là danh mục CHA → lấy luôn CON
-    if (!category.parent_category) {
-        const children = await Category.find({
-            parent_category: category._id.toString(),
-            deleted: false,
-            status: 'active'
-        });
+  const newProducts = products.map(item => {
+    const newPriceNumber = Math.round(
+      item.price * (100 - (item.discountPercentage || 0)) / 100
+    );
 
-        children.forEach(child => {
-            categoryIds.push(child._id.toString());
-        });
-    }
+    item.newPriceNumber = newPriceNumber;
+    item.oldPriceNumber = item.price;
 
-    // 4. Lấy sản phẩm
-    const products = await Product.find({
-        product_category: { $in: categoryIds },
-        status: 'active',
-        deleted: false
-    }).sort({ position: 1 });
+    item.newPrice = formatVND(newPriceNumber);
+    item.oldPrice = formatVND(item.price);
 
-    // 5. Tính giá VND
-    const newProducts = products.map(item => {
-        const newPriceNumber = Math.round(
-            item.price * (100 - item.discountPercentage) / 100
-        );
+    const rawDesc = item.description || item.content || "";
+    item.shortDescription = stripHtml(rawDesc).slice(0, 260);
 
-        item.newPrice = formatVND(newPriceNumber);
-        item.oldPrice = formatVND(item.price);
+    return item;
+  });
 
-        return item;
-    });
-
-    return newProducts;
+  return newProducts;
 };

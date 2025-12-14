@@ -59,9 +59,9 @@
     box-shadow: 0 8px 20px rgba(0,0,0,0.04);
     text-align: center;
 
-    display: block;             /* để toàn bộ card là vùng click */
-    text-decoration: none;      /* ❌ bỏ gạch chân */
-    color: inherit;             /* giữ màu chữ bên trong */
+    display: block;            
+    text-decoration: none;    
+    color: inherit;            
 
     transition: transform 0.22s ease, box-shadow 0.22s ease;
     will-change: transform;
@@ -100,7 +100,7 @@
     font-size: 16px;
     margin-bottom: 4px;
     font-weight: 600;
-    color: #0d6efd;         /* xanh link */
+    color: #000000;         /* xanh link */
 
     /* Giới hạn 2 dòng, không cho tràn */
     display: -webkit-box;

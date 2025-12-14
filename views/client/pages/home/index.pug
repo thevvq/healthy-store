@@ -23,8 +23,9 @@ block main
                 if productsHome && productsHome.length
                     each product, index in productsHome
                         - const catTab = index % 3 === 0 ? 'best' : (index % 3 === 1 ? 'new' : 'top');
+                        // Toàn bộ card là link sang trang chi tiết
                         a.product-card(
-                            href='/detail/' + product.slug
+                            href=`/detail/${product.slug}`
                             data-category=catTab
                         )
                             .product-card-image
@@ -34,13 +35,23 @@ block main
                                     img(src="/images/logo.svg", alt=product.title || product.name || 'Sản phẩm')
 
                             .product-card-body
-                                // tên sản phẩm
+                                // ===== TÊN SẢN PHẨM =====
                                 h3.product-card-name= product.title || product.name || 'Chưa có tên'
 
-                                // giá mới (ưu tiên newPrice, nếu không có thì dùng price)
+                                // ===== GIÁ + GIẢM GIÁ =====
                                 if product.newPrice
+                                    // Giá mới (sau giảm)
                                     p.product-card-price #{Number(product.newPrice).toLocaleString('vi-VN')} VND
+
+                                    // Giá cũ (nếu có)
+                                    if product.price
+                                        p.product-card-price-old #{Number(product.price).toLocaleString('vi-VN')} VND
+
+                                    // Badge giảm giá (nếu có)
+                                    if product.discountPercentage
+                                        span.product-card-discount -#{product.discountPercentage}%
                                 else if product.price
+                                    // Trường hợp chưa có newPrice, show giá gốc
                                     p.product-card-price #{Number(product.price).toLocaleString('vi-VN')} VND
                 else
                     p.text-muted.text-center Chưa có sản phẩm nào.
@@ -54,7 +65,7 @@ block main
             .home-bf-wrapper
                 // ----- CARD BLOG -----
                 .bf-card.bf-card-blog
-                    h2.bf-title Blog
+                    h2.bf-title Info
 
                     .bf-blog-list
                         // Item 1
@@ -81,7 +92,7 @@ block main
                     a.bf-btn(href="/blog")
                         span Xem thêm
                         span.bf-btn-arrow →
-                
+
                 // ----- CARD FANPAGE -----
                 .bf-card.bf-card-fanpage
                     h2.bf-title Fanpage
@@ -163,7 +174,7 @@ block main
                         span.shop-badge-text Facebook
                     .shop-cover
                         img(src="/images/slider3.jpg", alt="Facebook store")
-                    h3.shop-name facebook
+                    h3.shop-name Facebook
                     a.shop-btn(href="#" target="_blank")
                         span Xem chi tiết
                         span.shop-btn-arrow →

@@ -73,12 +73,12 @@ block main
                                         )
                                     td #{item.title}
                                     td #{item.quantity}
-                                    td #{item.price.toLocaleString("vi-VN")} ₫
-                                    td #{(item.quantity * item.price).toLocaleString("vi-VN")} ₫
+                                    td #{item.price.toLocaleString("vi-VN")} VND
+                                    td #{(item.quantity * item.price).toLocaleString("vi-VN")} VND
 
                     h4.mt-3
                         | Tổng thanh toán:
-                        span.text-danger #{order.total.toLocaleString("vi-VN")} ₫
+                        span.text-danger  #{order.total.toLocaleString("vi-VN")} VND
 
                     .mt-3
                         a.btn.btn-primary(href=`/orders/${order._id}`) Xem chi tiết

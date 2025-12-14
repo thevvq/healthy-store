@@ -21,9 +21,10 @@ block main
                                     | Không có ảnh
 
                         .col-md-8
+                            - const priceVND = Number(product.price) || 0;
                             p
                                 strong Giá:
-                                span.text-danger.ms-2 $#{product.price}
+                                span.text-danger.ms-2 #{priceVND.toLocaleString('vi-VN')} VND
 
                             p
                                 strong Giảm giá:
@@ -35,6 +36,7 @@ block main
 
                             p
                                 strong Trạng thái:
+
                                 if product.status === 'active'
                                     span.badge.bg-success.ms-2 Hoạt động
                                 else

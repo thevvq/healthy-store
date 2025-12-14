@@ -1,21 +1,23 @@
 extends ../../layouts/default
 
 block main
-    if roleUser.permissions.includes('orders_view')
+    - const permissions = (roleUser && Array.isArray(roleUser.permissions)) ? roleUser.permissions : []
+
+    if permissions.includes('orders_view')
         .container
             h2.mb-3 Chi tiết đơn hàng ##{order._id}
 
-            p.text-muted 
+            p.text-muted
                 | Ngày đặt: #{order.createdAt.toLocaleDateString('vi-VN')} #{order.createdAt.toLocaleTimeString('vi-VN')}
 
             h4 Trạng thái hiện tại:
             span.badge(
                 class= order.status === 'cancelled' ? 'bg-secondary' :
-                       order.status === 'completed' ? 'bg-success' :
-                       order.status === 'shipping' ? 'bg-info' :
-                       order.status === 'confirmed' ? 'bg-primary' :
-                       'bg-warning text-dark'
-            ) #{order.statusText}
+                      order.status === 'completed' ? 'bg-success' :
+                      order.status === 'shipping' ? 'bg-info' :
+                      order.status === 'confirmed' ? 'bg-primary' :
+                      'bg-warning text-dark'
+            ) #{order.statusText || order.status}
 
             hr
 
@@ -39,27 +41,34 @@ block main
                         th Giá
                         th Thành tiền
                 tbody
-                    each item in order.items
+                    if order.items && order.items.length
+                        each item in order.items
+                            - const priceVND = Number(item.price) || 0;
+                            - const qty = Number(item.quantity) || 0;
+                            - const lineTotalVND = qty * priceVND;
+                            tr
+                                td
+                                    img(
+                                        src=item.thumbnail,
+                                        width="60",
+                                        style="border-radius:6px;object-fit:cover;"
+                                    )
+                                td #{item.title}
+                                td #{qty}
+                                td #{priceVND.toLocaleString('vi-VN')} VND
+                                td #{lineTotalVND.toLocaleString('vi-VN')} VND
+                    else
                         tr
-                            td
-                                img(
-                                    src=item.thumbnail,
-                                    width="60",
-                                    style="border-radius:6px;object-fit:cover;"
-                                )
-                            td #{item.title}
-                            td #{item.quantity}
-                            td #{item.price.toLocaleString('vi-VN')} VND
-                            td #{(item.quantity * item.price).toLocaleString('vi-VN')} VND
+                            td(colspan="5").text-muted Không có sản phẩm.
 
             h3.mt-3
                 | Tổng thanh toán:
-                span.text-danger &nbsp;
-                    | #{order.total.toLocaleString('vi-VN')} VND
+                - const totalVND = Number(order.total) || 0;
+                span.text-danger &nbsp;#{totalVND.toLocaleString('vi-VN')} VND
 
             hr
 
-            if roleUser.permissions.includes('orders_edit')
+            if permissions.includes('orders_edit')
                 h3 Cập nhật trạng thái đơn
 
                 form(
@@ -75,5 +84,7 @@ block main
                         option(value="cancelled", selected=order.status === 'cancelled') Đã hủy
 
                     button.btn.btn-success.mt-3(type="submit") Lưu trạng thái
+
+            a.btn.btn-secondary.mt-3(href="/admin/orders") Quay lại danh sách
     else
         +alert-no-permission()
