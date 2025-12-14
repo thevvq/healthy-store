@@ -97,41 +97,42 @@
    MENU BUTTONS
 ============================================ */
 .menu-btn {
-    background: #f8f9fa;
-    border: 1px solid #ddd;
-    padding: 6px 14px;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: 0.25s;
+    background: #f1f3f5;              /* xám rất nhẹ */
+    border: 1px solid #d1d5db;
+    color: #374151;
+    padding: 7px 18px;
+    border-radius: 999px;             /* bo tròn hơn */
     font-size: 14px;
-
-    will-change: transform;
+    cursor: pointer;
+    transition: all 0.22s ease;
 }
 
 .menu-btn:hover {
-    background: #e2e6ea;
-    border-color: #ccc;
-
+    background: #e5e7eb;
+    border-color: #c7ccd1;
     transform: translateY(-2px);
-    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 8px 18px rgba(0,0,0,0.1);
 }
 
-.logout-btn {
-    background: #dc3545;
-    color: #fff;
-    padding: 6px 14px;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: 0.25s;
 
-    will-change: transform;
+/* ===============================
+   LOGOUT BUTTON – ĐỎ NHẸ, KHÔNG GẮT
+================================ */
+.logout-btn {
+    background: #ef4444;              /* đỏ dịu */
+    color: #fff;
+    padding: 7px 18px;
+    border-radius: 999px;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+    transition: all 0.22s ease;
 }
 
 .logout-btn:hover {
-    background: #bb2d3b;
-
+    background: #dc2626;
     transform: translateY(-2px);
-    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 8px 18px rgba(0,0,0,0.12);
 }
 
 /* ============================================
@@ -181,7 +182,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    background: #e78964;
+    background: #3cb815;
     color: #fff;
     padding: 7px 14px;
     border-radius: 20px;
@@ -192,7 +193,7 @@
 }
 
 .user-trigger:hover {
-    background: #b0d96a;
+    background: #f65005;
 
     transform: translateY(-2px);
     box-shadow: 0 10px 22px rgba(0, 0, 0, 0.14);

@@ -10,9 +10,15 @@ mixin sidebarCategoryTree(categories, parentId)
             li.sidebar-cat-item(class=hasChildren ? 'has-children' : '')
                 .sidebar-cat-row
                     a.sidebar-cat-link(href=`/products?category=${cat.slug}`)
+
                         span.sidebar-cat-icon
-                            i.fa-solid.fa-carrot
+                            if cat.thumbnail
+                                img.sidebar-cat-img(src=cat.thumbnail, alt=cat.title)
+                            else
+                                i.fa-solid.fa-carrot
+
                         span.sidebar-cat-text= cat.title
+
                     if hasChildren
                         button.sidebar-cat-toggle(type="button" aria-label="Mở danh mục con")
                             i.fa-solid.fa-chevron-down
@@ -28,7 +34,7 @@ block main
     .container.my-3
         .row
             .col-12
-                +box-head('Danh sách sản phẩm')
+            
 
         .row.mt-3
             // ================== CỘT TRÁI: SIDEBAR ==================
@@ -135,6 +141,7 @@ block main
                                             p.product-desc.text-muted Chưa có mô tả.
 
 block scripts
+    // keyword để JS phía client đọc lại (search từ header)
     script.
         window.initialProductKeyword = !{JSON.stringify(initialKeyword || "")};
     script(src="/js/products.js")
