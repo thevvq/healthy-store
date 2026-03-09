@@ -4,7 +4,9 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon --inspect index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "seed": "node seeds/index.seed.js",
+    "seed:admin": "node seeds/admin.seed.js"
   },
   "author": "",
   "license": "ISC",
