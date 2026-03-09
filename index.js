@@ -8,6 +8,8 @@ const session = require("express-session");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 
+const seedAdmin = require("./seeds/admin.seed")
+
 // ROUTES
 const routeClient = require('./routes/client/index.route');
 const routeAdmin = require('./routes/admin/index.route');
@@ -40,8 +42,8 @@ app.use(
         secret: process.env.SESSION_SECRET,
         resave: true,
         saveUninitialized: true,
-        cookie: { 
-            maxAge: 7 * 24 * 60 * 60 * 1000 
+        cookie: {
+            maxAge: 7 * 24 * 60 * 60 * 1000
         }
     })
 );
@@ -114,6 +116,7 @@ app.use((req, res, next) => {
     });
 });
 
+seedAdmin()
 
 /* ======================================================
    RUN SERVER
